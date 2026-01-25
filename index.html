@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Aarogya Link - Community health screening tool for anemia risk assessment">
+  <meta name="theme-color" content="#607d8b">
+  <title>Aarogya Link | Anemia Risk Screening</title>
+
+  <style>
+    * {box-sizing:border-box;}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #e8eaf6 0%, #f5f5f5 100%);
+      margin:0; padding:0;
+      min-height:100vh;
+      line-height:1.6;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #455a64 0%, #607d8b 100%);
+      color:white; padding:20px; text-align:center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    header h1 {
+      margin:0 0 8px 0; 
+      font-size:clamp(22px, 5vw, 32px); 
+      font-weight:600;
+    }
+    header p {
+      margin:4px 0; 
+      opacity:0.95; 
+      font-size:clamp(13px, 3vw, 16px);
+    }
+    
+    .lang-toggle {
+      margin-top:16px;
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .lang-btn {
+      padding:8px 16px;
+      border:2px solid rgba(255,255,255,0.3);
+      background:rgba(255,255,255,0.1);
+      color:white;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:14px;
+      transition:all 0.3s;
+      font-weight:500;
+    }
+    .lang-btn:hover {
+      background:rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+    .lang-btn.active {
+      background:white;
+      color:#37474f;
+      border-color:white;
+    }
+    .lang-btn:focus {
+      outline:3px solid rgba(255,255,255,0.5);
+      outline-offset:2px;
+    }
+    
+    .container {
+      max-width:900px; 
+      margin:auto; 
+      padding:16px;
+    }
+    
+    .card {
+      background:white; 
+      padding:clamp(16px, 4vw, 28px); 
+      margin-top:20px;
+      border-radius:16px; 
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow:0 12px 32px rgba(0,0,0,0.15);
+    }
+    
+    .card h2 {
+      margin-top:0;
+      color:#455a64;
+      font-size:clamp(18px, 4vw, 24px);
+      border-bottom:3px solid #607d8b;
+      padding-bottom:10px;
+      margin-bottom:20px;
+    }
+    
+    .disclaimer {
+      background:#fff8e1;
+      border-left:5px solid #ffa726;
+      padding:16px;
+      border-radius:8px;
+      margin-bottom:20px;
+    }
+    .disclaimer strong {color:#ef6c00;}
+    
+    .visual-card {
+      background:#f9f9f9;
+      padding:12px;
+      border-radius:8px;
+      margin:10px 0;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .visual-card img {
+      width:60px;
+      height:60px;
+      object-fit:cover;
+      border-radius:8px;
+      border:2px solid #e0e0e0;
+    }
+    .visual-card-text {
+      flex:1;
+      font-size:13px;
+      line-height:1.4;
+    }
+    
+    .food-gallery {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+      gap:10px;
+      margin:12px 0;
+      padding:12px;
+      background:#f5f5f5;
+      border-radius:8px;
+    }
+    .food-item {
+      text-align:center;
+      padding:8px;
+      background:white;
+      border-radius:8px;
+      border:2px solid #e0e0e0;
+      transition:transform 0.2s;
+    }
+    .food-item:hover {
+      transform:scale(1.05);
+      border-color:#607d8b;
+    }
+    .food-item img {
+      width:100%;
+      height:70px;
+      object-fit:cover;
+      border-radius:6px;
+      margin-bottom:6px;
+    }
+    .food-item-name {
+      font-size:11px;
+      font-weight:600;
+      color:#333;
+    }
+    
+    .symptom-visual {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:8px 0;
+      padding:8px;
+      background:#f9f9f9;
+      border-radius:6px;
+    }
+    .symptom-visual img {
+      width:50px;
+      height:50px;
+      object-fit:contain;
+    }
+    
+    .form-group {
+      margin-bottom:24px;
+      position:relative;
+    }
+    .form-group label {
+      display:block; 
+      margin-bottom:8px; 
+      font-weight:600; 
+      color:#333;
+      font-size:clamp(14px, 3vw, 16px);
+    }
+    .required {
+      color:#ff9800; 
+      margin-left:4px;
+      font-size:18px;
+    }
+    
+    select, input[type="number"], input[type="text"] {
+      width:100%; 
+      padding:12px 14px; 
+      border-radius:10px; 
+      border:2px solid #e0e0e0;
+      font-size:15px;
+      transition: all 0.3s;
+      background:white;
+    }
+    select:focus, input:focus {
+      outline:none; 
+      border-color:#607d8b;
+      box-shadow: 0 0 0 4px rgba(96,125,139,0.15);
+    }
+    select:invalid, input:invalid {
+      border-color:#f44336;
+    }
+    
+    .error-message {
+      color:#f57c00;
+      font-size:13px;
+      margin-top:4px;
+      display:none;
+    }
+    .form-group.error .error-message {
+      display:block;
+    }
+    .form-group.error select,
+    .form-group.error input {
+      border-color:#ff9800;
+    }
+    
+    button {
+      width:100%; 
+      padding:14px; 
+      margin-top:12px;
+      border-radius:10px; 
+      border:none;
+      background: linear-gradient(135deg, #546e7a 0%, #607d8b 100%);
+      color:white; 
+      font-size:17px; 
+      font-weight:600;
+      cursor:pointer; 
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(84,110,122,0.3);
+    }
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(84,110,122,0.4);
+    }
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    button:disabled {
+      background:#ccc; 
+      cursor:not-allowed; 
+      transform:none; 
+      box-shadow:none;
+      opacity:0.6;
+    }
+    button:focus {
+      outline:3px solid rgba(96,125,139,0.5);
+      outline-offset:2px;
+    }
+    
+    .result {
+      display:none; 
+      padding:24px; 
+      border-radius:12px; 
+      margin-top:24px;
+      animation: slideIn 0.5s ease;
+    }
+    @keyframes slideIn {
+      from {opacity:0; transform:translateY(20px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+    
+    .high {
+      background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+      border-left:6px solid #ef5350;
+    }
+    .moderate {
+      background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+      border-left:6px solid #ffa726;
+    }
+    .low {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border-left:6px solid #66bb6a;
+    }
+    
+    .result h2 {
+      margin-top:0; 
+      font-size:clamp(20px, 4vw, 26px);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .result p {
+      line-height:1.7; 
+      margin:12px 0;
+      font-size:clamp(14px, 3vw, 16px);
+    }
+    .result strong {color:#1a1a1a;}
+    
+    .action-buttons {
+      display:flex; 
+      gap:12px; 
+      margin-top:20px;
+      flex-wrap:wrap;
+    }
+    .action-btn {
+      flex:1; 
+      min-width:140px;
+      background: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+      padding:12px;
+      font-size:14px;
+    }
+    .reset-btn {
+      background: linear-gradient(135deg, #78909c 0%, #90a4ae 100%);
+    }
+    
+    .stats-box {
+      background:#f5f5f5;
+      padding:16px;
+      border-radius:8px;
+      margin-top:16px;
+      font-size:14px;
+    }
+    .stats-box strong {color:#546e7a;}
+    
+    .about-section {
+      background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+      padding:20px;
+      border-radius:12px;
+      line-height:1.8;
+    }
+    .about-section h3 {
+      color:#546e7a;
+      margin-top:0;
+    }
+    
+    .ref {
+      font-size:13px; 
+      line-height:1.6;
+      color:#555;
+    }
+    .ref p {margin:8px 0;}
+    
+    footer {
+      margin-top:40px; 
+      padding:24px 20px;
+      text-align:center; 
+      color:white;
+      background: linear-gradient(135deg, rgba(84,110,122,0.85) 0%, rgba(96,125,139,0.9) 100%);
+      border-radius:12px;
+    }
+    footer p {
+      margin:6px 0;
+      font-size:13px;
+    }
+    
+    /* Mobile Optimizations */
+    @media (max-width: 600px) {
+      header {padding:16px;}
+      .container {padding:12px;}
+      .card {padding:16px; margin-top:16px;}
+      .action-buttons {flex-direction:column;}
+      .action-btn {min-width:100%;}
+      .lang-toggle {gap:6px;}
+      .lang-btn {padding:6px 12px; font-size:13px;}
+    }
+    
+    /* Accessibility improvements */
+    *:focus-visible {
+      outline:3px solid #607d8b;
+      outline-offset:2px;
+    }
+    
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+    
+    /* Print styles */
+    @media print {
+      header, footer, .lang-toggle, .action-buttons, .card:not(:has(.result)) {
+        display: none !important;
+      }
+      body {
+        background: white;
+      }
+      .result {
+        display: block !important;
+        box-shadow: none;
+        border: 2px solid #333;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header role="banner">
+  <h1 id="title">🩺 Aarogya Link</h1>
+  <p id="subtitle">Smart Anemia Risk Screening</p>
+  <p id="tagline">Empowering Women's Health | Ages 15–49</p>
+
+  <div class="lang-toggle" role="group" aria-label="Language selection">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en" aria-pressed="true">English</button>
+    <button class="lang-btn" onclick="setLang('hi')" id="btn-hi" aria-pressed="false">हिंदी</button>
+    <button class="lang-btn" onclick="setLang('mr')" id="btn-mr" aria-pressed="false">मराठी</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- About Section -->
+  <div class="card about-section">
+    <h2 id="aboutTitle">About Aarogya Link</h2>
+    <div id="aboutContent">
+      <p><strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)</p>
+      <p>We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
+      <p>Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
+      <p><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="card">
+    <div class="disclaimer" role="alert">
+      <h3 id="disclaimerTitle" style="margin-top:0; font-size:18px;">⚠️ Important Disclaimer</h3>
+      <p id="disclaimerText">
+        <strong>This tool does NOT diagnose anemia.</strong> It identifies women who may be at higher risk based on symptoms and risk factors. 
+        A hemoglobin (Hb) blood test at a Primary Health Centre (PHC) or doctor is required for confirmation and diagnosis.
+      </p>
+    </div>
+  </div>
+
+  <!-- Screening Form -->
+  <div class="card">
+    <h2 id="formTitle">Health Screening Questionnaire</h2>
+
+    <form id="anemiaForm" novalidate>
+
+      <!-- Age Verification -->
+      <div class="form-group">
+        <label for="age" id="labelAge">
+          📅 Your Age (years) <span class="required" aria-label="required">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="age" 
+          name="age"
+          min="15" 
+          max="49" 
+          required
+          aria-required="true"
+          aria-describedby="ageError"
+          placeholder="Enter age between 15-49"
+        />
+        <div class="error-message" id="ageError">Please enter age between 15-49 years</div>
+      </div>
+
+      <!-- Name (Optional for data collection) -->
+      <div class="form-group">
+        <label for="name" id="labelName">
+          👤 Name (Optional - for follow-up)
+        </label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name"
+          placeholder="Enter your name"
+          aria-describedby="nameHelp"
+        />
+        <small id="nameHelp" style="color:#666; font-size:12px;">This helps us track referrals and follow-ups</small>
+      </div>
+
+      <!-- Question 1: Pregnancy -->
+      <div class="form-group">
+        <label for="pregnant" id="q1">
+          🤰 1. Are you currently pregnant? <span class="required">*</span>
+        </label>
+        <select id="pregnant" name="pregnant" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt1-no">❌ No</option>
+          <option value="yes" id="opt1-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 2: Postpartum -->
+      <div class="form-group">
+        <label for="postpartum" id="q2">
+          👶 2. Did you deliver a baby in the last 6 months? <span class="required">*</span>
+        </label>
+        <select id="postpartum" name="postpartum" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt2-no">❌ No</option>
+          <option value="yes" id="opt2-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 3: Fatigue -->
+      <div class="form-group">
+        <label for="fatigue" id="q3">
+          😴 3. Do you experience persistent tiredness or weakness? <span class="required">*</span>
+        </label>
+        <div class="symptom-visual">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Ccircle cx='35' cy='45' r='3' fill='%23333'/%3E%3Ccircle cx='65' cy='45' r='3' fill='%23333'/%3E%3Cpath d='M35 65c5-3 10-3 15-3s10 0 15 3' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M25 35c0-5 5-5 5 0M75 35c0-5-5-5-5 0' stroke='%23333' stroke-width='2' fill='none'/%3E%3C/svg%3E" alt="Tired">
+          <span id="symptomFatigue" style="font-size:13px; color:#666;">Feeling constantly tired, low energy, difficulty doing daily work</span>
+        </div>
+        <select id="fatigue" name="fatigue" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt3-no">❌ No</option>
+          <option value="yes" id="opt3-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 4: Dizziness -->
+      <div class="form-group">
+        <label for="dizziness" id="q4">
+          😵 4. Do you feel dizzy when standing up or walking? <span class="required">*</span>
+        </label>
+        <div class="symptom-visual">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Cpath d='M35 45l-5-5 5-5M65 45l5-5-5-5' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M35 65c5 3 10 3 15 3s10 0 15-3' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M30 25c5 5 10 10 15 15M70 25c-5 5-10 10-15 15' stroke='%23FFB74D' stroke-width='2' fill='none' opacity='0.7'/%3E%3C/svg%3E" alt="Dizzy">
+          <span id="symptomDizziness" style="font-size:13px; color:#666;">Feeling lightheaded, unsteady, room spinning</span>
+        </div>
+        <select id="dizziness" name="dizziness" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt4-no">❌ No</option>
+          <option value="yes" id="opt4-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 5: Breathlessness -->
+      <div class="form-group">
+        <label for="breathless" id="q5">
+          💨 5. Do you experience breathlessness during normal daily activities? <span class="required">*</span>
+        </label>
+        <div class="symptom-visual">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Ccircle cx='35' cy='45' r='4' fill='%23333'/%3E%3Ccircle cx='65' cy='45' r='4' fill='%23333'/%3E%3Cellipse cx='50' cy='65' rx='8' ry='12' fill='%23333'/%3E%3Cpath d='M20 50c-3-2-3-5 0-7M80 50c3-2 3-5 0-7' stroke='%2364B5F6' stroke-width='2' fill='none'/%3E%3Cpath d='M15 55c-4-2-4-5 0-7M85 55c4-2 4-5 0-7' stroke='%2364B5F6' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3C/svg%3E" alt="Breathless">
+          <span id="symptomBreathless" style="font-size:13px; color:#666;">Difficulty breathing during walking, cooking, or climbing stairs</span>
+        </div>
+        <select id="breathless" name="breathless" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt5-no">❌ No</option>
+          <option value="yes" id="opt5-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 6: Headaches -->
+      <div class="form-group">
+        <label for="headache" id="q6">
+          🤕 6. Do you have frequent headaches or difficulty concentrating? <span class="required">*</span>
+        </label>
+        <select id="headache" name="headache" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt6-no">❌ No</option>
+          <option value="yes" id="opt6-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 7: Heavy Bleeding -->
+      <div class="form-group">
+        <label for="bleeding" id="q7">
+          🩸 7. Do you experience heavy menstrual bleeding (soaking pad every 1-2 hours)? <span class="required">*</span>
+        </label>
+        <select id="bleeding" name="bleeding" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt7-no">❌ No</option>
+          <option value="yes" id="opt7-yes">✅ Yes</option>
+          <option value="skip" id="opt7-skip">🔒 Prefer not to say</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 8: Diet -->
+      <div class="form-group">
+        <label for="diet" id="q8">
+          🥬 8. Do you eat iron-rich foods (spinach, meat, pulses, jaggery) less than 3 times per week? <span class="required">*</span>
+        </label>
+        
+        <div class="food-gallery">
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%234CAF50' width='100' height='100'/%3E%3Cpath fill='%232E7D32' d='M30 70c0-15 10-25 20-25s20 10 20 25H30z'/%3E%3Cellipse cx='40' cy='40' rx='8' ry='12' fill='%232E7D32'/%3E%3Cellipse cx='50' cy='35' rx='10' ry='15' fill='%232E7D32'/%3E%3Cellipse cx='60' cy='40' rx='8' ry='12' fill='%232E7D32'/%3E%3C/svg%3E" alt="Spinach">
+            <div class="food-item-name">Spinach<br>पालक/पालक</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFE0B2' width='100' height='100'/%3E%3Cellipse cx='50' cy='50' rx='25' ry='20' fill='%23D84315'/%3E%3Cellipse cx='45' cy='45' rx='20' ry='15' fill='%23BF360C'/%3E%3C/svg%3E" alt="Meat">
+            <div class="food-item-name">Meat<br>मांस/मांस</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFF9C4' width='100' height='100'/%3E%3Cellipse cx='50' cy='50' rx='28' ry='35' fill='%23FFEB3B'/%3E%3Cellipse cx='50' cy='45' rx='22' ry='28' fill='%23FDD835'/%3E%3C/svg%3E" alt="Egg">
+            <div class="food-item-name">Eggs<br>अंडे/अंडी</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23EFEBE9' width='100' height='100'/%3E%3Cellipse cx='50' cy='55' rx='30' ry='25' fill='%238D6E63'/%3E%3Cellipse cx='50' cy='50' rx='28' ry='22' fill='%236D4C41'/%3E%3Ccircle cx='40' cy='48' r='4' fill='%23A1887F'/%3E%3Ccircle cx='55' cy='50' r='3' fill='%23A1887F'/%3E%3C/svg%3E" alt="Pulses">
+            <div class="food-item-name">Pulses<br>दाल/डाळी</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FBE9E7' width='100' height='100'/%3E%3Crect x='25' y='30' width='50' height='40' rx='5' fill='%238D6E63'/%3E%3Crect x='27' y='32' width='46' height='36' rx='4' fill='%236D4C41'/%3E%3C/svg%3E" alt="Jaggery">
+            <div class="food-item-name">Jaggery<br>गुड़/गूळ</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFECB3' width='100' height='100'/%3E%3Cellipse cx='50' cy='50' rx='18' ry='28' fill='%238D6E63'/%3E%3Cpath d='M32 50c0-15 8-28 18-28s18 13 18 28-8 28-18 28-18-13-18-28z' fill='%236D4C41'/%3E%3C/svg%3E" alt="Dates">
+            <div class="food-item-name">Dates<br>खजूर/खजूर</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23F3E5F5' width='100' height='100'/%3E%3Ccircle cx='45' cy='45' r='8' fill='%236D4C41'/%3E%3Ccircle cx='55' cy='50' r='7' fill='%236D4C41'/%3E%3Ccircle cx='50' cy='60' r='9' fill='%236D4C41'/%3E%3Ccircle cx='60' cy='40' r='6' fill='%236D4C41'/%3E%3C/svg%3E" alt="Nuts">
+            <div class="food-item-name">Nuts<br>मेवे/काजू</div>
+          </div>
+          
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFF9C4' width='100' height='100'/%3E%3Ccircle cx='50' cy='50' r='30' fill='%23FDD835'/%3E%3Ccircle cx='50' cy='50' r='25' fill='%23F9A825'/%3E%3Cpath d='M35 50a15 15 0 0 1 30 0' fill='%23FDD835'/%3E%3C/svg%3E" alt="Lemon">
+            <div class="food-item-name">Lemon<br>नींबू/लिंबू</div>
+          </div>
+        </div>
+        
+        <select id="diet" name="diet" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt8-no">✅ No (I eat regularly)</option>
+          <option value="yes" id="opt8-yes">❌ Yes (Less than 3×/week)</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 9: Tea/Coffee -->
+      <div class="form-group">
+        <label for="tea" id="q9">
+          ☕ 9. Do you drink tea or coffee immediately after meals (within 30 minutes)? <span class="required">*</span>
+        </label>
+        <select id="tea" name="tea" required aria-required="true">
+          <option value="">-- Select --</option>
+          <option value="no" id="opt9-no">❌ No</option>
+          <option value="yes" id="opt9-yes">✅ Yes</option>
+        </select>
+        <div class="error-message">Please select an option</div>
+      </div>
+
+      <!-- Question 10: Pallor -->
+      <div class="form-group">
+        <label for="pallor" id="q10">
+          👁️ 10. Have you noticed paleness in your eyelids, nails, or tongue? (Optional)
+        </label>
+        <select id="pallor" name="pallor">
+          <option value="skip">-- Skip this question --</option>
+          <option value="no" id="opt10-no">❌ No</option>
+          <option value="yes" id="opt10-yes">✅ Yes</option>
+        </select>
+      </div>
+
+      <button type="submit" id="btnSubmit">
+        🔍 Calculate Risk Assessment
+      </button>
+    </form>
+  </div>
+
+  <!-- Result Box -->
+  <div id="resultBox" class="result" role="alert" aria-live="assertive"></div>
+
+  <!-- References -->
+  <div class="card">
+    <h2 id="refTitle">Scientific References & Resources</h2>
+    <div class="ref">
+      <p>[1] World Health Organization. Guideline on haemoglobin cut-offs to define anaemia. WHO; 2024. Available from: https://www.who.int/publications/i/item/9789240088542</p>
+
+      <p>[2] World Health Organization. Anaemia – Fact Sheet (symptoms, risk groups, burden). WHO; 2024. Available from: https://www.who.int/news-room/fact-sheets/detail/anaemia</p>
+
+      <p>[3] Ministry of Health & Family Welfare, Government of India. Anemia Mukt Bharat: Operational Guidelines & Training Toolkit. National Health Mission. Available from: https://nhm.gov.in/index1.php?lang=1&level=3&lid=797&sublinkid=1448</p>
+
+      <p>[4] International Institute for Population Sciences (IIPS) and ICF. National Family Health Survey (NFHS-5), India Report 2019–21. DHS Program; 2021. Available from: https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf</p>
+
+      <p>[5] Akpan IJ, et al. Heavy menstrual bleeding and iron deficiency anemia: clinical review. Int J Gynaecol Obstet. 2025. Available from: https://pubmed.ncbi.nlm.nih.gov/</p>
+
+      <p>[6] Vyas N, et al. Accuracy of physical examination (pallor) for diagnosing anemia: systematic review. Cureus. 2022. Available from: https://pmc.ncbi.nlm.nih.gov/articles/PMC9868202/</p>
+
+      <p>[7] Disler PB, et al. The effect of tea on iron absorption. Gut. 1975;16:193–200. Available from: https://pubmed.ncbi.nlm.nih.gov/1124801/</p>
+    </div>
+  </div>
+
+  <footer role="contentinfo">
+    <p><strong>Aarogya Link</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
+    <p>Community Health Initiative | Zone 1, RID 3142</p>
+    <p id="footerText">For awareness and referral support only | Not a substitute for medical diagnosis</p>
+  </footer>
+
+</div>
+
+<script>
+  // ==========================================
+  // MULTILINGUAL CONTENT DATABASE
+  // ==========================================
+  
+  const translations = {
+    en: {
+      title: "🩺 Aarogya Link",
+      subtitle: "Smart Anemia Risk Screening",
+      tagline: "Empowering Women's Health | Ages 15–49",
+      
+      aboutTitle: "About Aarogya Link",
+      
+      disclaimerTitle: "⚠️ Important Disclaimer",
+      disclaimerText: "<strong>This tool does NOT diagnose anemia.</strong> It identifies women who may be at higher risk based on symptoms and risk factors. A hemoglobin (Hb) blood test at a Primary Health Centre (PHC) or doctor is required for confirmation and diagnosis.",
+      
+      formTitle: "Health Screening Questionnaire",
+      
+      labelAge: "Your Age (years)",
+      ageError: "Please enter age between 15-49 years",
+      labelName: "Name (Optional - for follow-up)",
+      nameHelp: "This helps us track referrals and follow-ups",
+      
+      q1: "1. Are you currently pregnant?",
+      q2: "2. Did you deliver a baby in the last 6 months?",
+      q3: "3. Do you experience persistent tiredness or weakness?",
+      q4: "4. Do you feel dizzy when standing up or walking?",
+      q5: "5. Do you experience breathlessness during normal daily activities?",
+      q6: "6. Do you have frequent headaches or difficulty concentrating?",
+      q7: "7. Do you experience heavy menstrual bleeding (soaking pad every 1-2 hours)?",
+      q8: "8. Do you eat iron-rich foods (spinach, meat, pulses, jaggery) less than 3 times per week?",
+      q9: "9. Do you drink tea or coffee immediately after meals (within 30 minutes)?",
+      q10: "10. Have you noticed paleness in your eyelids, nails, or tongue? (Optional)",
+      
+      symptomFatigue: "Feeling constantly tired, low energy, difficulty doing daily work",
+      symptomDizziness: "Feeling lightheaded, unsteady, room spinning",
+      symptomBreathless: "Difficulty breathing during walking, cooking, or climbing stairs",
+      
+      selectOption: "-- Select --",
+      optNo: "No",
+      optYes: "Yes",
+      optSkip: "Prefer not to say",
+      optSkipQ10: "-- Skip this question --",
+      opt8No: "No (I eat regularly)",
+      opt8Yes: "Yes (Less than 3×/week)",
+      
+      btnSubmit: "Calculate Risk Assessment",
+      errorSelect: "Please select an option",
+      
+      resultHigh: "🔴 High Risk",
+      resultHighText: "Based on your responses, you may be at higher risk of anemia.",
+      resultHighRec: "<strong>⚠️ Urgent Recommendation:</strong> Please visit the nearest Primary Health Centre (PHC) or community health worker for a hemoglobin (Hb) blood test <strong>within 1 week</strong>.<br><br>🏥 <strong>Where to go:</strong> Nearest PHC, ASHA worker, or Anganwadi center",
+      resultHighDiet: "<strong>🍽️ Immediate dietary advice:</strong><br>✅ <strong>EAT MORE:</strong> Green leafy vegetables (spinach 🥬, fenugreek 🌿), pulses (lentils 🫘, beans), jaggery 🍯, dates 🌰, meat/eggs 🍖🥚<br>❌ <strong>AVOID:</strong> Tea ☕ or coffee for at least 1 hour after meals (blocks iron absorption)<br>✅ <strong>ADD:</strong> Lemon 🍋, amla, oranges 🍊 with meals (helps iron absorption)",
+      
+      resultModerate: "🟡 Moderate Risk",
+      resultModText: "Your responses suggest moderate risk factors for anemia.",
+      resultModRec: "<strong>📋 Recommendation:</strong> Consider getting a hemoglobin test within the next 1 month, especially if you are pregnant or recently delivered.<br><br>🏥 Visit your nearest PHC or health worker",
+      resultModDiet: "<strong>🥗 Dietary improvement:</strong><br>✅ Focus on eating iron-rich foods at least 4-5 times per week<br>🥬 Green vegetables | 🫘 Pulses | 🍯 Jaggery | 🍖 Lean meat<br>🍋 Pair with vitamin C foods (lemon water, citrus fruits 🍊, tomatoes 🍅)<br>⏰ Avoid tea/coffee ☕ right after meals",
+      
+      resultLow: "🟢 Low Risk",
+      resultLowText: "No major anemia risk indicators identified based on current responses.",
+      resultLowRec: "<strong>✅ Advice:</strong> Maintain a balanced diet rich in iron and continue regular health check-ups annually.<br><br>🏥 Visit PHC once a year for routine check-up",
+      resultLowDiet: "<strong>🌟 Preventive care:</strong><br>✅ Keep eating variety of iron-rich foods<br>💧 Stay hydrated (drink 8-10 glasses water daily)<br>🥗 Maintain nutritional balance<br>👀 Monitor for any new symptoms",
+      
+      btnPrint: "Print Results",
+      btnReset: "New Screening",
+      btnSave: "Save to Phone",
+      
+      statsTitle: "Your Risk Score Breakdown",
+      statsSymptoms: "Symptom indicators",
+      statsRisk: "Risk factors present",
+      statsTotal: "Total risk score",
+      
+      refTitle: "Scientific References & Resources",
+      footerText: "For awareness and referral support only | Not a substitute for medical diagnosis"
+    },
+    
+    hi: {
+      title: "🩺 आरोग्य लिंक",
+      subtitle: "स्मार्ट एनीमिया जोखिम जांच",
+      tagline: "महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
+      
+      aboutTitle: "आरोग्य लिंक के बारे में",
+      
+      disclaimerTitle: "⚠️ महत्वपूर्ण अस्वीकरण",
+      disclaimerText: "<strong>यह उपकरण एनीमिया का निदान नहीं करता।</strong> यह लक्षणों और जोखिम कारकों के आधार पर उन महिलाओं की पहचान करता है जिन्हें अधिक जोखिम हो सकता है। पुष्टि और निदान के लिए प्राथमिक स्वास्थ्य केंद्र (PHC) या डॉक्टर से हीमोग्लोबिन (Hb) रक्त परीक्षण आवश्यक है।",
+      
+      formTitle: "स्वास्थ्य जांच प्रश्नावली",
+      
+      labelAge: "📅 आपकी उम्र (वर्षों में)",
+      ageError: "कृपया 15-49 वर्ष के बीच की उम्र दर्ज करें",
+      labelName: "👤 नाम (वैकल्पिक - फॉलो-अप के लिए)",
+      nameHelp: "यह हमें रेफरल और फॉलो-अप ट्रैक करने में मदद करता है",
+      
+      q1: "🤰 1. क्या आप वर्तमान में गर्भवती हैं?",
+      q2: "👶 2. क्या आपने पिछले 6 महीनों में बच्चे को जन्म दिया है?",
+      q3: "😴 3. क्या आप लगातार थकान या कमजोरी महसूस करती हैं?",
+      q4: "😵 4. क्या खड़े होने या चलने पर आपको चक्कर आता है?",
+      q5: "💨 5. क्या आप सामान्य दैनिक गतिविधियों के दौरान सांस फूलने का अनुभव करती हैं?",
+      q6: "🤕 6. क्या आपको बार-बार सिरदर्द या ध्यान केंद्रित करने में कठिनाई होती है?",
+      q7: "🩸 7. क्या आपको अधिक मासिक धर्म रक्तस्राव होता है (हर 1-2 घंटे में पैड भिगोना)?",
+      q8: "🥬 8. क्या आप सप्ताह में 3 बार से कम आयरन युक्त खाद्य पदार्थ (पालक, मांस, दालें, गुड़) खाती हैं?",
+      q9: "☕ 9. क्या आप भोजन के तुरंत बाद (30 मिनट के भीतर) चाय या कॉफी पीती हैं?",
+      q10: "👁️ 10. क्या आपने अपनी पलकों, नाखूनों या जीभ में पीलापन देखा है? (वैकल्पिक)",
+      
+      symptomFatigue: "लगातार थकान महसूस करना, कम ऊर्जा, रोज़ के काम करने में कठिनाई",
+      symptomDizziness: "सिर हल्का महसूस होना, अस्थिर, कमरा घूमता हुआ लगना",
+      symptomBreathless: "चलने, खाना बनाने या सीढ़ियां चढ़ने के दौरान सांस लेने में कठिनाई",
+      
+      selectOption: "-- चुनें --",
+      optNo: "❌ नहीं",
+      optYes: "✅ हां",
+      optSkip: "🔒 नहीं बताना चाहते",
+      optSkipQ10: "-- इस प्रश्न को छोड़ें --",
+      opt8No: "✅ नहीं (मैं नियमित रूप से खाती हूं)",
+      opt8Yes: "❌ हां (सप्ताह में 3 बार से कम)",
+      
+      btnSubmit: "🔍 जोखिम मूल्यांकन करें",
+      errorSelect: "कृपया एक विकल्प चुनें",
+      
+      resultHigh: "🔴 उच्च जोखिम",
+      resultHighText: "आपके उत्तरों के आधार पर, आपको एनीमिया का अधिक जोखिम हो सकता है।",
+      resultHighRec: "<strong>⚠️ तत्काल सिफारिश:</strong> कृपया <strong>1 सप्ताह के भीतर</strong> हीमोग्लोबिन (Hb) रक्त परीक्षण के लिए निकटतम प्राथमिक स्वास्थ्य केंद्र (PHC) या सामुदायिक स्वास्थ्य कार्यकर्ता से मिलें।<br><br>🏥 <strong>कहाँ जाएं:</strong> निकटतम PHC, आशा कार्यकर्ता, या आंगनवाड़ी केंद्र",
+      resultHighDiet: "<strong>🍽️ तत्काल आहार सलाह:</strong><br>✅ <strong>अधिक खाएं:</strong> हरी पत्तेदार सब्जियां (पालक 🥬, मेथी 🌿), दालें (मसूर 🫘, बीन्स), गुड़ 🍯, खजूर 🌰, मांस/अंडे 🍖🥚<br>❌ <strong>बचें:</strong> भोजन के बाद कम से कम 1 घंटे तक चाय ☕ या कॉफी (आयरन अवशोषण को रोकता है)<br>✅ <strong>जोड़ें:</strong> भोजन के साथ नींबू 🍋, आंवला, संतरा 🍊 (आयरन अवशोषण में मदद)",
+      
+      resultModerate: "🟡 मध्यम जोखिम",
+      resultModText: "आपके उत्तर एनीमिया के लिए मध्यम जोखिम कारकों का सुझाव देते हैं।",
+      resultModRec: "<strong>📋 सिफारिश:</strong> अगले 1 महीने के भीतर हीमोग्लोबिन परीक्षण कराने पर विचार करें, खासकर यदि आप गर्भवती हैं या हाल ही में प्रसव हुआ है।<br><br>🏥 अपने निकटतम PHC या स्वास्थ्य कार्यकर्ता से मिलें",
+      resultModDiet: "<strong>🥗 आहार सुधार:</strong><br>✅ सप्ताह में कम से कम 4-5 बार आयरन युक्त खाद्य पदार्थ खाएं<br>🥬 हरी सब्जियां | 🫘 दालें | 🍯 गुड़ | 🍖 लीन मीट<br>🍋 विटामिन सी युक्त खाद्य पदार्थों के साथ मिलाएं (नींबू पानी, खट्टे फल 🍊, टमाटर 🍅)<br>⏰ भोजन के तुरंत बाद चाय/कॉफी ☕ से बचें",
+      
+      resultLow: "🟢 कम जोखिम",
+      resultLowText: "वर्तमान उत्तरों के आधार पर कोई प्रमुख एनीमिया जोखिम संकेतक नहीं पाया गया।",
+      resultLowRec: "<strong>✅ सलाह:</strong> आयरन से भरपूर संतुलित आहार बनाए रखें और वार्षिक रूप से नियमित स्वास्थ्य जांच जारी रखें।<br><br>🏥 नियमित जांच के लिए साल में एक बार PHC जाएं",
+      resultLowDiet: "<strong>🌟 निवारक देखभाल:</strong><br>✅ विभिन्न प्रकार के आयरन युक्त खाद्य पदार्थ खाते रहें<br>💧 हाइड्रेटेड रहें (रोजाना 8-10 गिलास पानी पिएं)<br>🥗 पोषण संतुलन बनाए रखें<br>👀 किसी भी नए लक्षण की निगरानी करें",
+      
+      btnPrint: "परिणाम प्रिंट करें",
+      btnReset: "नई जांच",
+      btnSave: "फोन में सेव करें",
+      
+      statsTitle: "आपका जोखिम स्कोर विवरण",
+      statsSymptoms: "लक्षण संकेतक",
+      statsRisk: "जोखिम कारक मौजूद",
+      statsTotal: "कुल जोखिम स्कोर",
+      
+      refTitle: "वैज्ञानिक संदर्भ और संसाधन",
+      footerText: "केवल जागरूकता और रेफरल सहायता के लिए | चिकित्सा निदान का विकल्प नहीं"
+    },
+    
+    mr: {
+      title: "🩺 आरोग्य लिंक",
+      subtitle: "स्मार्ट अॅनिमिया जोखीम तपासणी",
+      tagline: "महिला आरोग्य सशक्तीकरण | वय 15–49",
+      
+      aboutTitle: "आरोग्य लिंक बद्दल",
+      
+      disclaimerTitle: "⚠️ महत्त्वाचा अस्वीकरण",
+      disclaimerText: "<strong>हे साधन अॅनिमियाचे निदान करत नाही.</strong> हे लक्षणे आणि जोखीम घटकांच्या आधारे जास्त जोखीम असलेल्या महिलांची ओळख करते. पुष्टीकरण आणि निदानासाठी प्राथमिक आरोग्य केंद्र (PHC) किंवा डॉक्टरांकडून हिमोग्लोबिन (Hb) रक्त चाचणी आवश्यक आहे.",
+      
+      formTitle: "आरोग्य तपासणी प्रश्नावली",
+      
+      labelAge: "📅 तुमचे वय (वर्षांमध्ये)",
+      ageError: "कृपया 15-49 वर्षांदरम्यानचे वय प्रविष्ट करा",
+      labelName: "👤 नाव (ऐच्छिक - फॉलो-अपसाठी)",
+      nameHelp: "हे आम्हाला रेफरल आणि फॉलो-अप ट्रॅक करण्यास मदत करते",
+      
+      q1: "🤰 1. तुम्ही सध्या गर्भवती आहात का?",
+      q2: "👶 2. तुम्ही गेल्या 6 महिन्यात बाळाला जन्म दिला आहे का?",
+      q3: "😴 3. तुम्हाला सतत थकवा किंवा अशक्तपणा जाणवतो का?",
+      q4: "😵 4. उभे राहताना किंवा चालताना तुम्हाला चक्कर येते का?",
+      q5: "💨 5. तुम्हाला सामान्य दैनंदिन कामांदरम्यान श्वास लागतो का?",
+      q6: "🤕 6. तुम्हाला वारंवार डोकेदुखी किंवा लक्ष केंद्रित करण्यात अडचण येते का?",
+      q7: "🩸 7. तुम्हाला जास्त मासिक पाळी रक्तस्राव होतो का (दर 1-2 तासांनी पॅड भिजणे)?",
+      q8: "🥬 8. तुम्ही आयर्न-समृद्ध पदार्थ (पालक, मांस, डाळी, गूळ) आठवड्यातून 3 वेळेपेक्षा कमी खातात का?",
+      q9: "☕ 9. तुम्ही जेवणानंतर लगेच (30 मिनिटांच्या आत) चहा किंवा कॉफी पिता का?",
+      q10: "👁️ 10. तुम्हाला तुमच्या पापण्या, नखे किंवा जीभ मध्ये फिकटपणा दिसला आहे का? (ऐच्छिक)",
+      
+      symptomFatigue: "सतत थकवा जाणवणे, कमी ऊर्जा, दैनंदिन काम करण्यात अडचण",
+      symptomDizziness: "डोके हलके वाटणे, अस्थिर वाटणे, खोली फिरत असल्यासारखे वाटणे",
+      symptomBreathless: "चालताना, स्वयंपाक करताना किंवा पायऱ्या चढताना श्वास घेण्यात अडचण",
+      
+      selectOption: "-- निवडा --",
+      optNo: "❌ नाही",
+      optYes: "✅ होय",
+      optSkip: "🔒 सांगू इच्छित नाही",
+      optSkipQ10: "-- हा प्रश्न वगळा --",
+      opt8No: "✅ नाही (मी नियमितपणे खाते)",
+      opt8Yes: "❌ होय (आठवड्यातून 3 वेळेपेक्षा कमी)",
+      
+      btnSubmit: "🔍 जोखीम मूल्यांकन करा",
+      errorSelect: "कृपया एक पर्याय निवडा",
+      
+      resultHigh: "🔴 उच्च जोखीम",
+      resultHighText: "तुमच्या उत्तरांवर आधारित, तुम्हाला अॅनिमियाचा जास्त धोका असू शकतो.",
+      resultHighRec: "<strong>⚠️ तातडीची शिफारस:</strong> कृपया <strong>1 आठवड्याच्या आत</strong> हिमोग्लोबिन (Hb) रक्त चाचणीसाठी जवळच्या प्राथमिक आरोग्य केंद्र (PHC) किंवा सामुदायिक आरोग्य कार्यकर्त्याला भेटा।<br><br>🏥 <strong>कुठे जावे:</strong> जवळचे PHC, आशा कार्यकर्ता, किंवा अंगणवाडी केंद्र",
+      resultHighDiet: "<strong>🍽️ तात्काळ आहार सल्ला:</strong><br>✅ <strong>जास्त खा:</strong> हिरव्या पालेभाज्या (पालक 🥬, मेथी 🌿), डाळी (मसूर 🫘, बीन्स), गूळ 🍯, खजूर 🌰, मांस/अंडी 🍖🥚<br>❌ <strong>टाळा:</strong> जेवणानंतर किमान 1 तास चहा ☕ किंवा कॉफी (आयर्न शोषण रोखते)<br>✅ <strong>घाला:</strong> जेवणासोबत लिंबू 🍋, आवळा, संत्री 🍊 (आयर्न शोषण सुधारते)",
+      
+      resultModerate: "🟡 मध्यम जोखीम",
+      resultModText: "तुमची उत्तरे अॅनिमियासाठी मध्यम जोखीम घटक सूचित करतात.",
+      resultModRec: "<strong>शिफारस:</strong> पुढील 1 महिन्यात हिमोग्लोबिन चाचणी करण्याचा विचार करा, विशेषत: जर तुम्ही गर्भवती असाल किंवा नुकतीच प्रसूत झाली असाल.",
+      resultModDiet: "<strong>आहार सुधारणा:</strong> आठवड्यातून किमान 4-5 वेळा आयर्न-समृद्ध पदार्थ खाण्यावर लक्ष केंद्रित करा. हिरव्या भाज्या, डाळी, फोर्टिफाइड धान्य, गूळ आणि लीन मीट समाविष्ट करा. आयर्न शोषण सुधारण्यासाठी यांना व्हिटॅमिन सी-समृद्ध पदार्थ (लिंबू पाणी, लिंबूवर्गीय फळे, टोमॅटो) सोबत घ्या. जेवणानंतर लगेच चहा/कॉफी टाळण्याचा प्रयत्न करा.",
+      
+      resultLow: "🟢 कमी जोखीम",
+      resultLowText: "सध्याच्या उत्तरांवर आधारित कोणतेही प्रमुख अॅनिमिया जोखीम सूचक आढळले नाहीत.",
+      resultLowRec: "<strong>सल्ला:</strong> आयर्न-समृद्ध संतुलित आहार राखा आणि वार्षिक नियमित आरोग्य तपासणी सुरू ठेवा.",
+      resultLowDiet: "<strong>प्रतिबंधात्मक काळजी:</strong> विविध आयर्न-समृद्ध पदार्थ खाणे सुरू ठेवा, हायड्रेटेड राहा आणि एकूण पौष्टिक संतुलन राखा. कोणत्याही नवीन लक्षणांचे निरीक्षण करा.",
+      
+      btnPrint: "परिणाम मुद्रित करा",
+      btnReset: "नवीन तपासणी",
+      btnSave: "फोनमध्ये सेव्ह करा",
+      
+      statsTitle: "तुमचा जोखीम स्कोअर तपशील",
+      statsSymptoms: "लक्षण सूचक",
+      statsRisk: "जोखीम घटक उपस्थित",
+      statsTotal: "एकूण जोखीम स्कोअर",
+      
+      refTitle: "वैज्ञानिक संदर्भ आणि संसाधने",
+      footerText: "केवळ जागरूकता आणि रेफरल समर्थनासाठी | वैद्यकीय निदानाचा पर्याय नाही"
+    }
+  };
+
+  // ==========================================
+  // GLOBAL STATE
+  // ==========================================
+  
+  let currentLang = 'en';
+
+  // ==========================================
+  // LANGUAGE SWITCHING
+  // ==========================================
+  
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('preferredLanguage', lang);
+    
+    // Update button states
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.classList.remove("active");
+      btn.setAttribute('aria-pressed', 'false');
+    });
+    document.getElementById("btn-" + lang).classList.add("active");
+    document.getElementById("btn-" + lang).setAttribute('aria-pressed', 'true');
+    
+    const t = translations[lang];
+    
+    // Header
+    document.getElementById("title").textContent = t.title;
+    document.getElementById("subtitle").textContent = t.subtitle;
+    document.getElementById("tagline").textContent = t.tagline;
+    
+    // About
+    document.getElementById("aboutTitle").textContent = t.aboutTitle;
+    
+    // Disclaimer
+    document.getElementById("disclaimerTitle").innerHTML = t.disclaimerTitle;
+    document.getElementById("disclaimerText").innerHTML = t.disclaimerText;
+    
+    // Form
+    document.getElementById("formTitle").textContent = t.formTitle;
+    document.getElementById("labelAge").innerHTML = t.labelAge + ' <span class="required" aria-label="required">*</span>';
+    document.getElementById("ageError").textContent = t.ageError;
+    document.getElementById("labelName").textContent = t.labelName;
+    document.getElementById("nameHelp").textContent = t.nameHelp;
+    
+    // Questions
+    document.getElementById("q1").innerHTML = t.q1 + ' <span class="required">*</span>';
+    document.getElementById("q2").innerHTML = t.q2 + ' <span class="required">*</span>';
+    document.getElementById("q3").innerHTML = t.q3 + ' <span class="required">*</span>';
+    document.getElementById("q4").innerHTML = t.q4 + ' <span class="required">*</span>';
+    document.getElementById("q5").innerHTML = t.q5 + ' <span class="required">*</span>';
+    document.getElementById("q6").innerHTML = t.q6 + ' <span class="required">*</span>';
+    document.getElementById("q7").innerHTML = t.q7 + ' <span class="required">*</span>';
+    document.getElementById("q8").innerHTML = t.q8 + ' <span class="required">*</span>';
+    document.getElementById("q9").innerHTML = t.q9 + ' <span class="required">*</span>';
+    document.getElementById("q10").textContent = t.q10;
+    
+    // Symptom descriptions
+    document.getElementById("symptomFatigue").textContent = t.symptomFatigue;
+    document.getElementById("symptomDizziness").textContent = t.symptomDizziness;
+    document.getElementById("symptomBreathless").textContent = t.symptomBreathless;
+    
+    // Update all select options
+    updateSelectOptions(lang);
+    
+    // Button
+    document.getElementById("btnSubmit").textContent = t.btnSubmit;
+    
+    // References
+    document.getElementById("refTitle").textContent = t.refTitle;
+    
+    // Footer
+    document.getElementById("footerText").textContent = t.footerText;
+    
+    // Update error messages
+    document.querySelectorAll('.error-message').forEach(msg => {
+      if (!msg.id.includes('age')) {
+        msg.textContent = t.errorSelect;
+      }
+    });
+    
+    // Re-render result if visible
+    const resultBox = document.getElementById("resultBox");
+    if (resultBox.style.display === "block") {
+      const lastResult = JSON.parse(localStorage.getItem('lastScreeningResult') || '{}');
+      if (lastResult.riskLevel) {
+        displayResult(lastResult.riskLevel, lastResult.score);
+      }
+    }
+  }
+
+  function updateSelectOptions(lang) {
+    const t = translations[lang];
+    
+    // Update all select dropdowns
+    const selects = ['pregnant', 'postpartum', 'fatigue', 'dizziness', 'breathless', 'headache', 'bleeding', 'diet', 'tea'];
+    
+    selects.forEach(selectId => {
+      const select = document.getElementById(selectId);
+      const currentValue = select.value;
+      
+      // Update first option (Select)
+      select.options[0].text = t.selectOption;
+      
+      if (selectId === 'diet') {
+        select.options[1].text = t.opt8No;
+        select.options[2].text = t.opt8Yes;
+      } else if (selectId === 'bleeding') {
+        select.options[1].text = t.optNo;
+        select.options[2].text = t.optYes;
+        select.options[3].text = t.optSkip;
+      } else {
+        select.options[1].text = t.optNo;
+        select.options[2].text = t.optYes;
+      }
+      
+      select.value = currentValue; // Preserve selection
+    });
+    
+    // Update pallor select
+    const pallorSelect = document.getElementById('pallor');
+    const pallorValue = pallorSelect.value;
+    pallorSelect.options[0].text = t.optSkipQ10;
+    pallorSelect.options[1].text = t.optNo;
+    pallorSelect.options[2].text = t.optYes;
+    pallorSelect.value = pallorValue;
+  }
+
+  // ==========================================
+  // IMPROVED RISK CALCULATION ALGORITHM
+  // ==========================================
+  
+  function calculateRiskScore(formData) {
+    let score = 0;
+    let symptoms = 0;
+    let riskFactors = 0;
+    
+    // High-priority risk factors (weighted heavily)
+    if (formData.pregnant === "yes") {
+      score += 3;
+      riskFactors++;
+    }
+    if (formData.postpartum === "yes") {
+      score += 3;
+      riskFactors++;
+    }
+    if (formData.bleeding === "yes") {
+      score += 4; // Heavy bleeding is strong indicator
+      riskFactors++;
+    }
+    if (formData.pallor === "yes") {
+      score += 3; // Physical sign
+      riskFactors++;
+    }
+    
+    // Symptom indicators (each adds to score)
+    if (formData.fatigue === "yes") {
+      score += 2;
+      symptoms++;
+    }
+    if (formData.dizziness === "yes") {
+      score += 2;
+      symptoms++;
+    }
+    if (formData.breathless === "yes") {
+      score += 2;
+      symptoms++;
+    }
+    if (formData.headache === "yes") {
+      score += 1;
+      symptoms++;
+    }
+    
+    // Dietary risk factors
+    if (formData.diet === "yes") {
+      score += 2;
+      riskFactors++;
+    }
+    if (formData.tea === "yes") {
+      score += 1; // Lower weight but still relevant
+    }
+    
+    // Risk level determination
+    // High: Score >= 8 OR (heavy bleeding + any symptoms) OR pallor + symptoms
+    // Moderate: Score 4-7 OR pregnant/postpartum OR poor diet + symptoms
+    // Low: Score < 4
+    
+    let riskLevel = 'low';
+    
+    if (score >= 8 || 
+        (formData.bleeding === "yes" && symptoms >= 1) || 
+        (formData.pallor === "yes" && symptoms >= 2)) {
+      riskLevel = 'high';
+    } else if (score >= 4 || 
+               formData.pregnant === "yes" || 
+               formData.postpartum === "yes" ||
+               (formData.diet === "yes" && symptoms >= 1)) {
+      riskLevel = 'moderate';
+    }
+    
+    return {
+      score: score,
+      symptoms: symptoms,
+      riskFactors: riskFactors,
+      riskLevel: riskLevel
+    };
+  }
+
+  // ==========================================
+  // FORM VALIDATION
+  // ==========================================
+  
+  function validateForm() {
+    let isValid = true;
+    
+    // Clear previous errors
+    document.querySelectorAll('.form-group').forEach(group => {
+      group.classList.remove('error');
+    });
+    
+    // Validate age
+    const age = document.getElementById('age');
+    if (!age.value || age.value < 15 || age.value > 49) {
+      age.closest('.form-group').classList.add('error');
+      isValid = false;
+    }
+    
+    // Validate required selects
+    const requiredSelects = ['pregnant', 'postpartum', 'fatigue', 'dizziness', 'breathless', 'headache', 'bleeding', 'diet', 'tea'];
+    
+    requiredSelects.forEach(selectId => {
+      const select = document.getElementById(selectId);
+      if (!select.value || select.value === '') {
+        select.closest('.form-group').classList.add('error');
+        isValid = false;
+      }
+    });
+    
+    return isValid;
+  }
+
+  // ==========================================
+  // RESULT DISPLAY
+  // ==========================================
+  
+  function displayResult(riskLevel, scoreData) {
+    const t = translations[currentLang];
+    const resultBox = document.getElementById("resultBox");
+    
+    let resultHTML = '';
+    
+    if (riskLevel === 'high') {
+      resultBox.className = "result high";
+      resultHTML = `
+        <h2>${t.resultHigh}</h2>
+        <p>${t.resultHighText}</p>
+        <p>${t.resultHighRec}</p>
+        
+        <div class="food-gallery" style="margin-top:16px;">
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23E3F2FD' width='100' height='100'/%3E%3Crect x='20' y='30' width='60' height='50' fill='%23fff' stroke='%232196F3' stroke-width='2'/%3E%3Crect x='35' y='45' width='12' height='20' fill='%232196F3'/%3E%3Crect x='53' y='45' width='12' height='20' fill='%232196F3'/%3E%3Cpath d='M20 30h60l-10-10h-40z' fill='%23F44336'/%3E%3Ccircle cx='50' cy='20' r='8' fill='%23F44336'/%3E%3Cpath d='M50 14v12M44 20h12' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E" alt="PHC">
+            <div class="food-item-name" style="font-size:10px;">Primary Health Centre (PHC)</div>
+          </div>
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23F3E5F5' width='100' height='100'/%3E%3Ccircle cx='50' cy='40' r='15' fill='%23CE93D8'/%3E%3Cpath d='M50 25c-8 0-15 7-15 15v20c0 8 7 15 15 15s15-7 15-15v-20c0-8-7-15-15-15z' fill='%23BA68C8'/%3E%3Ccircle cx='45' cy='38' r='2' fill='%23333'/%3E%3Ccircle cx='55' cy='38' r='2' fill='%23333'/%3E%3Cpath d='M45 45c2 2 8 2 10 0' stroke='%23333' stroke-width='1.5' fill='none'/%3E%3C/svg%3E" alt="ASHA">
+            <div class="food-item-name" style="font-size:10px;">ASHA Worker</div>
+          </div>
+          <div class="food-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFF3E0' width='100' height='100'/%3E%3Crect x='25' y='35' width='50' height='45' fill='%23FFCC80' stroke='%23FF9800' stroke-width='2'/%3E%3Crect x='40' y='50' width='20' height='30' fill='%23FF9800'/%3E%3Cpath d='M25 35h50l-10-15h-30z' fill='%23F57C00'/%3E%3Ccircle cx='40' cy='45' r='3' fill='%2364B5F6'/%3E%3Ccircle cx='60' cy='45' r='3' fill='%2364B5F6'/%3E%3C/svg%3E" alt="Anganwadi">
+            <div class="food-item-name" style="font-size:10px;">Anganwadi Centre</div>
+          </div>
+        </div>
+        
+        <p>${t.resultHighDiet}</p>
+      `;
+    } else if (riskLevel === 'moderate') {
+      resultBox.className = "result moderate";
+      resultHTML = `
+        <h2>${t.resultModerate}</h2>
+        <p>${t.resultModText}</p>
+        <p>${t.resultModRec}</p>
+        <p>${t.resultModDiet}</p>
+      `;
+    } else {
+      resultBox.className = "result low";
+      resultHTML = `
+        <h2>${t.resultLow}</h2>
+        <p>${t.resultLowText}</p>
+        <p>${t.resultLowRec}</p>
+        <p>${t.resultLowDiet}</p>
+      `;
+    }
+    
+    // Add stats box
+    resultHTML += `
+      <div class="stats-box">
+        <strong>${t.statsTitle}</strong><br>
+        ${t.statsSymptoms}: <strong>${scoreData.symptoms}</strong><br>
+        ${t.statsRisk}: <strong>${scoreData.riskFactors}</strong><br>
+        ${t.statsTotal}: <strong>${scoreData.score}</strong>
+      </div>
+    `;
+    
+    // Add action buttons
+    resultHTML += `
+      <div class="action-buttons">
+        <button class="action-btn" onclick="printResult()" aria-label="${t.btnPrint}">
+          📄 ${t.btnPrint}
+        </button>
+        <button class="action-btn" onclick="saveResult()" aria-label="${t.btnSave}">
+          💾 ${t.btnSave}
+        </button>
+        <button class="action-btn reset-btn" onclick="resetForm()" aria-label="${t.btnReset}">
+          🔄 ${t.btnReset}
+        </button>
+      </div>
+    `;
+    
+    resultBox.innerHTML = resultHTML;
+    resultBox.style.display = "block";
+    resultBox.scrollIntoView({behavior: "smooth", block: "nearest"});
+  }
+
+  // ==========================================
+  // FORM SUBMISSION
+  // ==========================================
+  
+  // Wait for DOM to be fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, attaching form handler');
+    
+    const form = document.getElementById('anemiaForm');
+    if (!form) {
+      console.error('Form not found!');
+      return;
+    }
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      console.log('Form submitted');
+      
+      if (!validateForm()) {
+        console.log('Validation failed');
+        const messages = {
+          en: 'Please complete all required fields marked with *',
+          hi: 'कृपया * चिह्नित सभी आवश्यक फ़ील्ड भरें',
+          mr: 'कृपया * चिन्हांकित सर्व आवश्यक फील्ड भरा'
+        };
+        alert(messages[currentLang] || messages.en);
+        return;
+      }
+      
+      console.log('Validation passed, collecting data');
+      
+      // Collect form data
+      const formData = {
+        age: document.getElementById("age").value,
+        name: document.getElementById("name").value,
+        pregnant: document.getElementById("pregnant").value,
+        postpartum: document.getElementById("postpartum").value,
+        fatigue: document.getElementById("fatigue").value,
+        dizziness: document.getElementById("dizziness").value,
+        breathless: document.getElementById("breathless").value,
+        headache: document.getElementById("headache").value,
+        bleeding: document.getElementById("bleeding").value,
+        diet: document.getElementById("diet").value,
+        tea: document.getElementById("tea").value,
+        pallor: document.getElementById("pallor").value,
+        timestamp: new Date().toISOString(),
+        language: currentLang
+      };
+      
+      console.log('Form data:', formData);
+      
+      // Calculate risk
+      const riskAssessment = calculateRiskScore(formData);
+      console.log('Risk assessment:', riskAssessment);
+      
+      // Store data
+      storeScreeningData(formData, riskAssessment);
+      
+      // Display result
+      displayResult(riskAssessment.riskLevel, riskAssessment);
+    });
+    
+    console.log('Form handler attached successfully');
+  });
+
+  // ==========================================
+  // DATA PERSISTENCE
+  // ==========================================
+  
+  function storeScreeningData(formData, riskAssessment) {
+    // Store individual screening
+    const screening = {
+      ...formData,
+      ...riskAssessment,
+      id: Date.now()
+    };
+    
+    // Get existing data
+    let allScreenings = JSON.parse(localStorage.getItem('anemiaScreenings') || '[]');
+    allScreenings.push(screening);
+    
+    // Keep only last 100 screenings
+    if (allScreenings.length > 100) {
+      allScreenings = allScreenings.slice(-100);
+    }
+    
+    localStorage.setItem('anemiaScreenings', JSON.stringify(allScreenings));
+    localStorage.setItem('lastScreeningResult', JSON.stringify({
+      riskLevel: riskAssessment.riskLevel,
+      score: riskAssessment
+    }));
+    
+    // Update analytics
+    updateAnalytics(riskAssessment.riskLevel);
+  }
+
+  function updateAnalytics(riskLevel) {
+    let stats = JSON.parse(localStorage.getItem('screeningStats') || '{"high":0,"moderate":0,"low":0,"total":0}');
+    stats[riskLevel]++;
+    stats.total++;
+    localStorage.setItem('screeningStats', JSON.stringify(stats));
+  }
+
+  // ==========================================
+  // ACTION FUNCTIONS
+  // ==========================================
+  
+  function printResult() {
+    window.print();
+  }
+
+  function saveResult() {
+    const resultBox = document.getElementById("resultBox");
+    const resultText = resultBox.innerText;
+    
+    const blob = new Blob([resultText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `aarogya-link-result-${new Date().toLocaleDateString()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    const t = translations[currentLang];
+    const messages = {
+      en: 'Result saved!',
+      hi: 'परिणाम सेव हो गया!',
+      mr: 'परिणाम जतन केला!'
+    };
+    alert(messages[currentLang]);
+  }
+
+  function resetForm() {
+    document.getElementById('anemiaForm').reset();
+    document.getElementById("resultBox").style.display = "none";
+    document.querySelectorAll('.form-group').forEach(group => {
+      group.classList.remove('error');
+    });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // ==========================================
+  // LOAD PREVIOUS SESSION
+  // ==========================================
+  
+  window.addEventListener('load', function() {
+    // Load language preference
+    const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+    if (savedLang !== 'en') {
+      setLang(savedLang);
+    }
+  });
+
+  // ==========================================
+  // ACCESSIBILITY: Keyboard navigation
+  // ==========================================
+  
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const resultBox = document.getElementById("resultBox");
+      if (resultBox.style.display === "block") {
+        resetForm();
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
