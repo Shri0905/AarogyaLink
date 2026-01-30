@@ -393,21 +393,6 @@
     
     .hidden {display:none;}
     
-    .welcome-screen {
-      text-align:center;
-      padding:40px 20px;
-    }
-    .welcome-screen h2 {
-      color:#455a64;
-      margin-bottom:16px;
-    }
-    .welcome-screen p {
-      color:#666;
-      font-size:16px;
-      line-height:1.8;
-      max-width:600px;
-      margin:0 auto 24px;
-    }
     .start-btn {
       display:inline-block;
       padding:16px 48px;
@@ -426,6 +411,68 @@
       box-shadow:0 6px 20px rgba(76,175,80,0.5);
     }
     
+    /* Collapsible About Section */
+    .about-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 16px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-top: 20px;
+      transition: all 0.3s;
+      border-left: 4px solid #607d8b;
+    }
+    .about-header:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+    .about-developer {
+      font-size: 15px;
+      color: #455a64;
+      margin: 0;
+      line-height: 1.6;
+    }
+    .about-developer strong {
+      color: #607d8b;
+      font-weight: 600;
+    }
+    .club-name {
+      color: #455a64;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .expand-icon {
+      font-size: 24px;
+      color: #607d8b;
+      transition: transform 0.3s;
+    }
+    .expand-icon.expanded {
+      transform: rotate(180deg);
+    }
+    .about-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+      background: white;
+      border-radius: 0 0 12px 12px;
+      margin-top: -12px;
+      padding: 0 20px;
+    }
+    .about-content.expanded {
+      max-height: 500px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .about-content p {
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+    }
+    
     footer {
       margin-top:40px;
       padding:24px 20px;
@@ -436,12 +483,39 @@
     }
     footer p {margin:6px 0; font-size:13px;}
     
+    /* Small Privacy Notice */
+    .privacy-footer {
+      background: #f5f5f5;
+      padding: 12px 16px;
+      margin-top: 16px;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .privacy-footer span {
+      font-size: 16px;
+    }
+    
     @media (max-width: 600px) {
       .container {padding:12px;}
       .card {padding:16px;}
       .nav-buttons {flex-direction:column;}
       .action-buttons {flex-direction:column;}
       .action-btn {min-width:100%;}
+      .about-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
   </style>
 </head>
@@ -462,8 +536,8 @@
 
 <div class="container">
 
-  <!-- Hero Banner -->
-  <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 20px; border: none; position: relative; overflow: hidden;">
+  <!-- Hero Banner with Integrated Start Button -->
+  <div class="card" id="heroCard" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 20px; border: none; position: relative; overflow: hidden;">
     <!-- Background Pattern -->
     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;"></div>
     
@@ -494,6 +568,22 @@
         </div>
       </div>
       
+      <!-- Assessment Info Box -->
+      <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; margin: 24px auto; max-width: 600px; border: 2px solid rgba(255,255,255,0.25); text-align: left;">
+        <p id="welcomeText" style="font-size: clamp(14px, 3vw, 16px); margin: 0 0 12px 0; line-height: 1.7; opacity: 0.95;">
+          This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.
+        </p>
+        <p id="welcomeDisclaimer" style="font-size: clamp(12px, 2.5vw, 14px); margin: 0; opacity: 0.9; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">⚠️</span>
+          <span>Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.</span>
+        </p>
+      </div>
+      
+      <!-- Start Button -->
+      <button class="start-btn" onclick="startScreening()" id="startBtn" style="margin-top: 24px;">
+        🚀 Start Screening
+      </button>
+      
       <!-- Features Pills -->
       <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 25px;">
         <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
@@ -510,52 +600,19 @@
         </div>
       </div>
     </div>
-    
-    <style>
-      @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-      }
-    </style>
   </div>
 
-  <!-- Privacy Notice -->
-  <div class="card" style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 16px 20px; margin-top: 16px;">
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <span style="font-size: 24px;">🔒</span>
-      <div>
-        <strong id="privacyTitle" style="color: #2e7d32; font-size: 15px;">Your Privacy is Protected</strong>
-        <p id="privacyText" style="margin: 4px 0 0 0; font-size: 13px; color: #1b5e20; line-height: 1.5;">
-          No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- About Section -->
-  <div class="card" id="aboutCard">
-    <h2 id="aboutTitle">About Aarogya Link</h2>
-    <div id="aboutContent">
-      <p id="aboutDeveloper"><strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)</p>
-      <p id="aboutDescription">We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
-      <p id="aboutLocation">Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
-      <p id="aboutMission"><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
-    </div>
-  </div>
-
-  <!-- Welcome Screen -->
-  <div class="card welcome-screen" id="welcomeScreen">
-    <h2 id="welcomeTitle">Welcome to Your Health Screening</h2>
-    <p id="welcomeText">
-      This quick 10-question assessment will help identify your anemia risk level. 
-      It takes just 2-3 minutes and provides personalized recommendations and local health resources.
+  <!-- Collapsible About Section -->
+  <div class="about-header" id="aboutHeader" onclick="toggleAbout()">
+    <p class="about-developer" id="aboutDeveloperShort">
+      <strong>Developed by:</strong> <span class="club-name">The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>
     </p>
-    <p id="welcomeDisclaimer" style="color:#607d8b; font-weight:600;">
-      ⚠️ Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.
-    </p>
-    <button class="start-btn" onclick="startScreening()" id="startBtn">
-      🚀 Start Screening
-    </button>
+    <span class="expand-icon" id="expandIcon">▼</span>
+  </div>
+  <div class="about-content" id="aboutContent">
+    <p id="aboutDescription">We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
+    <p id="aboutLocation">Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
+    <p id="aboutMission"><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
   </div>
 
   <!-- Progressive Screening Card -->
@@ -663,6 +720,14 @@
     <p><strong>Aarogya Link</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
     <p>Community Health Initiative | Zone 1, RID 3142</p>
     <p id="footerText">For awareness and referral support only | Not a substitute for medical diagnosis</p>
+    
+    <!-- Privacy Notice (Small) -->
+    <div class="privacy-footer">
+      <span>🔒</span>
+      <span id="privacyFooter">
+        <strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.
+      </span>
+    </div>
   </footer>
 
 </div>
@@ -678,23 +743,20 @@
       subtitle: "Smart Progressive Anemia Risk Screening",
       tagline: "Empowering Women's Health | Ages 15–49",
       
-      aboutTitle: "About Aarogya Link",
-      aboutDeveloper: "<strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)",
+      aboutDeveloperShort: "<strong>Developed by:</strong> <span class='club-name'>The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>",
       aboutDescription: "We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.",
-      aboutLocation: "Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
+      aboutLocation: "Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
       aboutMission: "<strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.",
       
-      welcomeTitle: "Welcome to Your Health Screening",
       welcomeText: "This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.",
-      welcomeDisclaimer: "⚠️ Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
+      welcomeDisclaimer: "Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
       startBtn: "🚀 Start Screening",
       
       heroTitle: "🌸 Women's Health Screening Initiative",
       heroSubtitle: "Free anemia risk assessment for women aged 15-49",
       heroTagline: "Supporting community health through early detection and awareness",
       
-      privacyTitle: "Your Privacy is Protected",
-      privacyText: "No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
+      privacyFooter: "<strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
       
       feature1: "⚡ 2 Minute Test",
       feature2: "🔒 100% Private",
@@ -720,23 +782,20 @@
       subtitle: "स्मार्ट प्रगतिशील एनीमिया जोखिम जांच",
       tagline: "महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
       
-      aboutTitle: "आरोग्य लिंक के बारे में",
-      aboutDeveloper: "<strong>विकसित किया गया:</strong> रोटरैक्ट क्लब ऑफ़ डी.वाई. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स, सैटेलाइट सिटी (ज़ोन 1, आरआईडी 3142)",
+      aboutDeveloperShort: "<strong>विकसित किया गया:</strong> <span class='club-name'>रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स</span>",
       aboutDescription: "हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है, सामुदायिक सेवा, व्यावसायिक विकास और सांस्कृतिक पहलों के माध्यम से सकारात्मक प्रभाव डालने पर केंद्रित है।",
-      aboutLocation: "नवी मुंबई में स्थित, हमारा क्लब छात्रों को पर्यावरण, शिक्षा और सशक्तीकरण में प्रभावशाली परियोजनाएं शुरू करने के लिए प्रोत्साहित करता है, साथ ही टीम वर्क, नेतृत्व और अंतर्राष्ट्रीय फेलोशिप को बढ़ावा देता है।",
+      aboutLocation: "नवी मुंबई (सैटेलाइट सिटी, ज़ोन 1, आरआईडी 3142) में स्थित, हमारा क्लब छात्रों को पर्यावरण, शिक्षा और सशक्तीकरण में प्रभावशाली परियोजनाएं शुरू करने के लिए प्रोत्साहित करता है, साथ ही टीम वर्क, नेतृत्व और अंतर्राष्ट्रीय फेलोशिप को बढ़ावा देता है।",
       aboutMission: "<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
       
-      welcomeTitle: "आपकी स्वास्थ्य जांच में आपका स्वागत है",
       welcomeText: "यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा। इसमें केवल 2-3 मिनट लगते हैं और व्यक्तिगत सिफारिशें और स्थानीय स्वास्थ्य संसाधन प्रदान करता है।",
-      welcomeDisclaimer: "⚠️ याद रखें: यह एक जांच उपकरण है, निदान नहीं। चिकित्सा सलाह के लिए हमेशा स्वास्थ्य पेशेवरों से परामर्श करें।",
+      welcomeDisclaimer: "याद रखें: यह एक जांच उपकरण है, निदान नहीं। चिकित्सा सलाह के लिए हमेशा स्वास्थ्य पेशेवरों से परामर्श करें।",
       startBtn: "🚀 जांच शुरू करें",
       
       heroTitle: "🌸 महिला स्वास्थ्य जांच पहल",
       heroSubtitle: "15-49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन",
       heroTagline: "शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
       
-      privacyTitle: "आपकी गोपनीयता सुरक्षित है",
-      privacyText: "हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहीत नहीं किया जाता है। सभी जांच जानकारी आपके डिवाइस पर निजी रहती है। हम केवल उपकरण को बेहतर बनाने के लिए गुमनाम उपयोग आंकड़े एकत्र करते हैं।",
+      privacyFooter: "<strong>गोपनीयता:</strong> हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहीत नहीं किया जाता है। सभी जांच जानकारी आपके डिवाइस पर निजी रहती है। हम केवल उपकरण को बेहतर बनाने के लिए गुमनाम उपयोग आंकड़े एकत्र करते हैं।",
       
       feature1: "⚡ 2 मिनट की जांच",
       feature2: "🔒 100% निजी",
@@ -762,23 +821,20 @@
       subtitle: "स्मार्ट प्रगतीशील अॅनिमिया जोखीम तपासणी",
       tagline: "महिला आरोग्य सशक्तीकरण | वय 15–49",
       
-      aboutTitle: "आरोग्य लिंक बद्दल",
-      aboutDeveloper: "<strong>विकसित केले:</strong> रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स, सॅटेलाइट सिटी (झोन 1, आरआयडी 3142)",
+      aboutDeveloperShort: "<strong>विकसित केले:</strong> <span class='club-name'>रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स</span>",
       aboutDescription: "आम्ही एक संस्था-आधारित युवा संघटना आहोत जी 18 वर्षे आणि त्याहून अधिक वयाच्या लोकांना विचारांची देवाणघेवाण करण्यासाठी एकत्र आणते, सामुदायिक सेवा, व्यावसायिक विकास आणि सांस्कृतिक उपक्रमांद्वारे सकारात्मक प्रभाव निर्माण करण्यावर केंद्रित आहे.",
-      aboutLocation: "नवी मुंबईमध्ये स्थित, आमचा क्लब विद्यार्थ्यांना पर्यावरण, शिक्षण आणि सशक्तीकरणामध्ये प्रभावी प्रकल्प सुरू करण्यासाठी प्रोत्साहित करतो, तसेच टीमवर्क, नेतृत्व आणि आंतरराष्ट्रीय फेलोशिपला प्रोत्साहन देतो.",
+      aboutLocation: "नवी मुंबई (सॅटेलाइट सिटी, झोन 1, आरआयडी 3142) मध्ये स्थित, आमचा क्लब विद्यार्थ्यांना पर्यावरण, शिक्षण आणि सशक्तीकरणामध्ये प्रभावी प्रकल्प सुरू करण्यासाठी प्रोत्साहित करतो, तसेच टीमवर्क, नेतृत्व आणि आंतरराष्ट्रीय फेलोशिपला प्रोत्साहन देतो.",
       aboutMission: "<strong>ध्येय:</strong> सर्व समुदायांसाठी जागरूकता, तपासणी आणि वेळेवर रेफरलद्वारे आरोग्य सेवा अंतर भरणे.",
       
-      welcomeTitle: "तुमच्या आरोग्य तपासणीमध्ये स्वागत आहे",
       welcomeText: "हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल. यास फक्त 2-3 मिनिटे लागतात आणि वैयक्तिक शिफारसी आणि स्थानिक आरोग्य संसाधने प्रदान करते.",
-      welcomeDisclaimer: "⚠️ लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही. वैद्यकीय सल्ल्यासाठी नेहमी आरोग्य व्यावसायिकांचा सल्ला घ्या.",
+      welcomeDisclaimer: "लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही. वैद्यकीय सल्ल्यासाठी नेहमी आरोग्य व्यावसायिकांचा सल्ला घ्या.",
       startBtn: "🚀 तपासणी सुरू करा",
       
       heroTitle: "🌸 महिला आरोग्य तपासणी उपक्रम",
       heroSubtitle: "15-49 वयोगटातील महिलांसाठी मोफत अॅनिमिया जोखीम मूल्यांकन",
       heroTagline: "लवकर शोध आणि जागरूकतेद्वारे सामुदायिक आरोग्याला समर्थन",
       
-      privacyTitle: "तुमची गोपनीयता सुरक्षित आहे",
-      privacyText: "आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही. सर्व तपासणी माहिती तुमच्या डिव्हाइसवर खाजगी राहते. साधन सुधारण्यासाठी आम्ही फक्त निनावी वापर आकडेवारी गोळा करतो.",
+      privacyFooter: "<strong>गोपनीयता:</strong> आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही. सर्व तपासणी माहिती तुमच्या डिव्हाइसवर खाजगी राहते. साधन सुधारण्यासाठी आम्ही फक्त निनावी वापर आकडेवारी गोळा करतो.",
       
       feature1: "⚡ 2 मिनिट चाचणी",
       feature2: "🔒 100% खाजगी",
@@ -972,6 +1028,23 @@
   let totalScore = 0;
 
   // ==========================================
+  // TOGGLE ABOUT SECTION
+  // ==========================================
+  
+  function toggleAbout() {
+    const content = document.getElementById('aboutContent');
+    const icon = document.getElementById('expandIcon');
+    
+    if (content.classList.contains('expanded')) {
+      content.classList.remove('expanded');
+      icon.classList.remove('expanded');
+    } else {
+      content.classList.add('expanded');
+      icon.classList.add('expanded');
+    }
+  }
+
+  // ==========================================
   // LANGUAGE SWITCHING
   // ==========================================
   
@@ -998,20 +1071,21 @@
     document.getElementById("title").textContent = t.title;
     document.getElementById("subtitle").textContent = t.subtitle;
     document.getElementById("tagline").textContent = t.tagline;
-    document.getElementById("aboutTitle").textContent = t.aboutTitle;
-    document.getElementById("aboutDeveloper").innerHTML = t.aboutDeveloper;
+    document.getElementById("aboutDeveloperShort").innerHTML = t.aboutDeveloperShort;
     document.getElementById("aboutDescription").textContent = t.aboutDescription;
     document.getElementById("aboutLocation").textContent = t.aboutLocation;
     document.getElementById("aboutMission").innerHTML = t.aboutMission;
-    document.getElementById("welcomeTitle").textContent = t.welcomeTitle;
     document.getElementById("welcomeText").textContent = t.welcomeText;
-    document.getElementById("welcomeDisclaimer").textContent = t.welcomeDisclaimer;
+    
+    // Update disclaimer with icon
+    const disclaimerElement = document.getElementById("welcomeDisclaimer");
+    disclaimerElement.innerHTML = `<span style="font-size: 18px;">⚠️</span><span>${t.welcomeDisclaimer}</span>`;
+    
     document.getElementById("startBtn").textContent = t.startBtn;
     document.getElementById("heroTitle").textContent = t.heroTitle;
     document.getElementById("heroSubtitle").textContent = t.heroSubtitle;
     document.getElementById("heroTagline").textContent = t.heroTagline;
-    document.getElementById("privacyTitle").textContent = t.privacyTitle;
-    document.getElementById("privacyText").textContent = t.privacyText;
+    document.getElementById("privacyFooter").innerHTML = t.privacyFooter;
     document.getElementById("feature1").textContent = t.feature1;
     document.getElementById("feature2").textContent = t.feature2;
     document.getElementById("feature3").textContent = t.feature3;
@@ -1036,8 +1110,9 @@
       'event_label': 'User started anemia screening'
     });
     
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('aboutCard').classList.add('hidden');
+    document.getElementById('heroCard').classList.add('hidden');
+    document.getElementById('aboutHeader').classList.add('hidden');
+    document.getElementById('aboutContent').classList.add('hidden');
     document.getElementById('screeningCard').classList.remove('hidden');
     currentQuestion = 0;
     answers = {};
@@ -1508,8 +1583,8 @@
 
   function resetScreening() {
     document.getElementById('resultCard').style.display = 'none';
-    document.getElementById('welcomeScreen').classList.remove('hidden');
-    document.getElementById('aboutCard').classList.remove('hidden');
+    document.getElementById('heroCard').classList.remove('hidden');
+    document.getElementById('aboutHeader').classList.remove('hidden');
     document.getElementById('screeningCard').classList.add('hidden');
     currentQuestion = 0;
     answers = {};
