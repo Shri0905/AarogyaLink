@@ -462,6 +462,76 @@
 
 <div class="container">
 
+  <!-- Hero Banner -->
+  <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 20px; border: none; position: relative; overflow: hidden;">
+    <!-- Background Pattern -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;"></div>
+    
+    <!-- Decorative Elements -->
+    <div style="position: absolute; top: 20px; left: 20px; font-size: 60px; opacity: 0.2;">🌸</div>
+    <div style="position: absolute; top: 40px; right: 30px; font-size: 50px; opacity: 0.2;">💝</div>
+    <div style="position: absolute; bottom: 30px; left: 40px; font-size: 45px; opacity: 0.2;">🩺</div>
+    <div style="position: absolute; bottom: 20px; right: 20px; font-size: 55px; opacity: 0.2;">✨</div>
+    
+    <div style="max-width: 800px; margin: auto; position: relative; z-index: 1;">
+      <!-- Icon Badge -->
+      <div style="display: inline-block; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); border-radius: 50px; padding: 15px 30px; margin-bottom: 20px; border: 2px solid rgba(255,255,255,0.3);">
+        <span style="font-size: 32px; display: inline-block; animation: pulse 2s infinite;">💗</span>
+      </div>
+      
+      <h2 id="heroTitle" style="font-size: clamp(28px, 6vw, 42px); margin: 0 0 16px 0; font-weight: 800; color: white; border: none; padding: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.2); letter-spacing: -0.5px; line-height: 1.2;">
+        🌸 Women's Health Screening Initiative
+      </h2>
+      
+      <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px 30px; margin: 20px auto; max-width: 600px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+        <p style="font-size: clamp(17px, 3.5vw, 22px); margin: 0; opacity: 1; line-height: 1.5; font-weight: 600;">
+          <span id="heroSubtitle">Free anemia risk assessment for women aged 15-49</span>
+        </p>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3);">
+          <p style="font-size: clamp(13px, 3vw, 16px); margin: 0; opacity: 0.95; line-height: 1.6;">
+            <span id="heroTagline">Supporting community health through early detection and awareness</span>
+          </p>
+        </div>
+      </div>
+      
+      <!-- Features Pills -->
+      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 25px;">
+        <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
+          <span id="feature1">⚡ 2 Minute Test</span>
+        </div>
+        <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
+          <span id="feature2">🔒 100% Private</span>
+        </div>
+        <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
+          <span id="feature3">🌐 3 Languages</span>
+        </div>
+        <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
+          <span id="feature4">💯 Free Forever</span>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+    </style>
+  </div>
+
+  <!-- Privacy Notice -->
+  <div class="card" style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 16px 20px; margin-top: 16px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 24px;">🔒</span>
+      <div>
+        <strong id="privacyTitle" style="color: #2e7d32; font-size: 15px;">Your Privacy is Protected</strong>
+        <p id="privacyText" style="margin: 4px 0 0 0; font-size: 13px; color: #1b5e20; line-height: 1.5;">
+          No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.
+        </p>
+      </div>
+    </div>
+  </div>
+
   <!-- About Section -->
   <div class="card" id="aboutCard">
     <h2 id="aboutTitle">About Aarogya Link</h2>
@@ -480,7 +550,7 @@
       This quick 10-question assessment will help identify your anemia risk level. 
       It takes just 2-3 minutes and provides personalized recommendations and local health resources.
     </p>
-    <p style="color:#607d8b; font-weight:600;">
+    <p id="welcomeDisclaimer" style="color:#607d8b; font-weight:600;">
       ⚠️ Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.
     </p>
     <button class="start-btn" onclick="startScreening()" id="startBtn">
@@ -616,7 +686,20 @@
       
       welcomeTitle: "Welcome to Your Health Screening",
       welcomeText: "This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.",
+      welcomeDisclaimer: "⚠️ Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
       startBtn: "🚀 Start Screening",
+      
+      heroTitle: "🌸 Women's Health Screening Initiative",
+      heroSubtitle: "Free anemia risk assessment for women aged 15-49",
+      heroTagline: "Supporting community health through early detection and awareness",
+      
+      privacyTitle: "Your Privacy is Protected",
+      privacyText: "No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
+      
+      feature1: "⚡ 2 Minute Test",
+      feature2: "🔒 100% Private",
+      feature3: "🌐 3 Languages",
+      feature4: "💯 Free Forever",
       
       nextStepsTitle: "📋 Recommended Next Steps",
       healthResourcesTitle: "🏥 Local Health Resources",
@@ -645,7 +728,20 @@
       
       welcomeTitle: "आपकी स्वास्थ्य जांच में आपका स्वागत है",
       welcomeText: "यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा। इसमें केवल 2-3 मिनट लगते हैं और व्यक्तिगत सिफारिशें और स्थानीय स्वास्थ्य संसाधन प्रदान करता है।",
+      welcomeDisclaimer: "⚠️ याद रखें: यह एक जांच उपकरण है, निदान नहीं। चिकित्सा सलाह के लिए हमेशा स्वास्थ्य पेशेवरों से परामर्श करें।",
       startBtn: "🚀 जांच शुरू करें",
+      
+      heroTitle: "🌸 महिला स्वास्थ्य जांच पहल",
+      heroSubtitle: "15-49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन",
+      heroTagline: "शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
+      
+      privacyTitle: "आपकी गोपनीयता सुरक्षित है",
+      privacyText: "हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहीत नहीं किया जाता है। सभी जांच जानकारी आपके डिवाइस पर निजी रहती है। हम केवल उपकरण को बेहतर बनाने के लिए गुमनाम उपयोग आंकड़े एकत्र करते हैं।",
+      
+      feature1: "⚡ 2 मिनट की जांच",
+      feature2: "🔒 100% निजी",
+      feature3: "🌐 3 भाषाएं",
+      feature4: "💯 हमेशा मुफ्त",
       
       nextStepsTitle: "📋 अनुशंसित अगले कदम",
       healthResourcesTitle: "🏥 स्थानीय स्वास्थ्य संसाधन",
@@ -674,7 +770,20 @@
       
       welcomeTitle: "तुमच्या आरोग्य तपासणीमध्ये स्वागत आहे",
       welcomeText: "हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल. यास फक्त 2-3 मिनिटे लागतात आणि वैयक्तिक शिफारसी आणि स्थानिक आरोग्य संसाधने प्रदान करते.",
+      welcomeDisclaimer: "⚠️ लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही. वैद्यकीय सल्ल्यासाठी नेहमी आरोग्य व्यावसायिकांचा सल्ला घ्या.",
       startBtn: "🚀 तपासणी सुरू करा",
+      
+      heroTitle: "🌸 महिला आरोग्य तपासणी उपक्रम",
+      heroSubtitle: "15-49 वयोगटातील महिलांसाठी मोफत अॅनिमिया जोखीम मूल्यांकन",
+      heroTagline: "लवकर शोध आणि जागरूकतेद्वारे सामुदायिक आरोग्याला समर्थन",
+      
+      privacyTitle: "तुमची गोपनीयता सुरक्षित आहे",
+      privacyText: "आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही. सर्व तपासणी माहिती तुमच्या डिव्हाइसवर खाजगी राहते. साधन सुधारण्यासाठी आम्ही फक्त निनावी वापर आकडेवारी गोळा करतो.",
+      
+      feature1: "⚡ 2 मिनिट चाचणी",
+      feature2: "🔒 100% खाजगी",
+      feature3: "🌐 3 भाषा",
+      feature4: "💯 नेहमी मोफत",
       
       nextStepsTitle: "📋 शिफारस केलेली पुढील पायऱ्या",
       healthResourcesTitle: "🏥 स्थानिक आरोग्य संसाधने",
@@ -896,7 +1005,17 @@
     document.getElementById("aboutMission").innerHTML = t.aboutMission;
     document.getElementById("welcomeTitle").textContent = t.welcomeTitle;
     document.getElementById("welcomeText").textContent = t.welcomeText;
+    document.getElementById("welcomeDisclaimer").textContent = t.welcomeDisclaimer;
     document.getElementById("startBtn").textContent = t.startBtn;
+    document.getElementById("heroTitle").textContent = t.heroTitle;
+    document.getElementById("heroSubtitle").textContent = t.heroSubtitle;
+    document.getElementById("heroTagline").textContent = t.heroTagline;
+    document.getElementById("privacyTitle").textContent = t.privacyTitle;
+    document.getElementById("privacyText").textContent = t.privacyText;
+    document.getElementById("feature1").textContent = t.feature1;
+    document.getElementById("feature2").textContent = t.feature2;
+    document.getElementById("feature3").textContent = t.feature3;
+    document.getElementById("feature4").textContent = t.feature4;
     document.getElementById("refTitle").textContent = t.refTitle;
     document.getElementById("footerText").textContent = t.footerText;
     
@@ -1315,12 +1434,19 @@
     const districtSelect = document.getElementById('districtSelect');
     
     const districts = {
-      maharashtra: ['Mumbai', 'Pune', 'Nagpur', 'Thane', 'Nashik', 'Aurangabad'],
-      gujarat: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar'],
-      karnataka: ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum'],
-      delhi: ['Central Delhi', 'North Delhi', 'South Delhi', 'East Delhi', 'West Delhi'],
-      up: ['Lucknow', 'Kanpur', 'Ghaziabad', 'Agra', 'Varanasi', 'Meerut'],
-      mp: ['Bhopal', 'Indore', 'Jabalpur', 'Gwalior', 'Ujjain']
+      maharashtra: [
+        'Mumbai', 'Mumbai Suburban', 'Thane', 'Raigad', 'Ratnagiri', 'Sindhudurg',
+        'Pune', 'Satara', 'Sangli', 'Solapur', 'Kolhapur',
+        'Nashik', 'Dhule', 'Nandurbar', 'Jalgaon',
+        'Aurangabad', 'Jalna', 'Beed', 'Latur', 'Osmanabad', 'Nanded', 'Parbhani', 'Hingoli',
+        'Nagpur', 'Wardha', 'Amravati', 'Akola', 'Yavatmal', 'Buldhana', 'Washim',
+        'Chandrapur', 'Gadchiroli', 'Bhandara', 'Gondia'
+      ],
+      gujarat: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar', 'Bhavnagar', 'Jamnagar'],
+      karnataka: ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum', 'Gulbarga'],
+      delhi: ['Central Delhi', 'North Delhi', 'South Delhi', 'East Delhi', 'West Delhi', 'New Delhi'],
+      up: ['Lucknow', 'Kanpur', 'Ghaziabad', 'Agra', 'Varanasi', 'Meerut', 'Prayagraj', 'Noida'],
+      mp: ['Bhopal', 'Indore', 'Jabalpur', 'Gwalior', 'Ujjain', 'Sagar', 'Ratlam']
     };
     
     districtSelect.innerHTML = '<option value="">Select Your District</option>';
