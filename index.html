@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Aarogya Link - Professional anemia screening tool with progressive assessment">
   <meta name="theme-color" content="#607d8b">
-  <title>Aarogya Link v2.0 | Smart Anemia Screening</title>
+  <title>Aarogya Link | Smart Anemia Screening</title>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-763YK30X5T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-763YK30X5T');
+  </script>
 
   <style>
     * {box-sizing:border-box;}
@@ -440,7 +449,7 @@
 <body>
 
 <header role="banner">
-  <h1 id="title">🩺 Aarogya Link v2.0</h1>
+  <h1 id="title">🩺 Aarogya Link</h1>
   <p id="subtitle">Smart Progressive Anemia Risk Screening</p>
   <p id="tagline">Empowering Women's Health | Ages 15–49</p>
 
@@ -457,10 +466,10 @@
   <div class="card" id="aboutCard">
     <h2 id="aboutTitle">About Aarogya Link</h2>
     <div id="aboutContent">
-      <p><strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)</p>
-      <p>We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
-      <p>Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
-      <p><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
+      <p id="aboutDeveloper"><strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)</p>
+      <p id="aboutDescription">We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
+      <p id="aboutLocation">Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
+      <p id="aboutMission"><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
     </div>
   </div>
 
@@ -560,8 +569,28 @@
     </div>
   </div>
 
+  <!-- References Section -->
+  <div class="card" id="referencesCard" style="display:none;">
+    <h2 id="refTitle">Scientific References & Resources</h2>
+    <div class="ref" style="font-size:13px; line-height:1.6; color:#555;">
+      <p>[1] World Health Organization. Guideline on haemoglobin cut-offs to define anaemia. WHO; 2024. Available from: https://www.who.int/publications/i/item/9789240088542</p>
+
+      <p>[2] World Health Organization. Anaemia – Fact Sheet (symptoms, risk groups, burden). WHO; 2024. Available from: https://www.who.int/news-room/fact-sheets/detail/anaemia</p>
+
+      <p>[3] Ministry of Health & Family Welfare, Government of India. Anemia Mukt Bharat: Operational Guidelines & Training Toolkit. National Health Mission. Available from: https://nhm.gov.in/index1.php?lang=1&level=3&lid=797&sublinkid=1448</p>
+
+      <p>[4] International Institute for Population Sciences (IIPS) and ICF. National Family Health Survey (NFHS-5), India Report 2019–21. DHS Program; 2021. Available from: https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf</p>
+
+      <p>[5] Akpan IJ, et al. Heavy menstrual bleeding and iron deficiency anemia: clinical review. Int J Gynaecol Obstet. 2025. Available from: https://pubmed.ncbi.nlm.nih.gov/</p>
+
+      <p>[6] Vyas N, et al. Accuracy of physical examination (pallor) for diagnosing anemia: systematic review. Cureus. 2022. Available from: https://pmc.ncbi.nlm.nih.gov/articles/PMC9868202/</p>
+
+      <p>[7] Disler PB, et al. The effect of tea on iron absorption. Gut. 1975;16:193–200. Available from: https://pubmed.ncbi.nlm.nih.gov/1124801/</p>
+    </div>
+  </div>
+
   <footer role="contentinfo">
-    <p><strong>Aarogya Link v2.0</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
+    <p><strong>Aarogya Link</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
     <p>Community Health Initiative | Zone 1, RID 3142</p>
     <p id="footerText">For awareness and referral support only | Not a substitute for medical diagnosis</p>
   </footer>
@@ -575,17 +604,23 @@
   
   const translations = {
     en: {
-      title: "🩺 Aarogya Link v2.0",
+      title: "🩺 Aarogya Link",
       subtitle: "Smart Progressive Anemia Risk Screening",
       tagline: "Empowering Women's Health | Ages 15–49",
       
       aboutTitle: "About Aarogya Link",
+      aboutDeveloper: "<strong>Developed by:</strong> The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Satellite City (Zone 1, RID 3142)",
+      aboutDescription: "We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.",
+      aboutLocation: "Located in Navi Mumbai, our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
+      aboutMission: "<strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.",
+      
       welcomeTitle: "Welcome to Your Health Screening",
       welcomeText: "This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.",
       startBtn: "🚀 Start Screening",
       
       nextStepsTitle: "📋 Recommended Next Steps",
       healthResourcesTitle: "🏥 Local Health Resources",
+      refTitle: "Scientific References & Resources",
       phcFinderTitle: "🗺️ Find PHC by Location",
       findPHCLink: "Use Location Services",
       showPHCBtn: "Find Nearest PHC",
@@ -598,17 +633,23 @@
     },
     
     hi: {
-      title: "🩺 आरोग्य लिंक v2.0",
+      title: "🩺 आरोग्य लिंक",
       subtitle: "स्मार्ट प्रगतिशील एनीमिया जोखिम जांच",
       tagline: "महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
       
       aboutTitle: "आरोग्य लिंक के बारे में",
+      aboutDeveloper: "<strong>विकसित किया गया:</strong> रोटरैक्ट क्लब ऑफ़ डी.वाई. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स, सैटेलाइट सिटी (ज़ोन 1, आरआईडी 3142)",
+      aboutDescription: "हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है, सामुदायिक सेवा, व्यावसायिक विकास और सांस्कृतिक पहलों के माध्यम से सकारात्मक प्रभाव डालने पर केंद्रित है।",
+      aboutLocation: "नवी मुंबई में स्थित, हमारा क्लब छात्रों को पर्यावरण, शिक्षा और सशक्तीकरण में प्रभावशाली परियोजनाएं शुरू करने के लिए प्रोत्साहित करता है, साथ ही टीम वर्क, नेतृत्व और अंतर्राष्ट्रीय फेलोशिप को बढ़ावा देता है।",
+      aboutMission: "<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
+      
       welcomeTitle: "आपकी स्वास्थ्य जांच में आपका स्वागत है",
       welcomeText: "यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा। इसमें केवल 2-3 मिनट लगते हैं और व्यक्तिगत सिफारिशें और स्थानीय स्वास्थ्य संसाधन प्रदान करता है।",
       startBtn: "🚀 जांच शुरू करें",
       
       nextStepsTitle: "📋 अनुशंसित अगले कदम",
       healthResourcesTitle: "🏥 स्थानीय स्वास्थ्य संसाधन",
+      refTitle: "वैज्ञानिक संदर्भ और संसाधन",
       phcFinderTitle: "🗺️ स्थान के अनुसार PHC खोजें",
       findPHCLink: "स्थान सेवाओं का उपयोग करें",
       showPHCBtn: "निकटतम PHC खोजें",
@@ -621,17 +662,23 @@
     },
     
     mr: {
-      title: "🩺 आरोग्य लिंक v2.0",
+      title: "🩺 आरोग्य लिंक",
       subtitle: "स्मार्ट प्रगतीशील अॅनिमिया जोखीम तपासणी",
       tagline: "महिला आरोग्य सशक्तीकरण | वय 15–49",
       
       aboutTitle: "आरोग्य लिंक बद्दल",
+      aboutDeveloper: "<strong>विकसित केले:</strong> रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स, सॅटेलाइट सिटी (झोन 1, आरआयडी 3142)",
+      aboutDescription: "आम्ही एक संस्था-आधारित युवा संघटना आहोत जी 18 वर्षे आणि त्याहून अधिक वयाच्या लोकांना विचारांची देवाणघेवाण करण्यासाठी एकत्र आणते, सामुदायिक सेवा, व्यावसायिक विकास आणि सांस्कृतिक उपक्रमांद्वारे सकारात्मक प्रभाव निर्माण करण्यावर केंद्रित आहे.",
+      aboutLocation: "नवी मुंबईमध्ये स्थित, आमचा क्लब विद्यार्थ्यांना पर्यावरण, शिक्षण आणि सशक्तीकरणामध्ये प्रभावी प्रकल्प सुरू करण्यासाठी प्रोत्साहित करतो, तसेच टीमवर्क, नेतृत्व आणि आंतरराष्ट्रीय फेलोशिपला प्रोत्साहन देतो.",
+      aboutMission: "<strong>ध्येय:</strong> सर्व समुदायांसाठी जागरूकता, तपासणी आणि वेळेवर रेफरलद्वारे आरोग्य सेवा अंतर भरणे.",
+      
       welcomeTitle: "तुमच्या आरोग्य तपासणीमध्ये स्वागत आहे",
       welcomeText: "हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल. यास फक्त 2-3 मिनिटे लागतात आणि वैयक्तिक शिफारसी आणि स्थानिक आरोग्य संसाधने प्रदान करते.",
       startBtn: "🚀 तपासणी सुरू करा",
       
       nextStepsTitle: "📋 शिफारस केलेली पुढील पायऱ्या",
       healthResourcesTitle: "🏥 स्थानिक आरोग्य संसाधने",
+      refTitle: "वैज्ञानिक संदर्भ आणि संसाधने",
       phcFinderTitle: "🗺️ स्थानानुसार PHC शोधा",
       findPHCLink: "स्थान सेवा वापरा",
       showPHCBtn: "जवळचे PHC शोधा",
@@ -823,6 +870,13 @@
     currentLang = lang;
     localStorage.setItem('preferredLanguage', lang);
     
+    // Track language change in GA4
+    gtag('event', 'language_change', {
+      'event_category': 'engagement',
+      'event_label': 'Language changed to ' + lang,
+      'language': lang
+    });
+    
     // Update button states
     document.querySelectorAll(".lang-btn").forEach(btn => {
       btn.classList.remove("active");
@@ -836,9 +890,14 @@
     document.getElementById("subtitle").textContent = t.subtitle;
     document.getElementById("tagline").textContent = t.tagline;
     document.getElementById("aboutTitle").textContent = t.aboutTitle;
+    document.getElementById("aboutDeveloper").innerHTML = t.aboutDeveloper;
+    document.getElementById("aboutDescription").textContent = t.aboutDescription;
+    document.getElementById("aboutLocation").textContent = t.aboutLocation;
+    document.getElementById("aboutMission").innerHTML = t.aboutMission;
     document.getElementById("welcomeTitle").textContent = t.welcomeTitle;
     document.getElementById("welcomeText").textContent = t.welcomeText;
     document.getElementById("startBtn").textContent = t.startBtn;
+    document.getElementById("refTitle").textContent = t.refTitle;
     document.getElementById("footerText").textContent = t.footerText;
     
     // If in screening, reload current question
@@ -852,6 +911,12 @@
   // ==========================================
   
   function startScreening() {
+    // Track screening start in GA4
+    gtag('event', 'screening_started', {
+      'event_category': 'engagement',
+      'event_label': 'User started anemia screening'
+    });
+    
     document.getElementById('welcomeScreen').classList.add('hidden');
     document.getElementById('aboutCard').classList.add('hidden');
     document.getElementById('screeningCard').classList.remove('hidden');
@@ -1052,6 +1117,22 @@
       riskLevel = 'moderate';
     }
     
+    // Track completion in GA4
+    gtag('event', 'screening_completed', {
+      'event_category': 'conversion',
+      'event_label': 'Screening completed',
+      'value': totalScore
+    });
+    
+    // Track risk level in GA4
+    gtag('event', 'risk_assessment', {
+      'event_category': 'assessment',
+      'event_label': riskLevel,
+      'risk_level': riskLevel,
+      'total_score': totalScore,
+      'symptoms_count': symptoms
+    });
+    
     // Store results
     const result = {
       score: totalScore,
@@ -1195,6 +1276,9 @@
     document.getElementById('btnSave').textContent = t.btnSave;
     document.getElementById('btnReset').textContent = t.btnReset;
     
+    // Show references section
+    document.getElementById('referencesCard').style.display = 'block';
+    
     resultCard.scrollIntoView({behavior: 'smooth'});
   }
 
@@ -1203,6 +1287,12 @@
   // ==========================================
   
   function findNearestPHC() {
+    // Track PHC finder usage in GA4
+    gtag('event', 'phc_finder_used', {
+      'event_category': 'engagement',
+      'event_label': 'User used GPS PHC finder'
+    });
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
