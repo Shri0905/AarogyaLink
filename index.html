@@ -1110,9 +1110,9 @@
       'event_label': 'User started anemia screening'
     });
     
-    document.getElementById('heroCard').classList.add('hidden');
-    document.getElementById('aboutHeader').classList.add('hidden');
-    document.getElementById('aboutContent').classList.add('hidden');
+    document.getElementById('heroCard').style.display = 'none';
+    document.getElementById('aboutHeader').style.display = 'none';
+    document.getElementById('aboutContent').style.display = 'none';
     document.getElementById('screeningCard').classList.remove('hidden');
     currentQuestion = 0;
     answers = {};
@@ -1583,8 +1583,8 @@
 
   function resetScreening() {
     document.getElementById('resultCard').style.display = 'none';
-    document.getElementById('heroCard').classList.remove('hidden');
-    document.getElementById('aboutHeader').classList.remove('hidden');
+    document.getElementById('heroCard').style.display = 'block';
+    document.getElementById('aboutHeader').style.display = 'flex';
     document.getElementById('screeningCard').classList.add('hidden');
     currentQuestion = 0;
     answers = {};
