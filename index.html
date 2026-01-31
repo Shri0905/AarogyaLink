@@ -16,17 +16,17 @@
     gtag('config', 'G-763YK30X5T');
     
     // Global error tracking
-    window.addEventListener('error', (e) => {
+    window.addEventListener('error', function(e) {
       gtag('event', 'exception', {
-        'description': e.error?.message || 'Unknown error',
+        'description': (e.error && e.error.message) ? e.error.message : 'Unknown error',
         'fatal': false
       });
       console.error('Global error:', e);
     });
 
-    window.addEventListener('unhandledrejection', (e) => {
+    window.addEventListener('unhandledrejection', function(e) {
       gtag('event', 'exception', {
-        'description': e.reason?.message || 'Unhandled promise rejection',
+        'description': (e.reason && e.reason.message) ? e.reason.message : 'Unhandled promise rejection',
         'fatal': false
       });
       console.error('Unhandled rejection:', e);
@@ -428,7 +428,6 @@
       box-shadow:0 6px 20px rgba(76,175,80,0.5);
     }
     
-    /* Collapsible About Section */
     .about-header {
       display: flex;
       justify-content: space-between;
@@ -500,7 +499,6 @@
     }
     footer p {margin:6px 0; font-size:13px;}
     
-    /* Small Privacy Notice */
     .privacy-footer {
       background: #f5f5f5;
       padding: 12px 16px;
@@ -553,19 +551,15 @@
 
 <div class="container">
 
-  <!-- Hero Banner with Integrated Start Button -->
+  <!-- Hero Banner -->
   <div class="card" id="heroCard" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 20px; border: none; position: relative; overflow: hidden;">
-    <!-- Background Pattern -->
     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 20px 20px;"></div>
-    
-    <!-- Decorative Elements -->
     <div style="position: absolute; top: 20px; left: 20px; font-size: 60px; opacity: 0.2;">🌸</div>
     <div style="position: absolute; top: 40px; right: 30px; font-size: 50px; opacity: 0.2;">💝</div>
     <div style="position: absolute; bottom: 30px; left: 40px; font-size: 45px; opacity: 0.2;">🩺</div>
     <div style="position: absolute; bottom: 20px; right: 20px; font-size: 55px; opacity: 0.2;">✨</div>
     
     <div style="max-width: 800px; margin: auto; position: relative; z-index: 1;">
-      <!-- Icon Badge -->
       <div style="display: inline-block; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); border-radius: 50px; padding: 15px 30px; margin-bottom: 20px; border: 2px solid rgba(255,255,255,0.3);">
         <span style="font-size: 32px; display: inline-block; animation: pulse 2s infinite;">💗</span>
       </div>
@@ -585,7 +579,6 @@
         </div>
       </div>
       
-      <!-- Assessment Info Box -->
       <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; margin: 24px auto; max-width: 600px; border: 2px solid rgba(255,255,255,0.25); text-align: left;">
         <p id="welcomeText" style="font-size: clamp(14px, 3vw, 16px); margin: 0 0 12px 0; line-height: 1.7; opacity: 0.95;">
           This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.
@@ -596,12 +589,10 @@
         </p>
       </div>
       
-      <!-- Start Button -->
       <button class="start-btn" onclick="startScreening()" id="startBtn" style="margin-top: 24px;">
         🚀 Start Screening
       </button>
       
-      <!-- Features Pills -->
       <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 25px;">
         <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 25px; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.3); font-size: 14px; font-weight: 600;">
           <span id="feature1">⚡ 2 Minute Test</span>
@@ -619,7 +610,7 @@
     </div>
   </div>
 
-  <!-- Collapsible About Section -->
+  <!-- Collapsible About -->
   <div class="about-header" id="aboutHeader" onclick="toggleAbout()">
     <p class="about-developer" id="aboutDeveloperShort">
       <strong>Developed by:</strong> <span class="club-name">The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>
@@ -632,7 +623,7 @@
     <p id="aboutMission"><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
   </div>
 
-  <!-- Progressive Screening Card -->
+  <!-- Screening Card -->
   <div class="card hidden" id="screeningCard">
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill" style="width:0%"></div>
@@ -646,12 +637,8 @@
     </div>
     
     <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn" disabled>
-        ← Previous
-      </button>
-      <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled>
-        Next →
-      </button>
+      <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn" disabled>← Previous</button>
+      <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled>Next →</button>
     </div>
   </div>
 
@@ -671,14 +658,8 @@
         <li>📞 <strong>National Health Helpline:</strong> 104</li>
         <li>👩 <strong>Women Helpline:</strong> 1091</li>
         <li>🚑 <strong>Emergency Ambulance:</strong> 108</li>
-        <li>
-          🔗 <strong>Anemia Mukt Bharat:</strong> 
-          <a href="https://anemiamuktbharat.info/" target="_blank" rel="noopener noreferrer">Official Portal</a>
-        </li>
-        <li>
-          📍 <strong>Find Nearest PHC:</strong> 
-          <a href="#" onclick="findNearestPHC(); return false;" id="findPHCLink">Use Location Services</a>
-        </li>
+        <li>🔗 <strong>Anemia Mukt Bharat:</strong> <a href="https://anemiamuktbharat.info/" target="_blank" rel="noopener noreferrer">Official Portal</a></li>
+        <li>📍 <strong>Find Nearest PHC:</strong> <a href="#" onclick="findNearestPHC(); return false;" id="findPHCLink">Use Location Services</a></li>
       </ul>
       
       <div class="phc-finder" id="phcFinder">
@@ -701,21 +682,13 @@
     </div>
     
     <div class="action-buttons">
-      <button class="action-btn" onclick="shareWhatsApp()">
-        📱 <span id="btnWhatsApp">Share on WhatsApp</span>
-      </button>
-      <button class="action-btn" onclick="printResults()">
-        📄 <span id="btnPrint">Print Results</span>
-      </button>
-      <button class="action-btn" onclick="saveResults()">
-        💾 <span id="btnSave">Save to Phone</span>
-      </button>
-      <button class="action-btn" style="background:linear-gradient(135deg, #78909c 0%, #90a4ae 100%);" onclick="resetScreening()">
-        🔄 <span id="btnReset">New Screening</span>
-      </button>
+      <button class="action-btn" onclick="shareWhatsApp()">📱 <span id="btnWhatsApp">Share on WhatsApp</span></button>
+      <button class="action-btn" onclick="printResults()">📄 <span id="btnPrint">Print Results</span></button>
+      <button class="action-btn" onclick="saveResults()">💾 <span id="btnSave">Save to Phone</span></button>
+      <button class="action-btn" style="background:linear-gradient(135deg, #78909c 0%, #90a4ae 100%);" onclick="resetScreening()">🔄 <span id="btnReset">New Screening</span></button>
     </div>
     
-    <!-- Progress Tracker Section -->
+    <!-- FIX 1: onclick passes 'this' instead of relying on implicit event -->
     <div class="next-steps" style="margin-top: 32px; background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border-left: 4px solid #3B82F6;">
       <h3 style="color: #1E40AF;">📊 <span id="progressTrackerTitle">Track Your Health Journey</span></h3>
       <div id="progressTrackerContent">
@@ -727,7 +700,7 @@
             <div style="font-size: 32px; font-weight: 700; color: #1E40AF; letter-spacing: 3px; font-family: monospace;" id="progressCode">AH-XXXX</div>
             <div style="font-size: 12px; color: #64748b; margin-top: 8px;" id="progressCodeDate">Generated: <span id="progressCodeDateValue"></span></div>
           </div>
-          <button onclick="copyProgressCode()" style="width: 100%; margin-top: 16px; padding: 12px; background: #3B82F6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;">
+          <button onclick="copyProgressCode(this)" style="width: 100%; margin-top: 16px; padding: 12px; background: #3B82F6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;">
             📋 <span id="btnCopyCode">Copy Progress Code</span>
           </button>
         </div>
@@ -741,7 +714,7 @@
       </div>
     </div>
     
-    <!-- 21-Day Challenge Section -->
+    <!-- 21-Day Challenge -->
     <div class="next-steps" style="margin-top: 24px; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border-left: 4px solid #10B981;" id="challengeSection">
       <h3 style="color: #065F46;">🎯 <span id="challengeTitle">Start 21-Day Health Boost Challenge</span></h3>
       <div id="challengeContent">
@@ -786,7 +759,7 @@
       </div>
     </div>
     
-    <!-- Educational Content Library -->
+    <!-- Educational Articles -->
     <div class="next-steps" style="margin-top: 24px; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-left: 4px solid #F59E0B;">
       <h3 style="color: #92400E;">📚 <span id="learnMoreTitle">Learn More About Anemia</span></h3>
       <div id="learnMoreContent">
@@ -852,23 +825,17 @@
     </div>
   </div>
 
-  <!-- References Section -->
+  <!-- References -->
   <div class="card" id="referencesCard" style="display:none;">
     <h2 id="refTitle">Scientific References & Resources</h2>
     <div class="ref" style="font-size:13px; line-height:1.6; color:#555;">
       <p>[1] World Health Organization. Guideline on haemoglobin cut-offs to define anaemia. WHO; 2024. Available from: https://www.who.int/publications/i/item/9789240088542</p>
-
-      <p>[2] World Health Organization. Anaemia – Fact Sheet (symptoms, risk groups, burden). WHO; 2024. Available from: https://www.who.int/news-room/fact-sheets/detail/anaemia</p>
-
-      <p>[3] Ministry of Health & Family Welfare, Government of India. Anemia Mukt Bharat: Operational Guidelines & Training Toolkit. National Health Mission. Available from: https://nhm.gov.in/index1.php?lang=1&level=3&lid=797&sublinkid=1448</p>
-
-      <p>[4] International Institute for Population Sciences (IIPS) and ICF. National Family Health Survey (NFHS-5), India Report 2019–21. DHS Program; 2021. Available from: https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf</p>
-
-      <p>[5] Akpan IJ, et al. Heavy menstrual bleeding and iron deficiency anemia: clinical review. Int J Gynaecol Obstet. 2025. Available from: https://pubmed.ncbi.nlm.nih.gov/</p>
-
-      <p>[6] Vyas N, et al. Accuracy of physical examination (pallor) for diagnosing anemia: systematic review. Cureus. 2022. Available from: https://pmc.ncbi.nlm.nih.gov/articles/PMC9868202/</p>
-
-      <p>[7] Disler PB, et al. The effect of tea on iron absorption. Gut. 1975;16:193–200. Available from: https://pubmed.ncbi.nlm.nih.gov/1124801/</p>
+      <p>[2] World Health Organization. Anaemia – Fact Sheet. WHO; 2024. Available from: https://www.who.int/news-room/fact-sheets/detail/anaemia</p>
+      <p>[3] Ministry of Health & Family Welfare, Government of India. Anemia Mukt Bharat: Operational Guidelines. National Health Mission. Available from: https://nhm.gov.in/index1.php?lang=1&level=3&lid=797&sublinkid=1448</p>
+      <p>[4] International Institute for Population Sciences (IIPS) and ICF. National Family Health Survey (NFHS-5), India Report 2019–21. DHS Program; 2021.</p>
+      <p>[5] Akpan IJ, et al. Heavy menstrual bleeding and iron deficiency anemia: clinical review. Int J Gynaecol Obstet. 2025.</p>
+      <p>[6] Vyas N, et al. Accuracy of physical examination (pallor) for diagnosing anemia: systematic review. Cureus. 2022.</p>
+      <p>[7] Disler PB, et al. The effect of tea on iron absorption. Gut. 1975;16:193–200.</p>
     </div>
   </div>
 
@@ -876,13 +843,9 @@
     <p><strong>Aarogya Link</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
     <p>Community Health Initiative | Zone 1, RID 3142</p>
     <p id="footerText">For awareness and referral support only | Not a substitute for medical diagnosis</p>
-    
-    <!-- Privacy Notice (Small) -->
     <div class="privacy-footer">
       <span>🔒</span>
-      <span id="privacyFooter">
-        <strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.
-      </span>
+      <span id="privacyFooter"><strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.</span>
     </div>
   </footer>
 
@@ -890,380 +853,125 @@
 
 <script>
   // ==========================================
-  // MULTILINGUAL CONTENT DATABASE
+  // MULTILINGUAL CONTENT
   // ==========================================
-  
-  const translations = {
+  var translations = {
     en: {
-      title: "🩺 Aarogya Link",
-      subtitle: "Smart Progressive Anemia Risk Screening",
-      tagline: "Empowering Women's Health | Ages 15–49",
-      
-      aboutDeveloperShort: "<strong>Developed by:</strong> <span class='club-name'>The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>",
-      aboutDescription: "We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.",
-      aboutLocation: "Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
-      aboutMission: "<strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.",
-      
-      welcomeText: "This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.",
-      welcomeDisclaimer: "Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
-      startBtn: "🚀 Start Screening",
-      
-      heroTitle: "🌸 Women's Health Screening Initiative",
-      heroSubtitle: "Free anemia risk assessment for women aged 15-49",
-      heroTagline: "Supporting community health through early detection and awareness",
-      
-      privacyFooter: "<strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
-      
-      feature1: "⚡ 2 Minute Test",
-      feature2: "🔒 100% Private",
-      feature3: "🌐 3 Languages",
-      feature4: "💯 Free Forever",
-      
-      nextStepsTitle: "📋 Recommended Next Steps",
-      healthResourcesTitle: "🏥 Local Health Resources",
-      refTitle: "Scientific References & Resources",
-      phcFinderTitle: "🗺️ Find PHC by Location",
-      findPHCLink: "Use Location Services",
-      showPHCBtn: "Find Nearest PHC",
-      
-      btnWhatsApp: "Share on WhatsApp",
-      btnPrint: "Print Results",
-      btnSave: "Save to Phone",
-      btnReset: "New Screening",
-      
-      // Progress Tracker
-      progressTrackerTitle: "Track Your Health Journey",
-      progressTrackerText: "Want to see your improvement over time? Save your unique Progress Code and come back in 2-4 weeks to retake the screening. We'll show you how much you've improved!",
-      progressCodeLabel: "Your Progress Code",
-      btnCopyCode: "Copy Progress Code",
-      progressTip: "How it works:",
-      progressTipText: "Save this code safely. Return in 2-4 weeks, enter your code, retake screening, and see your progress chart! All data stays private on your device.",
-      
-      // 21-Day Challenge
-      challengeTitle: "Start 21-Day Health Boost Challenge",
-      challengeText: "Small daily habits can make a big difference! Track your progress with these simple actions:",
-      dailyGoalsTitle: "Daily Goals (Check what you did today):",
-      goal1: "🥬 Ate iron-rich food (spinach, dal, eggs, jaggery)",
-      goal2: "🍋 Added vitamin C to meals (lemon, amla, orange)",
-      goal3: "☕ No tea/coffee for 1 hour after meals",
-      goal4: "🚶 15 minutes walk or yoga",
-      streakLabel: "Day Streak",
-      streakMotivation: "Start today to build your streak!",
-      challengeBonus: "Bonus Tip:",
-      challengeBonusText: "Complete all 4 goals for 21 days straight and you will form lasting healthy habits. Your body will thank you!",
-      
-      // Educational Content
-      learnMoreTitle: "Learn More About Anemia",
-      learnMoreText: "Knowledge is power! Read these short articles to understand anemia better:",
-      article1Subtitle: "Quick, tasty, and nutritious",
-      article2Subtitle: "The science explained simply",
-      article3Subtitle: "Don't ignore these symptoms",
-      article4Subtitle: "What the numbers mean",
-      article5Subtitle: "Natural ways to feel better",
-      
-      footerText: "For awareness and referral support only | Not a substitute for medical diagnosis"
+      title:"🩺 Aarogya Link",subtitle:"Smart Progressive Anemia Risk Screening",tagline:"Empowering Women's Health | Ages 15–49",
+      aboutDeveloperShort:"<strong>Developed by:</strong> <span class='club-name'>The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>",
+      aboutDescription:"We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.",
+      aboutLocation:"Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
+      aboutMission:"<strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.",
+      welcomeText:"This quick 10-question assessment will help identify your anemia risk level. It takes just 2-3 minutes and provides personalized recommendations and local health resources.",
+      welcomeDisclaimer:"Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
+      startBtn:"🚀 Start Screening",
+      heroTitle:"🌸 Women's Health Screening Initiative",heroSubtitle:"Free anemia risk assessment for women aged 15-49",heroTagline:"Supporting community health through early detection and awareness",
+      privacyFooter:"<strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
+      feature1:"⚡ 2 Minute Test",feature2:"🔒 100% Private",feature3:"🌐 3 Languages",feature4:"💯 Free Forever",
+      nextStepsTitle:"📋 Recommended Next Steps",healthResourcesTitle:"🏥 Local Health Resources",refTitle:"Scientific References & Resources",
+      phcFinderTitle:"🗺️ Find PHC by Location",findPHCLink:"Use Location Services",showPHCBtn:"Find Nearest PHC",
+      btnWhatsApp:"Share on WhatsApp",btnPrint:"Print Results",btnSave:"Save to Phone",btnReset:"New Screening",
+      progressTrackerTitle:"Track Your Health Journey",btnCopyCode:"Copy Progress Code",
+      challengeTitle:"Start 21-Day Health Boost Challenge",
+      goal1:"🥬 Ate iron-rich food (spinach, dal, eggs, jaggery)",goal2:"🍋 Added vitamin C to meals (lemon, amla, orange)",
+      goal3:"☕ No tea/coffee for 1 hour after meals",goal4:"🚶 15 minutes walk or yoga",
+      streakLabel:"Day Streak",
+      learnMoreTitle:"Learn More About Anemia",
+      footerText:"For awareness and referral support only | Not a substitute for medical diagnosis"
     },
-    
     hi: {
-      title: "🩺 आरोग्य लिंक",
-      subtitle: "स्मार्ट प्रगतिशील एनीमिया जोखिम जांच",
-      tagline: "महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
-      
-      aboutDeveloperShort: "<strong>विकसित किया गया:</strong> <span class='club-name'>रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स</span>",
-      aboutDescription: "हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है, सामुदायिक सेवा, व्यावसायिक विकास और सांस्कृतिक पहलों के माध्यम से सकारात्मक प्रभाव डालने पर केंद्रित है।",
-      aboutLocation: "नवी मुंबई (सैटेलाइट सिटी, ज़ोन 1, आरआईडी 3142) में स्थित, हमारा क्लब छात्रों को पर्यावरण, शिक्षा और सशक्तीकरण में प्रभावशाली परियोजनाएं शुरू करने के लिए प्रोत्साहित करता है, साथ ही टीम वर्क, नेतृत्व और अंतर्राष्ट्रीय फेलोशिप को बढ़ावा देता है।",
-      aboutMission: "<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
-      
-      welcomeText: "यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा। इसमें केवल 2-3 मिनट लगते हैं और व्यक्तिगत सिफारिशें और स्थानीय स्वास्थ्य संसाधन प्रदान करता है।",
-      welcomeDisclaimer: "याद रखें: यह एक जांच उपकरण है, निदान नहीं। चिकित्सा सलाह के लिए हमेशा स्वास्थ्य पेशेवरों से परामर्श करें।",
-      startBtn: "🚀 जांच शुरू करें",
-      
-      heroTitle: "🌸 महिला स्वास्थ्य जांच पहल",
-      heroSubtitle: "15-49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन",
-      heroTagline: "शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
-      
-      privacyFooter: "<strong>गोपनीयता:</strong> हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहीत नहीं किया जाता है। सभी जांच जानकारी आपके डिवाइस पर निजी रहती है। हम केवल उपकरण को बेहतर बनाने के लिए गुमनाम उपयोग आंकड़े एकत्र करते हैं।",
-      
-      feature1: "⚡ 2 मिनट की जांच",
-      feature2: "🔒 100% निजी",
-      feature3: "🌐 3 भाषाएं",
-      feature4: "💯 हमेशा मुफ्त",
-      
-      nextStepsTitle: "📋 अनुशंसित अगले कदम",
-      healthResourcesTitle: "🏥 स्थानीय स्वास्थ्य संसाधन",
-      refTitle: "वैज्ञानिक संदर्भ और संसाधन",
-      phcFinderTitle: "🗺️ स्थान के अनुसार PHC खोजें",
-      findPHCLink: "स्थान सेवाओं का उपयोग करें",
-      showPHCBtn: "निकटतम PHC खोजें",
-      
-      btnWhatsApp: "WhatsApp पर शेयर करें",
-      btnPrint: "परिणाम प्रिंट करें",
-      btnSave: "फोन में सेव करें",
-      btnReset: "नई जांच",
-      
-      footerText: "केवल जागरूकता और रेफरल सहायता के लिए | चिकित्सा निदान का विकल्प नहीं"
+      title:"🩺 आरोग्य लिंक",subtitle:"स्मार्ट प्रगतिशील एनीमिया जोखिम जांच",tagline:"महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
+      aboutDeveloperShort:"<strong>विकसित किया गया:</strong> <span class='club-name'>रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स</span>",
+      aboutDescription:"हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है।",
+      aboutLocation:"नवी मुंबई (सैटेलाइट सिटी, ज़ोन 1, आरआईडी 3142) में स्थित।",
+      aboutMission:"<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
+      welcomeText:"यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा।",
+      welcomeDisclaimer:"याद रखें: यह एक जांच उपकरण है, निदान नहीं।",
+      startBtn:"🚀 जांच शुरू करें",
+      heroTitle:"🌸 महिला स्वास्थ्य जांच पहल",heroSubtitle:"15-49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन",heroTagline:"शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
+      privacyFooter:"<strong>गोपनीयता:</strong> हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहीत नहीं किया जाता है।",
+      feature1:"⚡ 2 मिनट की जांच",feature2:"🔒 100% निजी",feature3:"🌐 3 भाषाएं",feature4:"💯 हमेशा मुफ्त",
+      nextStepsTitle:"📋 अनुशंसित अगले कदम",healthResourcesTitle:"🏥 स्थानीय स्वास्थ्य संसाधन",refTitle:"वैज्ञानिक संदर्भ और संसाधन",
+      phcFinderTitle:"🗺️ स्थान के अनुसार PHC खोजें",findPHCLink:"स्थान सेवाओं का उपयोग करें",showPHCBtn:"निकटतम PHC खोजें",
+      btnWhatsApp:"WhatsApp पर शेयर करें",btnPrint:"परिणाम प्रिंट करें",btnSave:"फोन में सेव करें",btnReset:"नई जांच",
+      progressTrackerTitle:"आपकी स्वास्थ्य यात्रा ट्रैक करें",btnCopyCode:"प्रगति कोड कॉपी करें",
+      challengeTitle:"21 दिन स्वास्थ्य बूस्ट चुनौती शुरू करें",
+      goal1:"🥬 आयरन युक्त खाना खाया",goal2:"🍋 भोजन में विटामिन सी लिया",
+      goal3:"☕ भोजन के बाद 1 घंटे तक चाय/कॉफी नहीं",goal4:"🚶 15 मिनट चलना या योग",
+      streakLabel:"दिन की लय",
+      learnMoreTitle:"एनीमिया के बारे में और जानें",
+      footerText:"केवल जागरूकता और रेफरल सहायता के लिए | चिकित्सा निदान का विकल्प नहीं"
     },
-    
     mr: {
-      title: "🩺 आरोग्य लिंक",
-      subtitle: "स्मार्ट प्रगतीशील अॅनिमिया जोखीम तपासणी",
-      tagline: "महिला आरोग्य सशक्तीकरण | वय 15–49",
-      
-      aboutDeveloperShort: "<strong>विकसित केले:</strong> <span class='club-name'>रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स</span>",
-      aboutDescription: "आम्ही एक संस्था-आधारित युवा संघटना आहोत जी 18 वर्षे आणि त्याहून अधिक वयाच्या लोकांना विचारांची देवाणघेवाण करण्यासाठी एकत्र आणते, सामुदायिक सेवा, व्यावसायिक विकास आणि सांस्कृतिक उपक्रमांद्वारे सकारात्मक प्रभाव निर्माण करण्यावर केंद्रित आहे.",
-      aboutLocation: "नवी मुंबई (सॅटेलाइट सिटी, झोन 1, आरआयडी 3142) मध्ये स्थित, आमचा क्लब विद्यार्थ्यांना पर्यावरण, शिक्षण आणि सशक्तीकरणामध्ये प्रभावी प्रकल्प सुरू करण्यासाठी प्रोत्साहित करतो, तसेच टीमवर्क, नेतृत्व आणि आंतरराष्ट्रीय फेलोशिपला प्रोत्साहन देतो.",
-      aboutMission: "<strong>ध्येय:</strong> सर्व समुदायांसाठी जागरूकता, तपासणी आणि वेळेवर रेफरलद्वारे आरोग्य सेवा अंतर भरणे.",
-      
-      welcomeText: "हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल. यास फक्त 2-3 मिनिटे लागतात आणि वैयक्तिक शिफारसी आणि स्थानिक आरोग्य संसाधने प्रदान करते.",
-      welcomeDisclaimer: "लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही. वैद्यकीय सल्ल्यासाठी नेहमी आरोग्य व्यावसायिकांचा सल्ला घ्या.",
-      startBtn: "🚀 तपासणी सुरू करा",
-      
-      heroTitle: "🌸 महिला आरोग्य तपासणी उपक्रम",
-      heroSubtitle: "15-49 वयोगटातील महिलांसाठी मोफत अॅनिमिया जोखीम मूल्यांकन",
-      heroTagline: "लवकर शोध आणि जागरूकतेद्वारे सामुदायिक आरोग्याला समर्थन",
-      
-      privacyFooter: "<strong>गोपनीयता:</strong> आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही. सर्व तपासणी माहिती तुमच्या डिव्हाइसवर खाजगी राहते. साधन सुधारण्यासाठी आम्ही फक्त निनावी वापर आकडेवारी गोळा करतो.",
-      
-      feature1: "⚡ 2 मिनिट चाचणी",
-      feature2: "🔒 100% खाजगी",
-      feature3: "🌐 3 भाषा",
-      feature4: "💯 नेहमी मोफत",
-      
-      nextStepsTitle: "📋 शिफारस केलेली पुढील पायऱ्या",
-      healthResourcesTitle: "🏥 स्थानिक आरोग्य संसाधने",
-      refTitle: "वैज्ञानिक संदर्भ आणि संसाधने",
-      phcFinderTitle: "🗺️ स्थानानुसार PHC शोधा",
-      findPHCLink: "स्थान सेवा वापरा",
-      showPHCBtn: "जवळचे PHC शोधा",
-      
-      btnWhatsApp: "WhatsApp वर शेअर करा",
-      btnPrint: "परिणाम मुद्रित करा",
-      btnSave: "फोनमध्ये सेव्ह करा",
-      btnReset: "नवीन तपासणी",
-      
-      footerText: "केवळ जागरूकता आणि रेफरल समर्थनासाठी | वैद्यकीय निदानाचा पर्याय नाही"
+      title:"🩺 आरोग्य लिंक",subtitle:"स्मार्ट प्रगतीशील अॅनिमिया जोखीम तपासणी",tagline:"महिला आरोग्य सशक्तीकरण | वय 15–49",
+      aboutDeveloperShort:"<strong>विकसित केले:</strong> <span class='club-name'>रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स</span>",
+      aboutDescription:"आम्ही एक संस्था-आधारित युवा संघटना आहोत.",
+      aboutLocation:"नवी मुंबई (सॅटेलाइट सिटी, झोन 1, आरआयडी 3142) मध्ये स्थित.",
+      aboutMission:"<strong>ध्येय:</strong> सर्व समुदायांसाठी जागरूकता, तपासणी आणि वेळेवर रेफरलद्वारे आरोग्य सेवा अंतर भरणे.",
+      welcomeText:"हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल.",
+      welcomeDisclaimer:"लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही.",
+      startBtn:"🚀 तपासणी सुरू करा",
+      heroTitle:"🌸 महिला आरोग्य तपासणी उपक्रम",heroSubtitle:"15-49 वयोगटातील महिलांसाठी मोफत अॅनिमिया जोखीम मूल्यांकन",heroTagline:"लवकर शोध आणि जागरूकतेद्वारे सामुदायिक आरोग्याला समर्थन",
+      privacyFooter:"<strong>गोपनीयता:</strong> आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही.",
+      feature1:"⚡ 2 मिनिट चाचणी",feature2:"🔒 100% खाजगी",feature3:"🌐 3 भाषा",feature4:"💯 नेहमी मोफत",
+      nextStepsTitle:"📋 शिफारस केलेली पुढील पायऱ्या",healthResourcesTitle:"🏥 स्थानिक आरोग्य संसाधने",refTitle:"वैज्ञानिक संदर्भ आणि संसाधने",
+      phcFinderTitle:"🗺️ स्थानानुसार PHC शोधा",findPHCLink:"स्थान सेवा वापरा",showPHCBtn:"जवळचे PHC शोधा",
+      btnWhatsApp:"WhatsApp वर शेअर करा",btnPrint:"परिणाम मुद्रित करा",btnSave:"फोनमध्ये सेव्ह करा",btnReset:"नवीन तपासणी",
+      progressTrackerTitle:"तुमची आरोग्य यात्रा ट्रॅक करा",btnCopyCode:"प्रगती कोड कॉपी करा",
+      challengeTitle:"21-दिवसांचे आरोग्य बूस्ट आव्हान सुरू करा",
+      goal1:"🥬 आयर्न-समृद्ध अन्न खाले",goal2:"🍋 जेवणात व्हिटॅमिन सी घेतले",
+      goal3:"☕ जेवणानंतर 1 तास चहा/कॉफी नाही",goal4:"🚶 15 मिनिटांचा चाल किंवा योग",
+      streakLabel:"दिवसांची लय",
+      learnMoreTitle:"अॅनिमियाबद्दल अधिक जाणा",
+      footerText:"केवळ जागरूकता आणि रेफरल समर्थनासाठी | वैद्यकीय निदानाचा पर्याय नाही"
     }
   };
 
   // ==========================================
-  // QUESTION DATABASE WITH PROGRESSIVE FLOW
+  // QUESTIONS
   // ==========================================
-  
-  const questions = [
-    {
-      id: 'age',
-      text: {
-        en: "📅 What is your age?",
-        hi: "📅 आपकी उम्र क्या है?",
-        mr: "📅 तुमचे वय काय आहे?"
-      },
-      type: 'number',
-      placeholder: {
-        en: "Enter age between 15-49",
-        hi: "15-49 के बीच उम्र दर्ज करें",
-        mr: "15-49 दरम्यान वय प्रविष्ट करा"
-      },
-      min: 15,
-      max: 49,
-      score: 0
-    },
-    {
-      id: 'pregnant',
-      text: {
-        en: "🤰 Are you currently pregnant?",
-        hi: "🤰 क्या आप वर्तमान में गर्भवती हैं?",
-        mr: "🤰 तुम्ही सध्या गर्भवती आहात का?"
-      },
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 3}
-      ]
-    },
-    {
-      id: 'postpartum',
-      text: {
-        en: "👶 Did you deliver a baby in the last 6 months?",
-        hi: "👶 क्या आपने पिछले 6 महीनों में बच्चे को जन्म दिया है?",
-        mr: "👶 तुम्ही गेल्या 6 महिन्यात बाळाला जन्म दिला आहे का?"
-      },
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 3}
-      ]
-    },
-    {
-      id: 'fatigue',
-      text: {
-        en: "😴 Do you experience persistent tiredness or weakness?",
-        hi: "😴 क्या आप लगातार थकान या कमजोरी महसूस करती हैं?",
-        mr: "😴 तुम्हाला सतत थकवा किंवा अशक्तपणा जाणवतो का?"
-      },
-      helper: {
-        en: "Feeling constantly tired, low energy, difficulty doing daily work",
-        hi: "लगातार थकान महसूस करना, कम ऊर्जा, रोज़ के काम करने में कठिनाई",
-        mr: "सतत थकवा जाणवणे, कमी ऊर्जा, दैनंदिन काम करण्यात अडचण"
-      },
-      icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Ccircle cx='35' cy='45' r='3' fill='%23333'/%3E%3Ccircle cx='65' cy='45' r='3' fill='%23333'/%3E%3Cpath d='M35 65c5-3 10-3 15-3s10 0 15 3' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M25 35c0-5 5-5 5 0M75 35c0-5-5-5-5 0' stroke='%23333' stroke-width='2' fill='none'/%3E%3C/svg%3E",
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 2}
-      ]
-    },
-    {
-      id: 'dizziness',
-      text: {
-        en: "😵 Do you feel dizzy when standing up or walking?",
-        hi: "😵 क्या खड़े होने या चलने पर आपको चक्कर आता है?",
-        mr: "😵 उभे राहताना किंवा चालताना तुम्हाला चक्कर येते का?"
-      },
-      helper: {
-        en: "Feeling lightheaded, unsteady, room spinning",
-        hi: "सिर हल्का महसूस होना, अस्थिर, कमरा घूमता हुआ लगना",
-        mr: "डोके हलके वाटणे, अस्थिर वाटणे, खोली फिरत असल्यासारखे वाटणे"
-      },
-      icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Cpath d='M35 45l-5-5 5-5M65 45l5-5-5-5' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M35 65c5 3 10 3 15 3s10 0 15-3' stroke='%23333' stroke-width='2' fill='none'/%3E%3Cpath d='M30 25c5 5 10 10 15 15M70 25c-5 5-10 10-15 15' stroke='%23FFB74D' stroke-width='2' fill='none' opacity='0.7'/%3E%3C/svg%3E",
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 2}
-      ]
-    },
-    {
-      id: 'breathless',
-      text: {
-        en: "💨 Do you experience breathlessness during normal daily activities?",
-        hi: "💨 क्या आप सामान्य दैनिक गतिविधियों के दौरान सांस फूलने का अनुभव करती हैं?",
-        mr: "💨 तुम्हाला सामान्य दैनंदिन कामांदरम्यान श्वास लागतो का?"
-      },
-      helper: {
-        en: "Difficulty breathing during walking, cooking, or climbing stairs",
-        hi: "चलने, खाना बनाने या सीढ़ियां चढ़ने के दौरान सांस लेने में कठिनाई",
-        mr: "चालताना, स्वयंपाक करताना किंवा पायऱ्या चढताना श्वास घेण्यात अडचण"
-      },
-      icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23FFE082'/%3E%3Ccircle cx='35' cy='45' r='4' fill='%23333'/%3E%3Ccircle cx='65' cy='45' r='4' fill='%23333'/%3E%3Cellipse cx='50' cy='65' rx='8' ry='12' fill='%23333'/%3E%3Cpath d='M20 50c-3-2-3-5 0-7M80 50c3-2 3-5 0-7' stroke='%2364B5F6' stroke-width='2' fill='none'/%3E%3Cpath d='M15 55c-4-2-4-5 0-7M85 55c4-2 4-5 0-7' stroke='%2364B5F6' stroke-width='1.5' fill='none' opacity='0.7'/%3E%3C/svg%3E",
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 2}
-      ]
-    },
-    {
-      id: 'headache',
-      text: {
-        en: "🤕 Do you have frequent headaches or difficulty concentrating?",
-        hi: "🤕 क्या आपको बार-बार सिरदर्द या ध्यान केंद्रित करने में कठिनाई होती है?",
-        mr: "🤕 तुम्हाला वारंवार डोकेदुखी किंवा लक्ष केंद्रित करण्यात अडचण येते का?"
-      },
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 1}
-      ]
-    },
-    {
-      id: 'bleeding',
-      text: {
-        en: "🩸 Do you experience heavy menstrual bleeding?",
-        hi: "🩸 क्या आपको अधिक मासिक धर्म रक्तस्राव होता है?",
-        mr: "🩸 तुम्हाला जास्त मासिक पाळी रक्तस्राव होतो का?"
-      },
-      helper: {
-        en: "Soaking pad every 1-2 hours during periods",
-        hi: "मासिक धर्म के दौरान हर 1-2 घंटे में पैड भिगोना",
-        mr: "मासिक पाळीच्या वेळी दर 1-2 तासांनी पॅड भिजणे"
-      },
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 4},
-        {text: {en: "🔒 Prefer not to say", hi: "🔒 नहीं बताना चाहते", mr: "🔒 सांगू इच्छित नाही"}, score: 0}
-      ]
-    },
-    {
-      id: 'diet',
-      text: {
-        en: "🥬 Do you eat iron-rich foods less than 3 times per week?",
-        hi: "🥬 क्या आप सप्ताह में 3 बार से कम आयरन युक्त खाद्य पदार्थ खाती हैं?",
-        mr: "🥬 तुम्ही आठवड्यातून 3 वेळेपेक्षा कमी आयर्न-समृद्ध पदार्थ खातात का?"
-      },
-      showFoodGallery: true,
-      options: [
-        {text: {en: "✅ No (I eat regularly)", hi: "✅ नहीं (मैं नियमित रूप से खाती हूं)", mr: "✅ नाही (मी नियमितपणे खाते)"}, score: 0},
-        {text: {en: "❌ Yes (Less than 3×/week)", hi: "❌ हां (सप्ताह में 3 बार से कम)", mr: "❌ होय (आठवड्यातून 3 वेळेपेक्षा कमी)"}, score: 2}
-      ]
-    },
-    {
-      id: 'tea',
-      text: {
-        en: "☕ Do you drink tea or coffee immediately after meals?",
-        hi: "☕ क्या आप भोजन के तुरंत बाद चाय या कॉफी पीती हैं?",
-        mr: "☕ तुम्ही जेवणानंतर लगेच चहा किंवा कॉफी पिता का?"
-      },
-      helper: {
-        en: "Within 30 minutes of eating",
-        hi: "खाने के 30 मिनट के भीतर",
-        mr: "जेवणाच्या 30 मिनिटांच्या आत"
-      },
-      options: [
-        {text: {en: "❌ No", hi: "❌ नहीं", mr: "❌ नाही"}, score: 0},
-        {text: {en: "✅ Yes", hi: "✅ हां", mr: "✅ होय"}, score: 1}
-      ]
-    }
+  var questions = [
+    {id:'age',text:{en:"📅 What is your age?",hi:"📅 आपकी उम्र क्या है?",mr:"📅 तुमचे वय काय आहे?"},type:'number',placeholder:{en:"Enter age between 15-49",hi:"15-49 के बीच उम्र दर्ज करें",mr:"15-49 दरम्यान वय प्रविष्ट करा"},min:15,max:49,score:0},
+    {id:'pregnant',text:{en:"🤰 Are you currently pregnant?",hi:"🤰 क्या आप वर्तमान में गर्भवती हैं?",mr:"🤰 तुम्ही सध्या गर्भवती आहात का?"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:3}]},
+    {id:'postpartum',text:{en:"👶 Did you deliver a baby in the last 6 months?",hi:"👶 क्या आपने पिछले 6 महीनों में बच्चे को जन्म दिया है?",mr:"👶 तुम्ही गेल्या 6 महिन्यात बाळाला जन्म दिला आहे का?"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:3}]},
+    {id:'fatigue',text:{en:"😴 Do you experience persistent tiredness or weakness?",hi:"😴 क्या आप लगातार थकान या कमजोरी महसूस करती हैं?",mr:"😴 तुम्हाला सतत थकवा किंवा अशक्तपणा जाणवतो का?"},helper:{en:"Feeling constantly tired, low energy, difficulty doing daily work",hi:"लगातार थकान महसूस करना, कम ऊर्जा",mr:"सतत थकवा जाणवणे, कमी ऊर्जा"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:2}]},
+    {id:'dizziness',text:{en:"😵 Do you feel dizzy when standing up or walking?",hi:"😵 क्या खड़े होने या चलने पर आपको चक्कर आता है?",mr:"😵 उभे राहताना किंवा चालताना तुम्हाला चक्कर येते का?"},helper:{en:"Feeling lightheaded, unsteady, room spinning",hi:"सिर हल्का महसूस होना, अस्थिर",mr:"डोके हलके वाटणे, अस्थिर वाटणे"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:2}]},
+    {id:'breathless',text:{en:"💨 Do you experience breathlessness during normal daily activities?",hi:"💨 क्या आप सामान्य दैनिक गतिविधियों के दौरान सांस फूलने का अनुभव करती हैं?",mr:"💨 तुम्हाला सामान्य दैनंदिन कामांदरम्यान श्वास लागतो का?"},helper:{en:"Difficulty breathing during walking, cooking, or climbing stairs",hi:"चलने, खाना बनाने या सीढ़ियां चढ़ने में कठिनाई",mr:"चालताना, स्वयंपाक करताना श्वास घेण्यात अडचण"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:2}]},
+    {id:'headache',text:{en:"🤕 Do you have frequent headaches or difficulty concentrating?",hi:"🤕 क्या आपको बार-बार सिरदर्द या ध्यान केंद्रित करने में कठिनाई होती है?",mr:"🤕 तुम्हाला वारंवार डोकेदुखी किंवा लक्ष केंद्रित करण्यात अडचण येते का?"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:1}]},
+    {id:'bleeding',text:{en:"🩸 Do you experience heavy menstrual bleeding?",hi:"🩸 क्या आपको अधिक मासिक धर्म रक्तस्राव होता है?",mr:"🩸 तुम्हाला जास्त मासिक पाळी रक्तस्राव होतो का?"},helper:{en:"Soaking pad every 1-2 hours during periods",hi:"मासिक धर्म के दौरान हर 1-2 घंटे में पैड भिगोना",mr:"मासिक पाळीच्या वेळी दर 1-2 तासांनी पॅड भिजणे"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:4},{text:{en:"🔒 Prefer not to say",hi:"🔒 नहीं बताना चाहते",mr:"🔒 सांगू इच्छित नाही"},score:0}]},
+    {id:'diet',text:{en:"🥬 Do you eat iron-rich foods less than 3 times per week?",hi:"🥬 क्या आप सप्ताह में 3 बार से कम आयरन युक्त खाद्य पदार्थ खाती हैं?",mr:"🥬 तुम्ही आठवड्यातून 3 वेळेपेक्षा कमी आयर्न-समृद्ध पदार्थ खातात का?"},showFoodGallery:true,options:[{text:{en:"✅ No (I eat regularly)",hi:"✅ नहीं (नियमित खाती हूं)",mr:"✅ नाही (नियमितपणे खाते)"},score:0},{text:{en:"❌ Yes (Less than 3×/week)",hi:"❌ हां (सप्ताह में 3 बार से कम)",mr:"❌ होय (3 वेळेपेक्षा कमी)"},score:2}]},
+    {id:'tea',text:{en:"☕ Do you drink tea or coffee immediately after meals?",hi:"☕ क्या आप भोजन के तुरंत बाद चाय या कॉफी पीती हैं?",mr:"☕ तुम्ही जेवणानंतर लगेच चहा किंवा कॉफी पिता का?"},helper:{en:"Within 30 minutes of eating",hi:"खाने के 30 मिनट के भीतर",mr:"जेवणाच्या 30 मिनिटांच्या आत"},options:[{text:{en:"❌ No",hi:"❌ नहीं",mr:"❌ नाही"},score:0},{text:{en:"✅ Yes",hi:"✅ हां",mr:"✅ होय"},score:1}]}
   ];
 
   // ==========================================
-  // SAFE LOCALSTORAGE WRAPPER
+  // SAFE LOCALSTORAGE
   // ==========================================
-  
   function safeLocalStorage(operation, key, value) {
     try {
-      if (operation === 'get') {
-        return localStorage.getItem(key);
-      } else if (operation === 'set') {
-        localStorage.setItem(key, value);
-        return true;
-      } else if (operation === 'remove') {
-        localStorage.removeItem(key);
-        return true;
-      }
+      if (operation === 'get') return localStorage.getItem(key);
+      if (operation === 'set') { localStorage.setItem(key, value); return true; }
+      if (operation === 'remove') { localStorage.removeItem(key); return true; }
     } catch (e) {
       console.error('localStorage error:', e);
-      if (e.name === 'QuotaExceededError') {
-        alert('Storage full. Results will not be saved.');
-      } else {
-        alert('Unable to save data. Please check your browser settings.');
-      }
-      gtag('event', 'exception', {
-        'description': 'localStorage_failed',
-        'fatal': false
-      });
-      return false;
+      gtag('event', 'exception', { 'description': 'localStorage_failed_' + operation, 'fatal': false });
+      return null;
     }
   }
 
   // ==========================================
-  // KEYBOARD NAVIGATION
+  // KEYBOARD NAV
   // ==========================================
-  
-  document.addEventListener('keydown', (e) => {
-    // Enter key to proceed to next question
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
-      const nextBtn = document.getElementById('nextBtn');
-      if (nextBtn && !nextBtn.disabled && !nextBtn.classList.contains('hidden')) {
-        nextQuestion();
-      }
+      var nextBtn = document.getElementById('nextBtn');
+      if (nextBtn && !nextBtn.disabled && !nextBtn.classList.contains('hidden')) nextQuestion();
     }
-    
-    // Arrow keys for option selection
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      const options = document.querySelectorAll('.option-btn');
+      var options = document.querySelectorAll('.option-btn');
       if (options.length === 0) return;
-      
-      const selected = document.querySelector('.option-btn.selected');
-      let index = selected ? Array.from(options).indexOf(selected) : -1;
-      
-      if (e.key === 'ArrowDown') {
-        index = (index + 1) % options.length;
-      } else {
-        index = index <= 0 ? options.length - 1 : index - 1;
-      }
-      
+      var selected = document.querySelector('.option-btn.selected');
+      var index = selected ? Array.prototype.indexOf.call(options, selected) : -1;
+      index = e.key === 'ArrowDown' ? (index + 1) % options.length : (index <= 0 ? options.length - 1 : index - 1);
       options[index].click();
       options[index].focus();
       e.preventDefault();
@@ -1273,53 +981,41 @@
   // ==========================================
   // GLOBAL STATE
   // ==========================================
-  
-  let currentLang = 'en';
-  let currentQuestion = 0;
-  let answers = {};
-  let totalScore = 0;
+  var currentLang = 'en';
+  var currentQuestion = 0;
+  var answers = {};
+  var totalScore = 0;
 
   // ==========================================
-  // TOGGLE ABOUT SECTION
+  // HELPER: Get today as YYYY-M-D (cross-browser safe)
   // ==========================================
-  
-  function toggleAbout() {
-    const content = document.getElementById('aboutContent');
-    const icon = document.getElementById('expandIcon');
-    
-    if (content.classList.contains('expanded')) {
-      content.classList.remove('expanded');
-      icon.classList.remove('expanded');
-    } else {
-      content.classList.add('expanded');
-      icon.classList.add('expanded');
-    }
+  function getTodayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
   }
 
   // ==========================================
-  // LANGUAGE SWITCHING
+  // TOGGLE ABOUT
   // ==========================================
-  
+  function toggleAbout() {
+    var content = document.getElementById('aboutContent');
+    var icon = document.getElementById('expandIcon');
+    content.classList.toggle('expanded');
+    icon.classList.toggle('expanded');
+  }
+
+  // ==========================================
+  // LANGUAGE
+  // ==========================================
   function setLang(lang) {
     currentLang = lang;
     safeLocalStorage('set', 'preferredLanguage', lang);
+    gtag('event', 'language_change', { 'event_category': 'engagement', 'language': lang });
     
-    // Track language change in GA4
-    gtag('event', 'language_change', {
-      'event_category': 'engagement',
-      'event_label': 'Language changed to ' + lang,
-      'language': lang
-    });
-    
-    // Update button states
-    document.querySelectorAll(".lang-btn").forEach(btn => {
-      btn.classList.remove("active");
-    });
+    document.querySelectorAll(".lang-btn").forEach(function(btn) { btn.classList.remove("active"); });
     document.getElementById("btn-" + lang).classList.add("active");
     
-    const t = translations[lang];
-    
-    // Update UI text
+    var t = translations[lang];
     document.getElementById("title").textContent = t.title;
     document.getElementById("subtitle").textContent = t.subtitle;
     document.getElementById("tagline").textContent = t.tagline;
@@ -1328,11 +1024,7 @@
     document.getElementById("aboutLocation").textContent = t.aboutLocation;
     document.getElementById("aboutMission").innerHTML = t.aboutMission;
     document.getElementById("welcomeText").textContent = t.welcomeText;
-    
-    // Update disclaimer with icon
-    const disclaimerElement = document.getElementById("welcomeDisclaimer");
-    disclaimerElement.innerHTML = `<span style="font-size: 18px;">⚠️</span><span>${t.welcomeDisclaimer}</span>`;
-    
+    document.getElementById("welcomeDisclaimer").innerHTML = '<span style="font-size:18px;">⚠️</span><span>' + t.welcomeDisclaimer + '</span>';
     document.getElementById("startBtn").textContent = t.startBtn;
     document.getElementById("heroTitle").textContent = t.heroTitle;
     document.getElementById("heroSubtitle").textContent = t.heroSubtitle;
@@ -1345,180 +1037,95 @@
     document.getElementById("refTitle").textContent = t.refTitle;
     document.getElementById("footerText").textContent = t.footerText;
     
-    // If in screening, reload current question
-    if (!document.getElementById('screeningCard').classList.contains('hidden')) {
-      loadQuestion();
-    }
+    if (!document.getElementById('screeningCard').classList.contains('hidden')) loadQuestion();
   }
 
   // ==========================================
-  // START SCREENING
+  // START
   // ==========================================
-  
   function startScreening() {
-    // Track screening start in GA4
-    gtag('event', 'screening_started', {
-      'event_category': 'engagement',
-      'event_label': 'User started anemia screening'
-    });
-    
+    gtag('event', 'screening_started', { 'event_category': 'engagement' });
     document.getElementById('heroCard').style.display = 'none';
     document.getElementById('aboutHeader').style.display = 'none';
     document.getElementById('aboutContent').style.display = 'none';
     document.getElementById('screeningCard').classList.remove('hidden');
-    currentQuestion = 0;
-    answers = {};
-    totalScore = 0;
+    currentQuestion = 0; answers = {}; totalScore = 0;
     loadQuestion();
   }
 
   // ==========================================
   // LOAD QUESTION
   // ==========================================
-  
   function loadQuestion() {
-    const q = questions[currentQuestion];
-    const lang = currentLang;
+    var q = questions[currentQuestion];
+    var lang = currentLang;
     
-    // Update progress
-    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    var progress = ((currentQuestion + 1) / questions.length) * 100;
     document.getElementById('progressFill').style.width = progress + '%';
-    document.getElementById('progressText').textContent = 
-      `Question ${currentQuestion + 1} of ${questions.length}`;
-    
-    // Update question text
+    document.getElementById('progressText').textContent = 'Question ' + (currentQuestion + 1) + ' of ' + questions.length;
     document.getElementById('questionText').textContent = q.text[lang];
-    
-    // Clear previous content
     document.getElementById('visualHelper').innerHTML = '';
     document.getElementById('optionsContainer').innerHTML = '';
     
-    // Add visual helper if exists
     if (q.helper) {
-      const helperHTML = `
-        <div class="visual-helper">
-          ${q.icon ? `<img src="${q.icon}" alt="Visual helper">` : ''}
-          <div class="visual-helper-text">${q.helper[lang]}</div>
-        </div>
-      `;
-      document.getElementById('visualHelper').innerHTML = helperHTML;
+      document.getElementById('visualHelper').innerHTML = '<div class="visual-helper"><div class="visual-helper-text">' + q.helper[lang] + '</div></div>';
     }
     
-    // Add food gallery if needed
     if (q.showFoodGallery) {
-      const foodGallery = `
-        <div class="food-gallery">
-          <div class="food-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%234CAF50' width='100' height='100'/%3E%3Cpath fill='%232E7D32' d='M30 70c0-15 10-25 20-25s20 10 20 25H30z'/%3E%3Cellipse cx='40' cy='40' rx='8' ry='12' fill='%232E7D32'/%3E%3Cellipse cx='50' cy='35' rx='10' ry='15' fill='%232E7D32'/%3E%3Cellipse cx='60' cy='40' rx='8' ry='12' fill='%232E7D32'/%3E%3C/svg%3E" alt="Spinach">
-            <div class="food-item-name">Spinach<br>पालक/पालक</div>
-          </div>
-          <div class="food-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23EFEBE9' width='100' height='100'/%3E%3Cellipse cx='50' cy='55' rx='30' ry='25' fill='%238D6E63'/%3E%3Cellipse cx='50' cy='50' rx='28' ry='22' fill='%236D4C41'/%3E%3Ccircle cx='40' cy='48' r='4' fill='%23A1887F'/%3E%3Ccircle cx='55' cy='50' r='3' fill='%23A1887F'/%3E%3C/svg%3E" alt="Pulses">
-            <div class="food-item-name">Pulses<br>दाल/डाळी</div>
-          </div>
-          <div class="food-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FBE9E7' width='100' height='100'/%3E%3Crect x='25' y='30' width='50' height='40' rx='5' fill='%238D6E63'/%3E%3Crect x='27' y='32' width='46' height='36' rx='4' fill='%236D4C41'/%3E%3C/svg%3E" alt="Jaggery">
-            <div class="food-item-name">Jaggery<br>गुड़/गूळ</div>
-          </div>
-          <div class="food-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FFF9C4' width='100' height='100'/%3E%3Cellipse cx='50' cy='50' rx='28' ry='35' fill='%23FFEB3B'/%3E%3Cellipse cx='50' cy='45' rx='22' ry='28' fill='%23FDD835'/%3E%3C/svg%3E" alt="Egg">
-            <div class="food-item-name">Eggs<br>अंडे/अंडी</div>
-          </div>
-        </div>
-      `;
-      document.getElementById('visualHelper').innerHTML += foodGallery;
+      document.getElementById('visualHelper').innerHTML += '<div class="food-gallery">' +
+        '<div class="food-item"><div style="width:100%;height:60px;background:#4CAF50;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px;">🥬</div><div class="food-item-name">Spinach<br>पालक/पालक</div></div>' +
+        '<div class="food-item"><div style="width:100%;height:60px;background:#8D6E63;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px;">🫘</div><div class="food-item-name">Pulses<br>दाल/डाळी</div></div>' +
+        '<div class="food-item"><div style="width:100%;height:60px;background:#6D4C41;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px;">🟤</div><div class="food-item-name">Jaggery<br>गुड़/गूळ</div></div>' +
+        '<div class="food-item"><div style="width:100%;height:60px;background:#FFF9C4;border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:28px;">🥚</div><div class="food-item-name">Eggs<br>अंडे/अंडी</div></div>' +
+      '</div>';
     }
     
-    // Generate options
     if (q.type === 'number') {
-      const inputHTML = `
-        <input type="number" 
-               id="numberInput" 
-               min="${q.min}" 
-               max="${q.max}" 
-               placeholder="${q.placeholder[lang]}"
-               style="width:100%; padding:14px; font-size:16px; border:2px solid #e0e0e0; border-radius:10px;"
-               onchange="selectNumberAnswer()">
-      `;
-      document.getElementById('optionsContainer').innerHTML = inputHTML;
-      
-      // Restore previous answer if exists
-      if (answers[q.id] !== undefined) {
-        document.getElementById('numberInput').value = answers[q.id];
-      }
+      document.getElementById('optionsContainer').innerHTML = '<input type="number" id="numberInput" min="' + q.min + '" max="' + q.max + '" placeholder="' + q.placeholder[lang] + '" style="width:100%;padding:14px;font-size:16px;border:2px solid #e0e0e0;border-radius:10px;" onchange="selectNumberAnswer()">';
+      if (answers[q.id] !== undefined) document.getElementById('numberInput').value = answers[q.id];
     } else {
-      q.options.forEach((option, index) => {
-        const isSelected = answers[q.id] === index;
-        const optionHTML = `
-          <div class="option-btn ${isSelected ? 'selected' : ''}" 
-               onclick="selectAnswer(${index}, ${option.score})">
-            <span class="option-icon">${option.text[lang].split(' ')[0]}</span>
-            <span>${option.text[lang].substring(option.text[lang].indexOf(' ') + 1)}</span>
-          </div>
-        `;
-        document.getElementById('optionsContainer').innerHTML += optionHTML;
+      var html = '';
+      q.options.forEach(function(option, index) {
+        var isSelected = answers[q.id] === index;
+        html += '<div class="option-btn ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + index + ',' + option.score + ')">' +
+          '<span class="option-icon">' + option.text[lang].split(' ')[0] + '</span>' +
+          '<span>' + option.text[lang].substring(option.text[lang].indexOf(' ') + 1) + '</span></div>';
       });
+      document.getElementById('optionsContainer').innerHTML = html;
     }
     
-    // Update navigation buttons
     document.getElementById('prevBtn').disabled = currentQuestion === 0;
     document.getElementById('nextBtn').disabled = answers[q.id] === undefined;
-    
-    if (currentQuestion === questions.length - 1) {
-      document.getElementById('nextBtn').textContent = '✓ Finish';
-    } else {
-      document.getElementById('nextBtn').textContent = 'Next →';
-    }
+    document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? '✓ Finish' : 'Next →';
   }
 
   // ==========================================
   // SELECT ANSWER
   // ==========================================
-  
   function selectAnswer(index, score) {
-    const q = questions[currentQuestion];
-    answers[q.id] = index;
-    
-    // Update visual selection
-    document.querySelectorAll('.option-btn').forEach((btn, i) => {
-      if (i === index) {
-        btn.classList.add('selected');
-      } else {
-        btn.classList.remove('selected');
-      }
+    answers[questions[currentQuestion].id] = index;
+    document.querySelectorAll('.option-btn').forEach(function(btn, i) {
+      btn.classList.toggle('selected', i === index);
     });
-    
-    // Enable next button
     document.getElementById('nextBtn').disabled = false;
   }
 
   function selectNumberAnswer() {
-    const q = questions[currentQuestion];
-    const input = document.getElementById('numberInput');
-    const value = parseInt(input.value);
-    
-    // Clear previous error
+    var q = questions[currentQuestion];
+    var input = document.getElementById('numberInput');
+    var value = parseInt(input.value);
     input.style.borderColor = '';
     
-    if (isNaN(value)) {
+    if (isNaN(value) || value < q.min || value > q.max) {
       input.style.borderColor = '#ef4444';
       document.getElementById('nextBtn').disabled = true;
+      if (!isNaN(value)) {
+        alert(currentLang === 'en' ? 'Please enter age between ' + q.min + '-' + q.max :
+              currentLang === 'hi' ? 'कृपया ' + q.min + '-' + q.max + ' के बीच उम्र दर्ज करें' :
+              'कृपया ' + q.min + '-' + q.max + ' दरम्यान वय प्रविष्ट करा');
+      }
       return;
     }
-    
-    if (value < q.min || value > q.max) {
-      input.style.borderColor = '#ef4444';
-      const lang = currentLang;
-      const errorMsg = lang === 'en' ? 
-        `Please enter age between ${q.min}-${q.max}` :
-        lang === 'hi' ?
-        `कृपया ${q.min}-${q.max} के बीच उम्र दर्ज करें` :
-        `कृपया ${q.min}-${q.max} दरम्यान वय प्रविष्ट करा`;
-      alert(errorMsg);
-      document.getElementById('nextBtn').disabled = true;
-      return;
-    }
-    
     input.style.borderColor = '#4caf50';
     answers[q.id] = value;
     document.getElementById('nextBtn').disabled = false;
@@ -1527,212 +1134,80 @@
   // ==========================================
   // NAVIGATION
   // ==========================================
-  
   function nextQuestion() {
-    if (currentQuestion < questions.length - 1) {
-      currentQuestion++;
-      loadQuestion();
-    } else {
-      calculateAndShowResult();
-    }
+    if (currentQuestion < questions.length - 1) { currentQuestion++; loadQuestion(); }
+    else calculateAndShowResult();
   }
-
   function previousQuestion() {
-    if (currentQuestion > 0) {
-      currentQuestion--;
-      loadQuestion();
-    }
+    if (currentQuestion > 0) { currentQuestion--; loadQuestion(); }
   }
 
   // ==========================================
   // CALCULATE RESULT
   // ==========================================
-  
   function calculateAndShowResult() {
     totalScore = 0;
-    let symptoms = 0;
+    var symptoms = 0;
     
-    // Calculate score
-    questions.forEach(q => {
-      if (q.type === 'number') {
-        // Age doesn't contribute to score
-        return;
-      }
-      
-      const answerIndex = answers[q.id];
+    questions.forEach(function(q) {
+      if (q.type === 'number') return;
+      var answerIndex = answers[q.id];
       if (answerIndex !== undefined) {
-        const score = q.options[answerIndex].score;
+        var score = q.options[answerIndex].score;
         totalScore += score;
-        
-        // Count symptoms
-        if (['fatigue', 'dizziness', 'breathless', 'headache'].includes(q.id) && score > 0) {
-          symptoms++;
-        }
+        if (['fatigue','dizziness','breathless','headache'].indexOf(q.id) !== -1 && score > 0) symptoms++;
       }
     });
     
-    // Determine risk level
-    let riskLevel = 'low';
-    if (totalScore >= 8 || 
-        (answers.bleeding === 1 && symptoms >= 1)) {
-      riskLevel = 'high';
-    } else if (totalScore >= 4 || 
-               answers.pregnant === 1 || 
-               answers.postpartum === 1 ||
-               (answers.diet === 1 && symptoms >= 1)) {
-      riskLevel = 'moderate';
-    }
+    var riskLevel = 'low';
+    if (totalScore >= 8 || (answers.bleeding === 1 && symptoms >= 1)) riskLevel = 'high';
+    else if (totalScore >= 4 || answers.pregnant === 1 || answers.postpartum === 1 || (answers.diet === 1 && symptoms >= 1)) riskLevel = 'moderate';
     
-    // Track completion in GA4
-    gtag('event', 'screening_completed', {
-      'event_category': 'conversion',
-      'event_label': 'Screening completed',
-      'value': totalScore
-    });
+    gtag('event', 'screening_completed', { 'event_category': 'conversion', 'value': totalScore });
+    gtag('event', 'risk_assessment', { 'event_category': 'assessment', 'risk_level': riskLevel, 'total_score': totalScore, 'symptoms_count': symptoms });
     
-    // Track risk level in GA4
-    gtag('event', 'risk_assessment', {
-      'event_category': 'assessment',
-      'event_label': riskLevel,
-      'risk_level': riskLevel,
-      'total_score': totalScore,
-      'symptoms_count': symptoms
-    });
-    
-    // Store results
-    const result = {
-      score: totalScore,
-      symptoms: symptoms,
-      riskLevel: riskLevel,
-      answers: answers,
-      timestamp: new Date().toISOString()
-    };
-    
+    var result = { score: totalScore, symptoms: symptoms, riskLevel: riskLevel, timestamp: new Date().toISOString() };
     safeLocalStorage('set', 'lastScreeningResult', JSON.stringify(result));
-    
-    // Show result
     displayResult(riskLevel, result);
   }
 
   // ==========================================
   // DISPLAY RESULT
   // ==========================================
-  
   function displayResult(riskLevel, result) {
     document.getElementById('screeningCard').classList.add('hidden');
-    const resultCard = document.getElementById('resultCard');
+    var resultCard = document.getElementById('resultCard');
     resultCard.style.display = 'block';
+    resultCard.className = 'result-card ' + riskLevel + '-risk';
     
-    // Set risk level class
-    resultCard.className = 'result-card';
-    if (riskLevel === 'high') {
-      resultCard.classList.add('high-risk');
-    } else if (riskLevel === 'moderate') {
-      resultCard.classList.add('moderate-risk');
-    } else {
-      resultCard.classList.add('low-risk');
-    }
+    var lang = currentLang;
+    var titles = { high: {en:'High Risk',hi:'उच्च जोखिम',mr:'उच्च जोखीम'}, moderate: {en:'Moderate Risk',hi:'मध्यम जोखिम',mr:'मध्यम जोखीम'}, low: {en:'Low Risk',hi:'कम जोखिम',mr:'कमी जोखीम'} };
+    var icons = { high:'🔴', moderate:'🟡', low:'🟢' };
+    document.getElementById('resultTitle').innerHTML = icons[riskLevel] + ' ' + titles[riskLevel][lang];
     
-    // Update content based on language and risk
-    const lang = currentLang;
+    var texts = {
+      high: {en:'Based on your responses, you may be at higher risk of anemia. Please take immediate action.',hi:'आपके उत्तरों के आधार पर, आपको एनीमिया का अधिक जोखिम हो सकता है। कृपया तत्काल कार्रवाई करें।',mr:'तुमच्या उत्तरांवर आधारित, तुम्हाला अॅनिमियाचा जास्त धोका असू शकतो. कृपया तात्काळ कार्रवाई करा.'},
+      moderate: {en:'Your responses suggest moderate risk factors for anemia. Consider getting tested soon.',hi:'आपके उत्तर एनीमिया के लिए मध्यम जोखिम कारकों का सुझाव देते हैं।',mr:'तुमची उत्तरे अॅनिमियासाठी मध्यम जोखीम घटक सूचित करतात.'},
+      low: {en:'No major anemia risk indicators identified. Keep maintaining good health!',hi:'कोई प्रमुख एनीमिया जोखिम संकेतक नहीं पाया गया।',mr:'कोणतेही प्रमुख अॅनिमिया जोखीम सूचक आढळले नाहीत.'}
+    };
+    document.getElementById('resultText').innerHTML = texts[riskLevel][lang];
     
-    if (riskLevel === 'high') {
-      document.getElementById('resultTitle').innerHTML = '🔴 ' + (lang === 'en' ? 'High Risk' : lang === 'hi' ? 'उच्च जोखिम' : 'उच्च जोखीम');
-      document.getElementById('resultText').innerHTML = lang === 'en' ? 
-        'Based on your responses, you may be at higher risk of anemia. Please take immediate action.' :
-        lang === 'hi' ?
-        'आपके उत्तरों के आधार पर, आपको एनीमिया का अधिक जोखिम हो सकता है। कृपया तत्काल कार्रवाई करें।' :
-        'तुमच्या उत्तरांवर आधारित, तुम्हाला अॅनिमियाचा जास्त धोका असू शकतो. कृपया तात्काळ कार्रवाई करा.';
-      
-      document.getElementById('nextStepsContent').innerHTML = lang === 'en' ?
-        `<p><strong>⚠️ URGENT:</strong> Visit the nearest Primary Health Centre (PHC) within 7 days for hemoglobin (Hb) blood test.</p>
-         <p><strong>🍽️ Dietary Changes:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>Eat iron-rich foods daily (spinach, pulses, jaggery, meat/eggs)</li>
-           <li>Add vitamin C with meals (lemon, amla, citrus fruits)</li>
-           <li>Avoid tea/coffee for 1 hour after meals</li>
-         </ul>` :
-        lang === 'hi' ?
-        `<p><strong>⚠️ तत्काल:</strong> हीमोग्लोबिन (Hb) रक्त परीक्षण के लिए 7 दिनों के भीतर निकटतम PHC पर जाएं।</p>
-         <p><strong>🍽️ आहार परिवर्तन:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>रोज़ आयरन युक्त खाद्य पदार्थ खाएं (पालक, दाल, गुड़, मांस/अंडे)</li>
-           <li>भोजन के साथ विटामिन सी लें (नींबू, आंवला, खट्टे फल)</li>
-           <li>भोजन के 1 घंटे बाद तक चाय/कॉफी से बचें</li>
-         </ul>` :
-        `<p><strong>⚠️ तातडीचे:</strong> हिमोग्लोबिन (Hb) रक्त चाचणीसाठी 7 दिवसांत जवळच्या PHC ला भेट द्या।</p>
-         <p><strong>🍽️ आहार बदल:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>रोज आयर्न-समृद्ध पदार्थ खा (पालक, डाळी, गूळ, मांस/अंडी)</li>
-           <li>जेवणासोबत व्हिटॅमिन सी घ्या (लिंबू, आवळा, लिंबूवर्गीय फळे)</li>
-           <li>जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा</li>
-         </ul>`;
-    } else if (riskLevel === 'moderate') {
-      document.getElementById('resultTitle').innerHTML = '🟡 ' + (lang === 'en' ? 'Moderate Risk' : lang === 'hi' ? 'मध्यम जोखिम' : 'मध्यम जोखीम');
-      document.getElementById('resultText').innerHTML = lang === 'en' ?
-        'Your responses suggest moderate risk factors for anemia. Consider getting tested soon.' :
-        lang === 'hi' ?
-        'आपके उत्तर एनीमिया के लिए मध्यम जोखिम कारकों का सुझाव देते हैं। जल्द परीक्षण कराने पर विचार करें।' :
-        'तुमची उत्तरे अॅनिमियासाठी मध्यम जोखीम घटक सूचित करतात. लवकरच चाचणी करण्याचा विचार करा.';
-      
-      document.getElementById('nextStepsContent').innerHTML = lang === 'en' ?
-        `<p><strong>📋 Recommendation:</strong> Get hemoglobin test within 2-4 weeks, especially if pregnant or recently delivered.</p>
-         <p><strong>🥗 Dietary Improvement:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>Eat iron-rich foods 4-5 times per week</li>
-           <li>Include vitamin C foods to improve absorption</li>
-           <li>Limit tea/coffee after meals</li>
-         </ul>` :
-        lang === 'hi' ?
-        `<p><strong>📋 सिफारिश:</strong> 2-4 सप्ताह के भीतर हीमोग्लोबिन परीक्षण करें, खासकर यदि गर्भवती हैं या हाल ही में प्रसव हुआ है।</p>
-         <p><strong>🥗 आहार सुधार:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>सप्ताह में 4-5 बार आयरन युक्त खाद्य पदार्थ खाएं</li>
-           <li>अवशोषण में सुधार के लिए विटामिन सी खाद्य पदार्थ शामिल करें</li>
-           <li>भोजन के बाद चाय/कॉफी सीमित करें</li>
-         </ul>` :
-        `<p><strong>📋 शिफारस:</strong> 2-4 आठवड्यांत हिमोग्लोबिन चाचणी करा, विशेषत: गर्भवती असल्यास किंवा नुकतीच प्रसूत झाल्यास।</p>
-         <p><strong>🥗 आहार सुधारणा:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>आठवड्यातून 4-5 वेळा आयर्न-समृद्ध पदार्थ खा</li>
-           <li>शोषण सुधारण्यासाठी व्हिटॅमिन सी पदार्थ समाविष्ट करा</li>
-           <li>जेवणानंतर चहा/कॉफी मर्यादित करा</li>
-         </ul>`;
-    } else {
-      document.getElementById('resultTitle').innerHTML = '🟢 ' + (lang === 'en' ? 'Low Risk' : lang === 'hi' ? 'कम जोखिम' : 'कमी जोखीम');
-      document.getElementById('resultText').innerHTML = lang === 'en' ?
-        'No major anemia risk indicators identified. Keep maintaining good health!' :
-        lang === 'hi' ?
-        'कोई प्रमुख एनीमिया जोखिम संकेतक नहीं पाया गया। अच्छे स्वास्थ्य को बनाए रखें!' :
-        'कोणतेही प्रमुख अॅनिमिया जोखीम सूचक आढळले नाहीत. चांगले आरोग्य राखा!';
-      
-      document.getElementById('nextStepsContent').innerHTML = lang === 'en' ?
-        `<p><strong>✅ Advice:</strong> Continue eating a balanced iron-rich diet and get annual health check-ups.</p>
-         <p><strong>🌟 Preventive Care:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>Maintain variety in iron-rich foods</li>
-           <li>Stay hydrated (8-10 glasses daily)</li>
-           <li>Repeat screening after 6 months</li>
-         </ul>` :
-        lang === 'hi' ?
-        `<p><strong>✅ सलाह:</strong> संतुलित आयरन युक्त आहार खाते रहें और वार्षिक स्वास्थ्य जांच कराएं।</p>
-         <p><strong>🌟 निवारक देखभाल:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>आयरन युक्त खाद्य पदार्थों में विविधता बनाए रखें</li>
-           <li>हाइड्रेटेड रहें (रोज़ 8-10 गिलास)</li>
-           <li>6 महीने बाद फिर से जांच करें</li>
-         </ul>` :
-        `<p><strong>✅ सल्ला:</strong> संतुलित आयर्न-समृद्ध आहार खाणे सुरू ठेवा आणि वार्षिक आरोग्य तपासणी करा।</p>
-         <p><strong>🌟 प्रतिबंधात्मक काळजी:</strong></p>
-         <ul style="margin-left:20px;">
-           <li>आयर्न-समृद्ध पदार्थांमध्ये विविधता राखा</li>
-           <li>हायड्रेटेड राहा (दररोज 8-10 ग्लास)</li>
-           <li>6 महिन्यांनंतर पुन्हा तपासणी करा</li>
-         </ul>`;
-    }
+    // Next steps content
+    var steps = {
+      high: {en:'<p><strong>⚠️ URGENT:</strong> Visit the nearest PHC within 7 days for hemoglobin (Hb) blood test.</p><p><strong>🍽️ Dietary Changes:</strong></p><ul style="margin-left:20px;"><li>Eat iron-rich foods daily (spinach, pulses, jaggery, meat/eggs)</li><li>Add vitamin C with meals (lemon, amla, citrus fruits)</li><li>Avoid tea/coffee for 1 hour after meals</li></ul>',
+           hi:'<p><strong>⚠️ तत्काल:</strong> हीमोग्लोबिन रक्त परीक्षण के लिए 7 दिनों के भीतर निकटतम PHC पर जाएं।</p><p><strong>🍽️ आहार परिवर्तन:</strong></p><ul style="margin-left:20px;"><li>रोज़ आयरन युक्त खाद्य पदार्थ खाएं</li><li>भोजन के साथ विटामिन सी लें</li><li>भोजन के 1 घंटे बाद तक चाय/कॉफी से बचें</li></ul>',
+           mr:'<p><strong>⚠️ तातडीचे:</strong> हिमोग्लोबिन रक्त चाचणीसाठी 7 दिवसांत जवळच्या PHC ला भेट द्या।</p><p><strong>🍽️ आहार बदल:</strong></p><ul style="margin-left:20px;"><li>रोज आयर्न-समृद्ध पदार्थ खा</li><li>जेवणासोबत व्हिटॅमिन सी घ्या</li><li>जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा</li></ul>'},
+      moderate: {en:'<p><strong>📋 Recommendation:</strong> Get hemoglobin test within 2-4 weeks.</p><p><strong>🥗 Dietary Improvement:</strong></p><ul style="margin-left:20px;"><li>Eat iron-rich foods 4-5 times per week</li><li>Include vitamin C foods to improve absorption</li><li>Limit tea/coffee after meals</li></ul>',
+                 hi:'<p><strong>📋 सिफारिश:</strong> 2-4 सप्ताह के भीतर हीमोग्लोबिन परीक्षण करें।</p><p><strong>🥗 आहार सुधार:</strong></p><ul style="margin-left:20px;"><li>सप्ताह में 4-5 बार आयरन युक्त खाद्य पदार्थ खाएं</li><li>विटामिन सी खाद्य पदार्थ शामिल करें</li></ul>',
+                 mr:'<p><strong>📋 शिफारस:</strong> 2-4 आठवड्यांत हिमोग्लोबिन चाचणी करा।</p><p><strong>🥗 आहार सुधारणा:</strong></p><ul style="margin-left:20px;"><li>आठवड्यातून 4-5 वेळा आयर्न-समृद्ध पदार्थ खा</li><li>व्हिटॅमिन सी पदार्थ समाविष्ट करा</li></ul>'},
+      low: {en:'<p><strong>✅ Advice:</strong> Continue eating a balanced iron-rich diet and get annual health check-ups.</p><p><strong>🌟 Preventive Care:</strong></p><ul style="margin-left:20px;"><li>Maintain variety in iron-rich foods</li><li>Stay hydrated (8-10 glasses daily)</li><li>Repeat screening after 6 months</li></ul>',
+            hi:'<p><strong>✅ सलाह:</strong> संतुलित आयरन युक्त आहार जारी रखें।</p><p><strong>🌟 निवारक देखभाल:</strong></p><ul style="margin-left:20px;"><li>आयरन युक्त खाद्य पदार्थों में विविधता बनाए रखें</li><li>हाइड्रेटेड रहें</li><li>6 महीने बाद फिर से जांच करें</li></ul>',
+            mr:'<p><strong>✅ सल्ला:</strong> संतुलित आयर्न-समृद्ध आहार सुरू ठेवा।</p><p><strong>🌟 प्रतिबंधात्मक काळजी:</strong></p><ul style="margin-left:20px;"><li>आयर्न-समृद्ध पदार्थांमध्ये विविधता राखा</li><li>हायड्रेटेड राहा</li><li>6 महिन्यांनंतर पुन्हा तपासणी करा</li></ul>'}
+    };
+    document.getElementById('nextStepsContent').innerHTML = steps[riskLevel][lang];
     
-    // Update translations for resource titles
-    const t = translations[lang];
+    // Update translated labels
+    var t = translations[lang];
     document.getElementById('nextStepsTitle').textContent = t.nextStepsTitle;
     document.getElementById('healthResourcesTitle').textContent = t.healthResourcesTitle;
     document.getElementById('phcFinderTitle').textContent = t.phcFinderTitle;
@@ -1742,412 +1217,113 @@
     document.getElementById('btnPrint').textContent = t.btnPrint;
     document.getElementById('btnSave').textContent = t.btnSave;
     document.getElementById('btnReset').textContent = t.btnReset;
+    document.getElementById('progressTrackerTitle').textContent = t.progressTrackerTitle;
+    document.getElementById('btnCopyCode').textContent = t.btnCopyCode;
+    document.getElementById('challengeTitle').textContent = t.challengeTitle;
+    document.getElementById('goal1').textContent = t.goal1;
+    document.getElementById('goal2').textContent = t.goal2;
+    document.getElementById('goal3').textContent = t.goal3;
+    document.getElementById('goal4').textContent = t.goal4;
+    document.getElementById('streakLabel').textContent = t.streakLabel;
+    document.getElementById('learnMoreTitle').textContent = t.learnMoreTitle;
     
-    // Show references section
     document.getElementById('referencesCard').style.display = 'block';
     
-    // Initialize progress tracker
-    const progressCode = generateProgressCode();
+    // FIX 2: Progress code persists across visits
+    var progressCode = generateProgressCode();
     document.getElementById('progressCode').textContent = progressCode;
     document.getElementById('progressCodeDateValue').textContent = new Date().toLocaleDateString();
-    saveProgressData(progressCode, result);
     
-    // Load challenge data
+    // Load challenge (restores checkboxes properly)
     loadChallengeData();
     
-    resultCard.scrollIntoView({behavior: 'smooth'});
+    resultCard.scrollIntoView({ behavior: 'smooth' });
   }
 
   // ==========================================
   // PHC FINDER
   // ==========================================
-  
   function findNearestPHC() {
-    // Track PHC finder usage in GA4
-    gtag('event', 'phc_finder_used', {
-      'event_category': 'engagement',
-      'event_label': 'User used GPS PHC finder'
-    });
-    
+    gtag('event', 'phc_finder_used', { 'event_category': 'engagement' });
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const mapsURL = `https://www.google.com/maps/search/Primary+Health+Centre/@${lat},${lng},14z`;
-          window.open(mapsURL, '_blank');
-        },
-        () => {
-          alert('Please enable location services or use the dropdown below to find PHC manually.');
-        }
-      );
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        window.open('https://www.google.com/maps/search/Primary+Health+Centre/@' + pos.coords.latitude + ',' + pos.coords.longitude + ',14z', '_blank');
+      }, function() {
+        alert('Please enable location services or use the dropdown below.');
+      });
     } else {
-      alert('Geolocation is not supported by your browser. Please use the dropdown below.');
+      alert('Geolocation not supported. Please use the dropdown below.');
     }
   }
 
   function loadDistricts() {
-    const state = document.getElementById('stateSelect').value;
-    const districtSelect = document.getElementById('districtSelect');
-    
-    const districts = {
-      maharashtra: [
-        'Mumbai', 'Mumbai Suburban', 'Thane', 'Raigad', 'Ratnagiri', 'Sindhudurg',
-        'Pune', 'Satara', 'Sangli', 'Solapur', 'Kolhapur',
-        'Nashik', 'Dhule', 'Nandurbar', 'Jalgaon',
-        'Aurangabad', 'Jalna', 'Beed', 'Latur', 'Osmanabad', 'Nanded', 'Parbhani', 'Hingoli',
-        'Nagpur', 'Wardha', 'Amravati', 'Akola', 'Yavatmal', 'Buldhana', 'Washim',
-        'Chandrapur', 'Gadchiroli', 'Bhandara', 'Gondia'
-      ],
-      gujarat: ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar', 'Bhavnagar', 'Jamnagar'],
-      karnataka: ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum', 'Gulbarga'],
-      delhi: ['Central Delhi', 'North Delhi', 'South Delhi', 'East Delhi', 'West Delhi', 'New Delhi'],
-      up: ['Lucknow', 'Kanpur', 'Ghaziabad', 'Agra', 'Varanasi', 'Meerut', 'Prayagraj', 'Noida'],
-      mp: ['Bhopal', 'Indore', 'Jabalpur', 'Gwalior', 'Ujjain', 'Sagar', 'Ratlam']
+    var state = document.getElementById('stateSelect').value;
+    var districts = {
+      maharashtra:['Mumbai','Mumbai Suburban','Thane','Raigad','Ratnagiri','Sindhudurg','Pune','Satara','Sangli','Solapur','Kolhapur','Nashik','Dhule','Nandurbar','Jalgaon','Aurangabad','Jalna','Beed','Latur','Osmanabad','Nanded','Parbhani','Hingoli','Nagpur','Wardha','Amravati','Akola','Yavatmal','Buldhana','Washim','Chandrapur','Gadchiroli','Bhandara','Gondia'],
+      gujarat:['Ahmedabad','Surat','Vadodara','Rajkot','Gandhinagar','Bhavnagar','Jamnagar'],
+      karnataka:['Bangalore','Mysore','Mangalore','Hubli','Belgaum','Gulbarga'],
+      delhi:['Central Delhi','North Delhi','South Delhi','East Delhi','West Delhi','New Delhi'],
+      up:['Lucknow','Kanpur','Ghaziabad','Agra','Varanasi','Meerut','Prayagraj','Noida'],
+      mp:['Bhopal','Indore','Jabalpur','Gwalior','Ujjain','Sagar','Ratlam']
     };
-    
-    districtSelect.innerHTML = '<option value="">Select Your District</option>';
-    
+    var sel = document.getElementById('districtSelect');
+    sel.innerHTML = '<option value="">Select Your District</option>';
     if (state && districts[state]) {
-      districts[state].forEach(district => {
-        districtSelect.innerHTML += `<option value="${district}">${district}</option>`;
-      });
+      districts[state].forEach(function(d) { sel.innerHTML += '<option value="' + d + '">' + d + '</option>'; });
     }
   }
 
   function showPHCContacts() {
-    const state = document.getElementById('stateSelect').value;
-    const district = document.getElementById('districtSelect').value;
-    const resultsDiv = document.getElementById('phcResults');
-    
-    if (!state || !district) {
-      alert('Please select both state and district');
-      return;
-    }
-    
-    // Mock PHC data (in real app, fetch from database)
-    resultsDiv.innerHTML = `
-      <div style="background:white; padding:12px; border-radius:8px; border:2px solid #4caf50;">
-        <strong>📍 ${district} PHC Information</strong><br>
-        <small style="color:#666;">Contact your nearest PHC for hemoglobin testing</small><br><br>
-        <a href="https://www.google.com/maps/search/Primary+Health+Centre+${district}" 
-           target="_blank" 
-           style="color:#2196f3; text-decoration:none; font-weight:600;">
-          🗺️ View ${district} PHCs on Google Maps
-        </a>
-      </div>
-    `;
-    resultsDiv.style.display = 'block';
+    var state = document.getElementById('stateSelect').value;
+    var district = document.getElementById('districtSelect').value;
+    if (!state || !district) { alert('Please select both state and district'); return; }
+    var div = document.getElementById('phcResults');
+    div.innerHTML = '<div style="background:white;padding:12px;border-radius:8px;border:2px solid #4caf50;"><strong>📍 ' + district + ' PHC Information</strong><br><small style="color:#666;">Contact your nearest PHC for hemoglobin testing</small><br><br><a href="https://www.google.com/maps/search/Primary+Health+Centre+' + district + '" target="_blank" rel="noopener noreferrer" style="color:#2196f3;text-decoration:none;font-weight:600;">🗺️ View ' + district + ' PHCs on Google Maps</a></div>';
+    div.style.display = 'block';
   }
 
   // ==========================================
-  // ACTION FUNCTIONS
+  // SHARE / SAVE / PRINT
   // ==========================================
-  
   function shareWhatsApp() {
-    const resultData = safeLocalStorage('get', 'lastScreeningResult');
-    if (!resultData) {
-      alert('No screening result found. Please complete the screening first.');
-      return;
-    }
+    var resultData = safeLocalStorage('get', 'lastScreeningResult');
+    if (!resultData) { alert('No result found. Please complete screening first.'); return; }
+    var result;
+    try { result = JSON.parse(resultData); } catch(e) { alert('Error. Please try screening again.'); return; }
     
-    let result;
-    try {
-      result = JSON.parse(resultData);
-    } catch (e) {
-      console.error('Failed to parse result:', e);
-      alert('Error loading results. Please try screening again.');
-      return;
-    }
+    var lang = currentLang;
+    var riskLabels = { high:{en:'🔴 HIGH RISK',hi:'🔴 उच्च जोखिम',mr:'🔴 उच्च जोखीम'}, moderate:{en:'🟡 MODERATE RISK',hi:'🟡 मध्यम जोखिम',mr:'🟡 मध्यम जोखीम'}, low:{en:'🟢 LOW RISK',hi:'🟢 कम जोखिम',mr:'🟢 कमी जोखीम'} };
+    var msg = '*AAROGYA LINK*\n📅 ' + new Date().toLocaleDateString() + '\n⚕️ ' + riskLabels[result.riskLevel][lang] + '\n📊 Score: ' + result.score + '/15\n\n🩺 Rotaract Club of D.Y. Patil SBB\n🌐 https://aarogyalink.org\n\n⚠️ This is a screening tool, not a diagnosis.';
     
-    const lang = currentLang;
-    let riskText = '';
-    
-    if (result.riskLevel === 'high') {
-      riskText = lang === 'en' ? '🔴 HIGH RISK' : lang === 'hi' ? '🔴 उच्च जोखिम' : '🔴 उच्च जोखीम';
-    } else if (result.riskLevel === 'moderate') {
-      riskText = lang === 'en' ? '🟡 MODERATE RISK' : lang === 'hi' ? '🟡 मध्यम जोखिम' : '🟡 मध्यम जोखीम';
-    } else {
-      riskText = lang === 'en' ? '🟢 LOW RISK' : lang === 'hi' ? '🟢 कम जोखिम' : '🟢 कमी जोखीम';
-    }
-    
-    const date = new Date().toLocaleDateString();
-    
-    let message = '';
-    if (lang === 'en') {
-      message = `*AAROGYA LINK - Anemia Screening Result*
-
-📅 Date: ${date}
-⚕️ Risk Level: ${riskText}
-📊 Score: ${result.score}/15
-
-${result.riskLevel === 'high' ? '⚠️ *URGENT ACTION REQUIRED*\n✅ Visit PHC within 7 days for Hb test\n✅ Consult healthcare professional' : result.riskLevel === 'moderate' ? '📋 *Recommended Actions:*\n✅ Get Hb test within 2-4 weeks\n✅ Improve iron-rich diet' : '✅ *Good Health Status*\nContinue healthy eating habits'}
-
-🩺 Developed by Rotaract Club of D.Y. Patil SBB
-🌐 Visit: https://aarogyalink.org
-
-⚠️ This is a screening tool, not a diagnosis. Please consult healthcare professionals.`;
-    } else if (lang === 'hi') {
-      message = `*आरोग्य लिंक - एनीमिया जांच परिणाम*
-
-📅 तिथि: ${date}
-⚕️ जोखिम स्तर: ${riskText}
-📊 स्कोर: ${result.score}/15
-
-${result.riskLevel === 'high' ? '⚠️ *तत्काल कार्रवाई आवश्यक*\n✅ 7 दिनों में PHC जाएं\n✅ डॉक्टर से परामर्श करें' : result.riskLevel === 'moderate' ? '📋 *अनुशंसित कार्रवाई:*\n✅ 2-4 सप्ताह में Hb जांच\n✅ आयरन युक्त आहार लें' : '✅ *अच्छा स्वास्थ्य*\nस्वस्थ खान-पान जारी रखें'}
-
-🩺 विकसित: रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल SBB
-🌐 Visit: https://aarogyalink.org
-
-⚠️ यह जांच उपकरण है, निदान नहीं।`;
-    } else {
-      message = `*आरोग्य लिंक - अॅनिमिया तपासणी निकाल*
-
-📅 तारीख: ${date}
-⚕️ जोखीम पातळी: ${riskText}
-📊 स्कोअर: ${result.score}/15
-
-${result.riskLevel === 'high' ? '⚠️ *तातडीची कार्रवाई आवश्यक*\n✅ 7 दिवसांत PHC ला भेट द्या\n✅ डॉक्टरांचा सल्ला घ्या' : result.riskLevel === 'moderate' ? '📋 *शिफारशीत कृती:*\n✅ 2-4 आठवड्यात Hb चाचणी\n✅ आयर्न-समृद्ध आहार घ्या' : '✅ *चांगले आरोग्य*\nनिरोगी खाणे सुरू ठेवा'}
-
-🩺 विकसित: रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील SBB
-🌐 Visit: https://aarogyalink.org
-
-⚠️ हे तपासणी साधन आहे, निदान नाही।`;
-    }
-    
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    // Track in GA4
-    gtag('event', 'share', {
-      'event_category': 'engagement',
-      'event_label': 'WhatsApp share',
-      'method': 'WhatsApp'
-    });
+    window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    gtag('event', 'share', { 'event_category': 'engagement', 'method': 'WhatsApp' });
   }
-  
-  function printResults() {
-    window.print();
-  }
+
+  function printResults() { window.print(); }
 
   function saveResults() {
-    const resultData = safeLocalStorage('get', 'lastScreeningResult');
-    if (!resultData) {
-      alert('No screening result found. Please complete the screening first.');
-      return;
-    }
+    var resultData = safeLocalStorage('get', 'lastScreeningResult');
+    if (!resultData) { alert('No result found.'); return; }
+    var result;
+    try { result = JSON.parse(resultData); } catch(e) { alert('Error loading results.'); return; }
     
-    let result;
-    try {
-      result = JSON.parse(resultData);
-    } catch (e) {
-      console.error('Failed to parse result:', e);
-      alert('Error loading results. Please try screening again.');
-      return;
-    }
+    var content = 'AAROGYA LINK - Screening Result\n' +
+      '================================\nDate: ' + new Date().toLocaleDateString() +
+      '\nRisk Level: ' + result.riskLevel.toUpperCase() +
+      '\nScore: ' + result.score + '/15' +
+      '\nSymptoms: ' + result.symptoms +
+      '\n\n⚠️ This is a screening tool, not a medical diagnosis.\n' +
+      'Always consult healthcare professionals.\n\n' +
+      'National Health Helpline: 104\nWomen Helpline: 1091\nEmergency: 108\n\n' +
+      'Developed by Rotaract Club of D.Y. Patil SBB, Navi Mumbai';
     
-    const lang = currentLang;
-    const date = new Date().toLocaleDateString();
-    
-    let riskText = '';
-    if (result.riskLevel === 'high') {
-      riskText = lang === 'en' ? 'HIGH RISK' : lang === 'hi' ? 'उच्च जोखिम' : 'उच्च जोखीम';
-    } else if (result.riskLevel === 'moderate') {
-      riskText = lang === 'en' ? 'MODERATE RISK' : lang === 'hi' ? 'मध्यम जोखिम' : 'मध्यम जोखीम';
-    } else {
-      riskText = lang === 'en' ? 'LOW RISK' : lang === 'hi' ? 'कम जोखिम' : 'कमी जोखीम';
-    }
-    
-    let fileContent = '';
-    if (lang === 'en') {
-      fileContent = `═══════════════════════════════════════════════════
-AAROGYA LINK - ANEMIA SCREENING RESULT
-═══════════════════════════════════════════════════
-
-DATE: ${date}
-SCREENING ID: ${Date.now()}
-
-RISK ASSESSMENT
-═══════════════════════════════════════════════════
-Risk Level: ${riskText}
-Total Score: ${result.score}/15
-Symptom Count: ${result.symptoms}
-
-RECOMMENDED ACTIONS
-═══════════════════════════════════════════════════
-${result.riskLevel === 'high' ? `⚠️ URGENT - ACTION REQUIRED WITHIN 7 DAYS
-• Visit nearest Primary Health Centre (PHC) for hemoglobin test
-• Consult healthcare professional about symptoms
-• Start iron-rich diet immediately
-• Avoid tea/coffee after meals
-
-DIETARY RECOMMENDATIONS:
-• Eat iron-rich foods daily (spinach, pulses, jaggery, eggs)
-• Add vitamin C with meals (lemon, amla, citrus fruits)
-• Consider iron supplements (consult doctor first)` : result.riskLevel === 'moderate' ? `📋 RECOMMENDED - ACTION WITHIN 2-4 WEEKS
-• Schedule hemoglobin test at PHC
-• Improve iron-rich food intake (4-5 times/week)
-• Add vitamin C foods to improve absorption
-• Limit tea/coffee immediately after meals` : `✅ GOOD HEALTH STATUS
-• Continue balanced iron-rich diet
-• Stay hydrated (8-10 glasses daily)
-• Annual health check-ups recommended
-• Repeat screening after 6 months`}
-
-HEALTH RESOURCES
-═══════════════════════════════════════════════════
-National Health Helpline: 104
-Women Helpline: 1091
-Emergency Ambulance: 108
-Anemia Mukt Bharat: https://anemiamuktbharat.info
-
-IMPORTANT NOTES
-═══════════════════════════════════════════════════
-⚠️ This is a SCREENING TOOL, not a medical diagnosis
-⚠️ Always consult healthcare professionals for proper diagnosis
-⚠️ If experiencing severe symptoms, seek immediate medical attention
-
-DEVELOPED BY
-═══════════════════════════════════════════════════
-Rotaract Club of D.Y. Patil School of 
-Biotechnology and Bioinformatics
-Navi Mumbai | Zone 1, RID 3142
-
-Community Health Initiative
-For awareness and referral support only
-
-═══════════════════════════════════════════════════
-Generated: ${new Date().toLocaleString()}
-`;
-    } else if (lang === 'hi') {
-      fileContent = `═══════════════════════════════════════════════════
-आरोग्य लिंक - एनीमिया जांच परिणाम
-═══════════════════════════════════════════════════
-
-तिथि: ${date}
-जांच ID: ${Date.now()}
-
-जोखिम मूल्यांकन
-═══════════════════════════════════════════════════
-जोखिम स्तर: ${riskText}
-कुल स्कोर: ${result.score}/15
-लक्षण गिनती: ${result.symptoms}
-
-अनुशंसित कार्रवाई
-═══════════════════════════════════════════════════
-${result.riskLevel === 'high' ? `⚠️ तत्काल - 7 दिनों में कार्रवाई आवश्यक
-• निकटतम PHC पर हीमोग्लोबिन जांच के लिए जाएं
-• लक्षणों के बारे में डॉक्टर से परामर्श करें
-• तुरंत आयरन युक्त आहार शुरू करें
-• भोजन के बाद चाय/कॉफी से बचें
-
-आहार सिफारिशें:
-• रोज़ आयरन युक्त खाद्य पदार्थ खाएं
-• भोजन के साथ विटामिन सी लें
-• आयरन सप्लीमेंट (डॉक्टर से परामर्श)` : result.riskLevel === 'moderate' ? `📋 अनुशंसित - 2-4 सप्ताह में कार्रवाई
-• PHC पर हीमोग्लोबिन जांच कराएं
-• आयरन युक्त खाद्य पदार्थ बढ़ाएं
-• विटामिन सी खाद्य पदार्थ शामिल करें
-• भोजन के बाद चाय/कॉफी सीमित करें` : `✅ अच्छा स्वास्थ्य
-• संतुलित आयरन युक्त आहार जारी रखें
-• हाइड्रेटेड रहें (रोज़ 8-10 गिलास)
-• वार्षिक स्वास्थ्य जांच
-• 6 महीने बाद फिर से जांच`}
-
-स्वास्थ्य संसाधन
-═══════════════════════════════════════════════════
-राष्ट्रीय स्वास्थ्य हेल्पलाइन: 104
-महिला हेल्पलाइन: 1091
-आपातकालीन एम्बुलेंस: 108
-
-महत्वपूर्ण नोट्स
-═══════════════════════════════════════════════════
-⚠️ यह एक जांच उपकरण है, चिकित्सा निदान नहीं
-⚠️ उचित निदान के लिए स्वास्थ्य पेशेवरों से परामर्श करें
-⚠️ गंभीर लक्षणों के लिए तुरंत चिकित्सा सहायता लें
-
-विकसित
-═══════════════════════════════════════════════════
-रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़
-बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स
-नवी मुंबई | ज़ोन 1, आरआईडी 3142
-
-═══════════════════════════════════════════════════
-उत्पन्न: ${new Date().toLocaleString()}
-`;
-    } else {
-      fileContent = `═══════════════════════════════════════════════════
-आरोग्य लिंक - अॅनिमिया तपासणी निकाल
-═══════════════════════════════════════════════════
-
-तारीख: ${date}
-तपासणी ID: ${Date.now()}
-
-जोखीम मूल्यमापन
-═══════════════════════════════════════════════════
-जोखीम पातळी: ${riskText}
-एकूण स्कोअर: ${result.score}/15
-लक्षण संख्या: ${result.symptoms}
-
-शिफारशीत कृती
-═══════════════════════════════════════════════════
-${result.riskLevel === 'high' ? `⚠️ तातडीचे - 7 दिवसांत कार्रवाई आवश्यक
-• जवळच्या PHC वर हिमोग्लोबिन चाचणीसाठी जा
-• लक्षणांबद्दल डॉक्टरांचा सल्ला घ्या
-• लगेच आयर्न-समृद्ध आहार सुरू करा
-• जेवणानंतर चहा/कॉफी टाळा
-
-आहार शिफारसी:
-• रोज आयर्न-समृद्ध पदार्थ खा
-• जेवणासोबत व्हिटॅमिन सी घ्या
-• आयर्न सप्लिमेंट्स (डॉक्टरांचा सल्ला)` : result.riskLevel === 'moderate' ? `📋 शिफारशीत - 2-4 आठवड्यांत कृती
-• PHC वर हिमोग्लोबिन चाचणी करा
-• आयर्न-समृद्ध पदार्थ वाढवा
-• व्हिटॅमिन सी पदार्थ समाविष्ट करा
-• जेवणानंतर चहा/कॉफी मर्यादित करा` : `✅ चांगले आरोग्य
-• संतुलित आयर्न-समृद्ध आहार सुरू ठेवा
-• हायड्रेटेड राहा (दररोज 8-10 ग्लास)
-• वार्षिक आरोग्य तपासणी
-• 6 महिन्यांनंतर पुन्हा तपासणी`}
-
-आरोग्य संसाधने
-═══════════════════════════════════════════════════
-राष्ट्रीय आरोग्य हेल्पलाइन: 104
-महिला हेल्पलाइन: 1091
-आपत्कालीन रुग्णवाहिका: 108
-
-महत्वाच्या नोट्स
-═══════════════════════════════════════════════════
-⚠️ हे तपासणी साधन आहे, वैद्यकीय निदान नाही
-⚠️ योग्य निदानासाठी आरोग्य व्यावसायिकांचा सल्ला घ्या
-⚠️ गंभीर लक्षणांसाठी तात्काळ वैद्यकीय मदत घ्या
-
-विकसित
-═══════════════════════════════════════════════════
-रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ
-बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स
-नवी मुंबई | झोन 1, आरआयडी 3142
-
-═══════════════════════════════════════════════════
-उत्पन्न: ${new Date().toLocaleString()}
-`;
-    }
-    
-    const blob = new Blob([fileContent], {type: 'text/plain;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Aarogya-Link-Result-${date.replace(/\//g, '-')}.txt`;
-    a.click();
+    var blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'Aarogya-Link-Result.txt'; a.click();
     URL.revokeObjectURL(url);
-    
     alert(currentLang === 'en' ? 'Result saved!' : currentLang === 'hi' ? 'परिणाम सेव हो गया!' : 'परिणाम जतन केला!');
-    
-    // Track in GA4
-    gtag('event', 'download', {
-      'event_category': 'engagement',
-      'event_label': 'Save results'
-    });
+    gtag('event', 'download', { 'event_category': 'engagement' });
   }
 
   function resetScreening() {
@@ -2155,341 +1331,168 @@ ${result.riskLevel === 'high' ? `⚠️ तातडीचे - 7 दिवस�
     document.getElementById('heroCard').style.display = 'block';
     document.getElementById('aboutHeader').style.display = 'flex';
     document.getElementById('screeningCard').classList.add('hidden');
-    currentQuestion = 0;
-    answers = {};
-    totalScore = 0;
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    currentQuestion = 0; answers = {}; totalScore = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // ==========================================
-  // PROGRESS TRACKER FUNCTIONS
+  // FIX 2: PROGRESS CODE — persists in localStorage
   // ==========================================
-  
   function generateProgressCode() {
-    const prefix = 'AH';
-    const num = Math.floor(1000 + Math.random() * 9000);
-    return `${prefix}-${num}`;
+    var existing = safeLocalStorage('get', 'aarogya_progress_code');
+    if (existing) return existing;
+    var code = 'AH-' + Math.floor(1000 + Math.random() * 9000);
+    safeLocalStorage('set', 'aarogya_progress_code', code);
+    return code;
   }
-  
-  function copyProgressCode() {
-    const code = document.getElementById('progressCode').textContent;
-    navigator.clipboard.writeText(code).then(() => {
-      const btn = event.target;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '✅ Copied!';
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-      }, 2000);
-      
-      gtag('event', 'copy_progress_code', {
-        'event_category': 'engagement',
-        'event_label': 'Progress code copied'
+
+  // FIX 1: 'this' is passed from onclick, no reliance on global event
+  function copyProgressCode(btn) {
+    var code = document.getElementById('progressCode').textContent;
+    var span = document.getElementById('btnCopyCode');
+    var originalText = span ? span.textContent : 'Copy Progress Code';
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(function() {
+        if (span) span.textContent = '✅ Copied!';
+        setTimeout(function() { if (span) span.textContent = originalText; }, 2000);
+        gtag('event', 'copy_progress_code', { 'event_category': 'engagement' });
+      }).catch(function() {
+        fallbackCopy(code);
       });
-    }).catch(() => {
-      alert('Code: ' + code + '\n\nPlease copy manually');
-    });
-  }
-  
-  function saveProgressData(code, result) {
-    const progressData = {
-      code: code,
-      results: [{
-        date: new Date().toISOString(),
-        score: result.score,
-        riskLevel: result.riskLevel,
-        symptoms: result.symptoms
-      }]
-    };
-    
-    // Check if code already exists
-    const existing = safeLocalStorage('get', `progress_${code}`);
-    if (existing) {
-      try {
-        const data = JSON.parse(existing);
-        data.results.push(progressData.results[0]);
-        safeLocalStorage('set', `progress_${code}`, JSON.stringify(data));
-      } catch (e) {
-        console.error('Failed to update progress:', e);
-      }
     } else {
-      safeLocalStorage('set', `progress_${code}`, JSON.stringify(progressData));
+      fallbackCopy(code);
     }
   }
 
-  // ==========================================
-  // 21-DAY CHALLENGE FUNCTIONS
-  // ==========================================
-  
-  function updateChallenge() {
-    const checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
-    const today = new Date().toDateString();
-    
-    // Count checked items
-    let completedToday = 0;
-    checkboxes.forEach(cb => {
-      if (cb.checked) completedToday++;
-    });
-    
-    // Get challenge data
-    const challengeData = safeLocalStorage('get', 'challenge_data');
-    let data = { streak: 0, lastUpdate: '', history: [] };
-    
-    if (challengeData) {
-      try {
-        data = JSON.parse(challengeData);
-      } catch (e) {
-        console.error('Failed to parse challenge data:', e);
-      }
+  // Fallback for browsers without clipboard API
+  function fallbackCopy(code) {
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    var span = document.getElementById('btnCopyCode');
+    if (span) {
+      var orig = span.textContent;
+      span.textContent = '✅ Copied!';
+      setTimeout(function() { span.textContent = orig; }, 2000);
     }
+    gtag('event', 'copy_progress_code', { 'event_category': 'engagement', 'method': 'fallback' });
+  }
+
+  // ==========================================
+  // FIX 3 + 5: 21-DAY CHALLENGE — safe dates, persist checkboxes
+  // ==========================================
+  function updateChallenge() {
+    var checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
+    var todayStr = getTodayStr();
     
-    // Update streak
+    var completedToday = 0;
+    checkboxes.forEach(function(cb) { if (cb.checked) completedToday++; });
+
+    // FIX 5: Save checkbox states immediately on every change
+    var states = [];
+    checkboxes.forEach(function(cb) { states.push(cb.checked); });
+    safeLocalStorage('set', 'challenge_checkboxes_' + todayStr, JSON.stringify(states));
+
+    var challengeData = safeLocalStorage('get', 'challenge_data');
+    var data = { streak: 0, lastUpdate: '', history: [] };
+    if (challengeData) { try { data = JSON.parse(challengeData); } catch(e) {} }
+
     if (completedToday === 4) {
-      if (data.lastUpdate !== today) {
-        // Check if it is consecutive day
-        const lastDate = new Date(data.lastUpdate);
-        const currentDate = new Date(today);
-        const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
-        
-        if (diffDays === 1) {
-          data.streak++;
-        } else if (diffDays > 1) {
-          data.streak = 1; // Reset streak
-        } else {
-          data.streak = data.streak || 1;
+      if (data.lastUpdate !== todayStr) {
+        // FIX 3: Safe date comparison using YYYY-M-D format
+        var diffDays = 999;
+        if (data.lastUpdate) {
+          var parts = data.lastUpdate.split('-');
+          if (parts.length === 3) {
+            var lastDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            var today = new Date();
+            var currentDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            diffDays = Math.round((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+          }
         }
         
-        data.lastUpdate = today;
-        data.history.push({
-          date: today,
-          completed: 4
-        });
+        if (diffDays === 1) data.streak++;
+        else if (diffDays > 1) data.streak = 1;
+        else data.streak = data.streak || 1;
         
+        data.lastUpdate = todayStr;
+        data.history.push({ date: todayStr, completed: 4 });
         safeLocalStorage('set', 'challenge_data', JSON.stringify(data));
       }
     }
     
-    // Update UI
     updateChallengeUI(data.streak, completedToday);
-    
-    // Track in GA4
-    if (completedToday === 4) {
-      gtag('event', 'challenge_day_completed', {
-        'event_category': 'engagement',
-        'event_label': 'Day completed',
-        'value': data.streak
-      });
-    }
+    if (completedToday === 4) gtag('event', 'challenge_day_completed', { 'event_category': 'engagement', 'value': data.streak });
   }
-  
+
   function updateChallengeUI(streak, completedToday) {
-    const streakDisplay = document.getElementById('streakDisplay');
-    const streakMotivation = document.getElementById('streakMotivation');
-    
-    streakDisplay.textContent = `🔥 ${streak}`;
-    
-    const lang = currentLang;
-    if (streak === 0) {
-      streakMotivation.textContent = lang === 'en' ? 
-        'Complete all 4 goals today to start your streak!' :
-        lang === 'hi' ?
-        'स्ट्रीक शुरू करने के लिए आज सभी 4 लक्ष्य पूरे करें!' :
-        'तुमची स्ट्रीक सुरू करण्यासाठी आज सर्व 4 ध्येये पूर्ण करा!';
-    } else if (streak < 7) {
-      streakMotivation.textContent = lang === 'en' ? 
-        `Great start! Keep going! ${completedToday}/4 today` :
-        lang === 'hi' ?
-        `बढ़िया शुरुआत! जारी रखें! आज ${completedToday}/4` :
-        `उत्तम सुरुवात! चालू ठेवा! आज ${completedToday}/4`;
-    } else if (streak < 14) {
-      streakMotivation.textContent = lang === 'en' ? 
-        `You're doing amazing! Week ${Math.floor(streak/7)} done!` :
-        lang === 'hi' ?
-        `आप बहुत अच्छा कर रहे हैं! सप्ताह ${Math.floor(streak/7)} पूरा!` :
-        `तुम्ही छान करत आहात! आठवडा ${Math.floor(streak/7)} पूर्ण!`;
-    } else if (streak < 21) {
-      streakMotivation.textContent = lang === 'en' ? 
-        `Almost there! ${21-streak} days to go!` :
-        lang === 'hi' ?
-        `लगभग पहुंच गए! ${21-streak} दिन बाकी!` :
-        `जवळजवळ पोहोचलात! ${21-streak} दिवस बाकी!`;
-    } else {
-      streakMotivation.textContent = lang === 'en' ? 
-        '🎉 21-Day Challenge Complete! You're a champion!' :
-        lang === 'hi' ?
-        '🎉 21-दिन की चुनौती पूरी! आप चैंपियन हैं!' :
-        '🎉 21-दिवसांचे आव्हान पूर्ण! तुम्ही चॅम्पियन आहात!';
-    }
+    document.getElementById('streakDisplay').textContent = '🔥 ' + streak;
+    var lang = currentLang;
+    var msg = '';
+    if (streak === 0) msg = lang === 'en' ? 'Complete all 4 goals today to start your streak!' : lang === 'hi' ? 'आज सभी 4 लक्ष्य पूरे करें!' : 'आज सर्व 4 ध्येये पूर्ण करा!';
+    else if (streak < 7) msg = lang === 'en' ? 'Great start! ' + completedToday + '/4 today' : lang === 'hi' ? 'बढ़िया! आज ' + completedToday + '/4' : 'उत्तम! आज ' + completedToday + '/4';
+    else if (streak < 14) msg = lang === 'en' ? 'Amazing! Week ' + Math.floor(streak/7) + ' done!' : lang === 'hi' ? 'सप्ताह ' + Math.floor(streak/7) + ' पूरा!' : 'आठवडा ' + Math.floor(streak/7) + ' पूर्ण!';
+    else if (streak < 21) msg = lang === 'en' ? (21-streak) + ' days to go!' : lang === 'hi' ? (21-streak) + ' दिन बाकी!' : (21-streak) + ' दिवस बाकी!';
+    else msg = lang === 'en' ? '🎉 21-Day Challenge Complete!' : lang === 'hi' ? '🎉 चुनौती पूरी!' : '🎉 आव्हान पूर्ण!';
+    document.getElementById('streakMotivation').textContent = msg;
   }
-  
+
+  // FIX 5: Restore checkboxes from per-day storage (not just when all 4 done)
   function loadChallengeData() {
-    const challengeData = safeLocalStorage('get', 'challenge_data');
+    var todayStr = getTodayStr();
+    var savedStates = safeLocalStorage('get', 'challenge_checkboxes_' + todayStr);
+    if (savedStates) {
+      try {
+        var states = JSON.parse(savedStates);
+        var checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
+        checkboxes.forEach(function(cb, i) { if (states[i]) cb.checked = true; });
+      } catch(e) { console.error('checkbox restore failed', e); }
+    }
+
+    var challengeData = safeLocalStorage('get', 'challenge_data');
     if (challengeData) {
       try {
-        const data = JSON.parse(challengeData);
-        const today = new Date().toDateString();
-        
-        // If data is from today, check the boxes
-        if (data.lastUpdate === today && data.history.length > 0) {
-          const todayRecord = data.history[data.history.length - 1];
-          if (todayRecord.completed === 4) {
-            const checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = true);
-          }
-        }
-        
+        var data = JSON.parse(challengeData);
         updateChallengeUI(data.streak, 0);
-      } catch (e) {
-        console.error('Failed to load challenge data:', e);
-      }
+      } catch(e) {}
     }
   }
 
   // ==========================================
-  // EDUCATIONAL ARTICLES FUNCTIONS
+  // FIX 4: ARTICLES — no optional chaining, explicit fallback
   // ==========================================
-  
-  const articles = {
+  var articles = {
     en: {
-      article1: `<strong>Start your day iron-strong with these simple breakfast ideas:</strong><br><br>
+      article1: '<strong>Iron-Rich Breakfast Ideas:</strong><br><br><strong>1. Spinach Paratha with Curd</strong><br>Mix chopped spinach in whole wheat dough. Serve with curd and lemon for vitamin C boost.<br><br><strong>2. Moong Dal Cheela</strong><br>Protein-packed pancakes from moong dal. Add onions and tomatoes. Serve with green chutney.<br><br><strong>3. Ragi Porridge with Jaggery</strong><br>Cook ragi flour with milk. Sweeten with jaggery (iron-rich). Add dry fruits.<br><br><strong>4. Egg Bhurji with Whole Wheat Toast</strong><br>Scrambled eggs with tomatoes and onions on whole grain bread. Add orange juice.<br><br><strong>5. Poha with Peanuts and Lemon</strong><br>Traditional poha loaded with peanuts (iron) and fresh lemon juice (vitamin C).<br><br><strong>💡 Pro Tip:</strong> Always add lemon or amla to iron-rich meals — vitamin C helps your body absorb iron better!',
 
-<strong>1. Spinach Paratha with Curd</strong><br>
-Mix chopped spinach in whole wheat dough. Serve with curd and a squeeze of lemon for vitamin C boost.<br><br>
+      article2: '<strong>The Tea-Iron Connection:</strong><br><br>Tea and coffee contain compounds called <strong>tannins</strong> and <strong>polyphenols</strong>. These bind with iron in your digestive system and prevent your body from absorbing it.<br><br><strong>What happens:</strong><br>• You eat dal or spinach (rich in iron)<br>• Drink tea right after<br>• Tannins bind to the iron<br>• Your body absorbs only 25-30% instead of 60-70%<br><br><strong>Simple Solution:</strong><br>Wait at least 1 hour after meals before drinking tea or coffee.<br><br><strong>Better Options Right After Meals:</strong><br>✅ Plain water<br>✅ Buttermilk<br>✅ Lemon water<br>✅ Fresh fruit juice (vitamin C boost!)<br><br><strong>💡 Cultural Tip:</strong> Many grandmothers were right — now science confirms why!',
 
-<strong>2. Moong Dal Cheela</strong><br>
-Protein-packed pancakes made from moong dal. Add onions, tomatoes. Serve with green chutney.<br><br>
+      article3: '<strong>Warning Signs — Visit PHC if You Experience:</strong><br><br><strong>🚨 URGENT (Visit Today):</strong><br>• Extreme weakness — cannot stand or walk<br>• Fainting or near-fainting episodes<br>• Chest pain or rapid heartbeat<br>• Severe breathlessness even at rest<br>• Pale skin with blue lips or nails<br><br><strong>⚠️ WITHIN 3-7 DAYS:</strong><br>• Constant tiredness for 2+ weeks<br>• Dizziness when standing up<br>• Frequent headaches<br>• Soaking pad every 1-2 hours during periods<br><br><strong>📋 PLAN A VISIT (Within 2-4 Weeks):</strong><br>• Mild fatigue<br>• Occasional dizziness<br>• Poor appetite<br>• Pregnant or recently delivered<br><br><strong>💡 Remember:</strong> Getting tested is free at PHCs. Do not wait until it gets worse!',
 
-<strong>3. Ragi Porridge with Jaggery</strong><br>
-Cook ragi flour with milk. Sweeten with jaggery (iron-rich). Add dry fruits.<br><br>
+      article4: '<strong>Understanding Hemoglobin Levels:</strong><br><br><strong>What is Hemoglobin (Hb)?</strong><br>Hemoglobin is a protein in red blood cells that carries oxygen. When it is low, you have anemia.<br><br><strong>Normal Levels for Women (15-49 years):</strong><br>✅ <strong>Normal:</strong> 12.0 g/dL or higher<br>🟡 <strong>Mild Anemia:</strong> 11.0-11.9 g/dL<br>🟠 <strong>Moderate Anemia:</strong> 8.0-10.9 g/dL<br>🔴 <strong>Severe Anemia:</strong> Below 8.0 g/dL<br><br><strong>During Pregnancy:</strong><br>Normal drops slightly to 11.0 g/dL or higher.<br><br><strong>💡 Good to Know:</strong> Your hemoglobin can improve 1-2 g/dL in just 3-4 weeks with proper diet and supplements!',
 
-<strong>4. Egg Bhurji with Whole Wheat Toast</strong><br>
-Scrambled eggs with tomatoes, onions. Serve with whole grain bread. Add orange juice.<br><br>
-
-<strong>5. Poha with Peanuts and Lemon</strong><br>
-Traditional poha loaded with peanuts (iron) and fresh lemon juice (vitamin C).<br><br>
-
-<strong>💡 Pro Tip:</strong> Always add lemon or amla to iron-rich meals - vitamin C helps your body absorb iron better!`,
-
-      article2: `<strong>The Tea-Iron Connection Explained:</strong><br><br>
-
-Tea and coffee contain compounds called <strong>tannins</strong> and <strong>polyphenols</strong>. These bind with iron in your digestive system and prevent your body from absorbing it.<br><br>
-
-<strong>What happens:</strong><br>
-• You eat dal/spinach (rich in iron)<br>
-• Drink tea immediately after<br>
-• Tannins in tea bind to the iron<br>
-• Your body can only absorb 25-30% of the iron instead of 60-70%<br><br>
-
-<strong>Simple Solution:</strong><br>
-Wait at least 1 hour after meals before drinking tea or coffee. This gives your body time to absorb the iron first.<br><br>
-
-<strong>Better Options Right After Meals:</strong><br>
-✅ Plain water<br>
-✅ Buttermilk<br>
-✅ Lemon water<br>
-✅ Fresh fruit juice (vitamin C boost!)<br><br>
-
-<strong>💡 Cultural Tip:</strong> Many grandmothers were right - they would say "don\'t drink tea after eating greens." Now science confirms why!`,
-
-      article3: `<strong>Do Not Ignore These Warning Signs - Visit PHC if You Experience:</strong><br><br>
-
-<strong>🚨 URGENT (Visit Today):</strong><br>
-• Extreme weakness - cannot stand or walk<br>
-• Fainting or near-fainting episodes<br>
-• Chest pain or rapid heartbeat<br>
-• Severe breathlessness even at rest<br>
-• Pale skin with blue lips/nails<br><br>
-
-<strong>⚠️ WITHIN 3-7 DAYS:</strong><br>
-• Constant tiredness for 2+ weeks<br>
-• Dizziness when standing up<br>
-• Frequent headaches<br>
-• Soaking pad every 1-2 hours during periods<br>
-• Difficulty concentrating or memory issues<br><br>
-
-<strong>📋 PLAN A VISIT (Within 2-4 Weeks):</strong><br>
-• Mild fatigue<br>
-• Occasional dizziness<br>
-• Poor appetite<br>
-• Pregnant or recently delivered<br><br>
-
-<strong>What to Tell the Doctor:</strong><br>
-1. Your symptoms and how long you have had them<br>
-2. Your diet habits<br>
-3. Menstrual history<br>
-4. Any medications you are taking<br><br>
-
-<strong>💡 Remember:</strong> Getting tested is free at PHCs. Do not wait until it gets worse!`,
-
-      article4: `<strong>Understanding Your Blood Test Results:</strong><br><br>
-
-<strong>What is Hemoglobin (Hb)?</strong><br>
-Hemoglobin is a protein in red blood cells that carries oxygen throughout your body. When it is low, you have anemia.<br><br>
-
-<strong>Normal Levels for Women (15-49 years):</strong><br>
-✅ <strong>Normal:</strong> 12.0 g/dL or higher<br>
-🟡 <strong>Mild Anemia:</strong> 11.0-11.9 g/dL<br>
-🟠 <strong>Moderate Anemia:</strong> 8.0-10.9 g/dL<br>
-🔴 <strong>Severe Anemia:</strong> Below 8.0 g/dL<br><br>
-
-<strong>During Pregnancy:</strong><br>
-Normal drops slightly to 11.0 g/dL or higher due to blood volume expansion.<br><br>
-
-<strong>What the Numbers Mean:</strong><br>
-• <strong>13+ g/dL:</strong> Excellent iron stores<br>
-• <strong>12-12.9 g/dL:</strong> Normal, maintain healthy diet<br>
-• <strong>11-11.9 g/dL:</strong> Start eating more iron-rich foods<br>
-• <strong>10-10.9 g/dL:</strong> Needs iron supplements + diet change<br>
-• <strong>Below 10 g/dL:</strong> Medical treatment required<br><br>
-
-<strong>💡 Good to Know:</strong> Your hemoglobin can improve 1-2 g/dL in just 3-4 weeks with proper diet and supplements!`,
-
-      article5: `<strong>Natural Ways to Boost Energy at Home:</strong><br><br>
-
-<strong>1. Jaggery Water in Morning</strong><br>
-Mix 1 small piece of jaggery in warm water. Drink on empty stomach. Rich in iron and instant energy.<br><br>
-
-<strong>2. Amla (Indian Gooseberry)</strong><br>
-Eat 1-2 fresh amla daily or amla candy. Super high in vitamin C - helps iron absorption.<br><br>
-
-<strong>3. Beetroot Juice</strong><br>
-Blend 1 small beetroot with carrot and apple. Drink fresh. Natural blood builder.<br><br>
-
-<strong>4. Dates and Milk</strong><br>
-Soak 2-3 dates overnight in milk. Eat in morning. Iron + calcium + energy.<br><br>
-
-<strong>5. Sesame Seeds (Til)</strong><br>
-Add roasted sesame to ladoos, chikki, or sprinkle on food. Excellent iron source.<br><br>
-
-<strong>6. Deep Breathing (Pranayama)</strong><br>
-5 minutes of deep breathing improves oxygen circulation. Helps combat fatigue.<br><br>
-
-<strong>7. Afternoon Power Nap</strong><br>
-20-minute rest after lunch (not more!). Recharges your body without affecting night sleep.<br><br>
-
-<strong>8. Tulsi Tea (Instead of regular tea)</strong><br>
-Boil tulsi leaves in water. No tannins = does not block iron. Reduces stress too.<br><br>
-
-<strong>💡 Consistency is Key:</strong> These remedies work best when done daily for 3-4 weeks. Track your energy levels!`
-    },
-    // Add Hindi and Marathi translations if needed
+      article5: '<strong>Natural Ways to Boost Energy:</strong><br><br><strong>1. Jaggery Water in Morning</strong><br>Mix 1 small piece of jaggery in warm water. Drink on empty stomach.<br><br><strong>2. Amla (Indian Gooseberry)</strong><br>Eat 1-2 fresh amla daily. Super high in vitamin C — helps iron absorption.<br><br><strong>3. Beetroot Juice</strong><br>Blend 1 small beetroot with carrot and apple. Natural blood builder.<br><br><strong>4. Dates and Milk</strong><br>Soak 2-3 dates overnight in milk. Eat in morning. Iron + calcium + energy.<br><br><strong>5. Sesame Seeds (Til)</strong><br>Add roasted sesame to food. Excellent iron source.<br><br><strong>6. Deep Breathing (Pranayama)</strong><br>5 minutes of deep breathing improves oxygen circulation.<br><br><strong>7. Tulsi Tea</strong><br>Boil tulsi leaves in water. No tannins — does not block iron.<br><br><strong>💡 Consistency is Key:</strong> These work best when done daily for 3-4 weeks!'
+    }
   };
-  
+
+  // FIX 4: No optional chaining — explicit check works on all browsers
   function toggleArticle(articleId) {
-    const content = document.getElementById(articleId);
-    const arrow = document.getElementById(articleId + 'Arrow');
-    const lang = currentLang;
-    
+    var content = document.getElementById(articleId);
+    var arrow = document.getElementById(articleId + 'Arrow');
+    var lang = currentLang;
+
     if (content.style.display === 'none') {
-      // Load content
-      content.innerHTML = articles[lang]?.[articleId] || articles['en'][articleId];
+      var articleText = (articles[lang] && articles[lang][articleId]) ? articles[lang][articleId] : articles['en'][articleId];
+      content.innerHTML = articleText || '<p>Content loading...</p>';
       content.style.display = 'block';
       arrow.textContent = '▲';
-      
-      // Track in GA4
-      gtag('event', 'article_opened', {
-        'event_category': 'engagement',
-        'event_label': articleId
-      });
+      gtag('event', 'article_opened', { 'event_category': 'engagement', 'event_label': articleId });
     } else {
       content.style.display = 'none';
       arrow.textContent = '▼';
@@ -2497,14 +1500,11 @@ Boil tulsi leaves in water. No tannins = does not block iron. Reduces stress too
   }
 
   // ==========================================
-  // LOAD LANGUAGE ON START
+  // INIT
   // ==========================================
-  
   window.addEventListener('load', function() {
-    const savedLang = safeLocalStorage('get', 'preferredLanguage') || 'en';
-    if (savedLang !== 'en') {
-      setLang(savedLang);
-    }
+    var savedLang = safeLocalStorage('get', 'preferredLanguage') || 'en';
+    if (savedLang !== 'en') setLang(savedLang);
   });
 </script>
 
