@@ -14,6 +14,23 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-763YK30X5T');
+    
+    // Global error tracking
+    window.addEventListener('error', (e) => {
+      gtag('event', 'exception', {
+        'description': e.error?.message || 'Unknown error',
+        'fatal': false
+      });
+      console.error('Global error:', e);
+    });
+
+    window.addEventListener('unhandledrejection', (e) => {
+      gtag('event', 'exception', {
+        'description': e.reason?.message || 'Unhandled promise rejection',
+        'fatal': false
+      });
+      console.error('Unhandled rejection:', e);
+    });
   </script>
 
   <style>
@@ -656,7 +673,7 @@
         <li>🚑 <strong>Emergency Ambulance:</strong> 108</li>
         <li>
           🔗 <strong>Anemia Mukt Bharat:</strong> 
-          <a href="https://anemiamuktbharat.info/" target="_blank" rel="noopener">Official Portal</a>
+          <a href="https://anemiamuktbharat.info/" target="_blank" rel="noopener noreferrer">Official Portal</a>
         </li>
         <li>
           📍 <strong>Find Nearest PHC:</strong> 
@@ -684,6 +701,9 @@
     </div>
     
     <div class="action-buttons">
+      <button class="action-btn" onclick="shareWhatsApp()">
+        📱 <span id="btnWhatsApp">Share on WhatsApp</span>
+      </button>
       <button class="action-btn" onclick="printResults()">
         📄 <span id="btnPrint">Print Results</span>
       </button>
@@ -693,6 +713,142 @@
       <button class="action-btn" style="background:linear-gradient(135deg, #78909c 0%, #90a4ae 100%);" onclick="resetScreening()">
         🔄 <span id="btnReset">New Screening</span>
       </button>
+    </div>
+    
+    <!-- Progress Tracker Section -->
+    <div class="next-steps" style="margin-top: 32px; background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border-left: 4px solid #3B82F6;">
+      <h3 style="color: #1E40AF;">📊 <span id="progressTrackerTitle">Track Your Health Journey</span></h3>
+      <div id="progressTrackerContent">
+        <p id="progressTrackerText" style="font-size: 15px; line-height: 1.7;">Want to see your improvement over time? Save your unique Progress Code and come back in 2-4 weeks to retake the screening. We'll show you how much you've improved!</p>
+        
+        <div style="background: white; padding: 24px; border-radius: 12px; margin: 16px 0; border: 2px dashed #3B82F6;">
+          <div style="text-align: center;">
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 8px;" id="progressCodeLabel">Your Progress Code</div>
+            <div style="font-size: 32px; font-weight: 700; color: #1E40AF; letter-spacing: 3px; font-family: monospace;" id="progressCode">AH-XXXX</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 8px;" id="progressCodeDate">Generated: <span id="progressCodeDateValue"></span></div>
+          </div>
+          <button onclick="copyProgressCode()" style="width: 100%; margin-top: 16px; padding: 12px; background: #3B82F6; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px;">
+            📋 <span id="btnCopyCode">Copy Progress Code</span>
+          </button>
+        </div>
+        
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 16px; border-radius: 10px; margin-top: 16px;">
+          <p style="margin: 0; font-size: 14px; color: #1E40AF;">
+            <strong>💡 <span id="progressTip">How it works:</span></strong><br>
+            <span id="progressTipText">Save this code safely. Return in 2-4 weeks, enter your code, retake screening, and see your progress chart! All data stays private on your device.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 21-Day Challenge Section -->
+    <div class="next-steps" style="margin-top: 24px; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border-left: 4px solid #10B981;" id="challengeSection">
+      <h3 style="color: #065F46;">🎯 <span id="challengeTitle">Start 21-Day Health Boost Challenge</span></h3>
+      <div id="challengeContent">
+        <p id="challengeText" style="font-size: 15px; line-height: 1.7;">Small daily habits can make a big difference! Track your progress with these simple actions:</p>
+        
+        <div style="background: white; padding: 20px; border-radius: 12px; margin: 16px 0;">
+          <div style="margin-bottom: 16px;">
+            <div style="font-weight: 700; color: #065F46; margin-bottom: 12px; font-size: 16px;" id="dailyGoalsTitle">Daily Goals (Check what you did today):</div>
+            <div id="dailyGoals" style="display: flex; flex-direction: column; gap: 10px;">
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #F8FAFC; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                <input type="checkbox" onchange="updateChallenge()" style="width: 20px; height: 20px; cursor: pointer;">
+                <span id="goal1">🥬 Ate iron-rich food (spinach, dal, eggs, jaggery)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #F8FAFC; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                <input type="checkbox" onchange="updateChallenge()" style="width: 20px; height: 20px; cursor: pointer;">
+                <span id="goal2">🍋 Added vitamin C to meals (lemon, amla, orange)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #F8FAFC; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                <input type="checkbox" onchange="updateChallenge()" style="width: 20px; height: 20px; cursor: pointer;">
+                <span id="goal3">☕ No tea/coffee for 1 hour after meals</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #F8FAFC; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                <input type="checkbox" onchange="updateChallenge()" style="width: 20px; height: 20px; cursor: pointer;">
+                <span id="goal4">🚶 15 minutes walk or yoga</span>
+              </label>
+            </div>
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-top: 16px;">
+            <div style="font-size: 48px; font-weight: 700;" id="streakDisplay">🔥 0</div>
+            <div style="font-size: 14px; opacity: 0.9; margin-top: 4px;" id="streakLabel">Day Streak</div>
+            <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;" id="streakMotivation">Start today to build your streak!</div>
+          </div>
+        </div>
+        
+        <div style="background: rgba(16, 185, 129, 0.1); padding: 16px; border-radius: 10px;">
+          <p style="margin: 0; font-size: 14px; color: #065F46;">
+            <strong>✨ <span id="challengeBonus">Bonus Tip:</span></strong><br>
+            <span id="challengeBonusText">Complete all 4 goals for 21 days straight and you will form lasting healthy habits. Your body will thank you!</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Educational Content Library -->
+    <div class="next-steps" style="margin-top: 24px; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); border-left: 4px solid #F59E0B;">
+      <h3 style="color: #92400E;">📚 <span id="learnMoreTitle">Learn More About Anemia</span></h3>
+      <div id="learnMoreContent">
+        <p id="learnMoreText" style="font-size: 15px; line-height: 1.7;">Knowledge is power! Read these short articles to understand anemia better:</p>
+        
+        <div style="display: grid; gap: 12px; margin-top: 16px;">
+          <div class="article-card" onclick="toggleArticle('article1')" style="background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; color: #92400E; font-size: 15px;">🍳 5 Iron-Rich Breakfast Ideas</div>
+                <div style="font-size: 13px; color: #78716C; margin-top: 4px;" id="article1Subtitle">Quick, tasty, and nutritious</div>
+              </div>
+              <span id="article1Arrow" style="font-size: 20px; color: #F59E0B;">▼</span>
+            </div>
+            <div id="article1" class="article-content" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #FDE68A; font-size: 14px; line-height: 1.8; color: #44403C;"></div>
+          </div>
+          
+          <div class="article-card" onclick="toggleArticle('article2')" style="background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; color: #92400E; font-size: 15px;">☕ Why Tea After Meals Reduces Iron</div>
+                <div style="font-size: 13px; color: #78716C; margin-top: 4px;" id="article2Subtitle">The science explained simply</div>
+              </div>
+              <span id="article2Arrow" style="font-size: 20px; color: #F59E0B;">▼</span>
+            </div>
+            <div id="article2" class="article-content" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #FDE68A; font-size: 14px; line-height: 1.8; color: #44403C;"></div>
+          </div>
+          
+          <div class="article-card" onclick="toggleArticle('article3')" style="background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; color: #92400E; font-size: 15px;">⚠️ Warning Signs - When to Visit PHC</div>
+                <div style="font-size: 13px; color: #78716C; margin-top: 4px;" id="article3Subtitle">Don't ignore these symptoms</div>
+              </div>
+              <span id="article3Arrow" style="font-size: 20px; color: #F59E0B;">▼</span>
+            </div>
+            <div id="article3" class="article-content" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #FDE68A; font-size: 14px; line-height: 1.8; color: #44403C;"></div>
+          </div>
+          
+          <div class="article-card" onclick="toggleArticle('article4')" style="background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; color: #92400E; font-size: 15px;">🩺 Understanding Hemoglobin Levels</div>
+                <div style="font-size: 13px; color: #78716C; margin-top: 4px;" id="article4Subtitle">What the numbers mean</div>
+              </div>
+              <span id="article4Arrow" style="font-size: 20px; color: #F59E0B;">▼</span>
+            </div>
+            <div id="article4" class="article-content" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #FDE68A; font-size: 14px; line-height: 1.8; color: #44403C;"></div>
+          </div>
+          
+          <div class="article-card" onclick="toggleArticle('article5')" style="background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; color: #92400E; font-size: 15px;">🏠 Simple Home Remedies for Energy</div>
+                <div style="font-size: 13px; color: #78716C; margin-top: 4px;" id="article5Subtitle">Natural ways to feel better</div>
+              </div>
+              <span id="article5Arrow" style="font-size: 20px; color: #F59E0B;">▼</span>
+            </div>
+            <div id="article5" class="article-content" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid #FDE68A; font-size: 14px; line-height: 1.8; color: #44403C;"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -770,9 +926,40 @@
       findPHCLink: "Use Location Services",
       showPHCBtn: "Find Nearest PHC",
       
+      btnWhatsApp: "Share on WhatsApp",
       btnPrint: "Print Results",
       btnSave: "Save to Phone",
       btnReset: "New Screening",
+      
+      // Progress Tracker
+      progressTrackerTitle: "Track Your Health Journey",
+      progressTrackerText: "Want to see your improvement over time? Save your unique Progress Code and come back in 2-4 weeks to retake the screening. We'll show you how much you've improved!",
+      progressCodeLabel: "Your Progress Code",
+      btnCopyCode: "Copy Progress Code",
+      progressTip: "How it works:",
+      progressTipText: "Save this code safely. Return in 2-4 weeks, enter your code, retake screening, and see your progress chart! All data stays private on your device.",
+      
+      // 21-Day Challenge
+      challengeTitle: "Start 21-Day Health Boost Challenge",
+      challengeText: "Small daily habits can make a big difference! Track your progress with these simple actions:",
+      dailyGoalsTitle: "Daily Goals (Check what you did today):",
+      goal1: "🥬 Ate iron-rich food (spinach, dal, eggs, jaggery)",
+      goal2: "🍋 Added vitamin C to meals (lemon, amla, orange)",
+      goal3: "☕ No tea/coffee for 1 hour after meals",
+      goal4: "🚶 15 minutes walk or yoga",
+      streakLabel: "Day Streak",
+      streakMotivation: "Start today to build your streak!",
+      challengeBonus: "Bonus Tip:",
+      challengeBonusText: "Complete all 4 goals for 21 days straight and you will form lasting healthy habits. Your body will thank you!",
+      
+      // Educational Content
+      learnMoreTitle: "Learn More About Anemia",
+      learnMoreText: "Knowledge is power! Read these short articles to understand anemia better:",
+      article1Subtitle: "Quick, tasty, and nutritious",
+      article2Subtitle: "The science explained simply",
+      article3Subtitle: "Don't ignore these symptoms",
+      article4Subtitle: "What the numbers mean",
+      article5Subtitle: "Natural ways to feel better",
       
       footerText: "For awareness and referral support only | Not a substitute for medical diagnosis"
     },
@@ -809,6 +996,7 @@
       findPHCLink: "स्थान सेवाओं का उपयोग करें",
       showPHCBtn: "निकटतम PHC खोजें",
       
+      btnWhatsApp: "WhatsApp पर शेयर करें",
       btnPrint: "परिणाम प्रिंट करें",
       btnSave: "फोन में सेव करें",
       btnReset: "नई जांच",
@@ -848,6 +1036,7 @@
       findPHCLink: "स्थान सेवा वापरा",
       showPHCBtn: "जवळचे PHC शोधा",
       
+      btnWhatsApp: "WhatsApp वर शेअर करा",
       btnPrint: "परिणाम मुद्रित करा",
       btnSave: "फोनमध्ये सेव्ह करा",
       btnReset: "नवीन तपासणी",
@@ -1019,6 +1208,69 @@
   ];
 
   // ==========================================
+  // SAFE LOCALSTORAGE WRAPPER
+  // ==========================================
+  
+  function safeLocalStorage(operation, key, value) {
+    try {
+      if (operation === 'get') {
+        return localStorage.getItem(key);
+      } else if (operation === 'set') {
+        localStorage.setItem(key, value);
+        return true;
+      } else if (operation === 'remove') {
+        localStorage.removeItem(key);
+        return true;
+      }
+    } catch (e) {
+      console.error('localStorage error:', e);
+      if (e.name === 'QuotaExceededError') {
+        alert('Storage full. Results will not be saved.');
+      } else {
+        alert('Unable to save data. Please check your browser settings.');
+      }
+      gtag('event', 'exception', {
+        'description': 'localStorage_failed',
+        'fatal': false
+      });
+      return false;
+    }
+  }
+
+  // ==========================================
+  // KEYBOARD NAVIGATION
+  // ==========================================
+  
+  document.addEventListener('keydown', (e) => {
+    // Enter key to proceed to next question
+    if (e.key === 'Enter') {
+      const nextBtn = document.getElementById('nextBtn');
+      if (nextBtn && !nextBtn.disabled && !nextBtn.classList.contains('hidden')) {
+        nextQuestion();
+      }
+    }
+    
+    // Arrow keys for option selection
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      const options = document.querySelectorAll('.option-btn');
+      if (options.length === 0) return;
+      
+      const selected = document.querySelector('.option-btn.selected');
+      let index = selected ? Array.from(options).indexOf(selected) : -1;
+      
+      if (e.key === 'ArrowDown') {
+        index = (index + 1) % options.length;
+      } else {
+        index = index <= 0 ? options.length - 1 : index - 1;
+      }
+      
+      options[index].click();
+      options[index].focus();
+      e.preventDefault();
+    }
+  });
+
+  // ==========================================
   // GLOBAL STATE
   // ==========================================
   
@@ -1050,7 +1302,7 @@
   
   function setLang(lang) {
     currentLang = lang;
-    localStorage.setItem('preferredLanguage', lang);
+    safeLocalStorage('set', 'preferredLanguage', lang);
     
     // Track language change in GA4
     gtag('event', 'language_change', {
@@ -1129,7 +1381,7 @@
     const lang = currentLang;
     
     // Update progress
-    const progress = ((currentQuestion) / questions.length) * 100;
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
     document.getElementById('progressFill').style.width = progress + '%';
     document.getElementById('progressText').textContent = 
       `Question ${currentQuestion + 1} of ${questions.length}`;
@@ -1242,14 +1494,34 @@
 
   function selectNumberAnswer() {
     const q = questions[currentQuestion];
-    const value = parseInt(document.getElementById('numberInput').value);
+    const input = document.getElementById('numberInput');
+    const value = parseInt(input.value);
     
-    if (value >= q.min && value <= q.max) {
-      answers[q.id] = value;
-      document.getElementById('nextBtn').disabled = false;
-    } else {
+    // Clear previous error
+    input.style.borderColor = '';
+    
+    if (isNaN(value)) {
+      input.style.borderColor = '#ef4444';
       document.getElementById('nextBtn').disabled = true;
+      return;
     }
+    
+    if (value < q.min || value > q.max) {
+      input.style.borderColor = '#ef4444';
+      const lang = currentLang;
+      const errorMsg = lang === 'en' ? 
+        `Please enter age between ${q.min}-${q.max}` :
+        lang === 'hi' ?
+        `कृपया ${q.min}-${q.max} के बीच उम्र दर्ज करें` :
+        `कृपया ${q.min}-${q.max} दरम्यान वय प्रविष्ट करा`;
+      alert(errorMsg);
+      document.getElementById('nextBtn').disabled = true;
+      return;
+    }
+    
+    input.style.borderColor = '#4caf50';
+    answers[q.id] = value;
+    document.getElementById('nextBtn').disabled = false;
   }
 
   // ==========================================
@@ -1336,7 +1608,7 @@
       timestamp: new Date().toISOString()
     };
     
-    localStorage.setItem('lastScreeningResult', JSON.stringify(result));
+    safeLocalStorage('set', 'lastScreeningResult', JSON.stringify(result));
     
     // Show result
     displayResult(riskLevel, result);
@@ -1466,12 +1738,22 @@
     document.getElementById('phcFinderTitle').textContent = t.phcFinderTitle;
     document.getElementById('findPHCLink').textContent = t.findPHCLink;
     document.getElementById('showPHCBtn').textContent = t.showPHCBtn;
+    document.getElementById('btnWhatsApp').textContent = t.btnWhatsApp;
     document.getElementById('btnPrint').textContent = t.btnPrint;
     document.getElementById('btnSave').textContent = t.btnSave;
     document.getElementById('btnReset').textContent = t.btnReset;
     
     // Show references section
     document.getElementById('referencesCard').style.display = 'block';
+    
+    // Initialize progress tracker
+    const progressCode = generateProgressCode();
+    document.getElementById('progressCode').textContent = progressCode;
+    document.getElementById('progressCodeDateValue').textContent = new Date().toLocaleDateString();
+    saveProgressData(progressCode, result);
+    
+    // Load challenge data
+    loadChallengeData();
     
     resultCard.scrollIntoView({behavior: 'smooth'});
   }
@@ -1562,23 +1844,310 @@
   // ACTION FUNCTIONS
   // ==========================================
   
+  function shareWhatsApp() {
+    const resultData = safeLocalStorage('get', 'lastScreeningResult');
+    if (!resultData) {
+      alert('No screening result found. Please complete the screening first.');
+      return;
+    }
+    
+    let result;
+    try {
+      result = JSON.parse(resultData);
+    } catch (e) {
+      console.error('Failed to parse result:', e);
+      alert('Error loading results. Please try screening again.');
+      return;
+    }
+    
+    const lang = currentLang;
+    let riskText = '';
+    
+    if (result.riskLevel === 'high') {
+      riskText = lang === 'en' ? '🔴 HIGH RISK' : lang === 'hi' ? '🔴 उच्च जोखिम' : '🔴 उच्च जोखीम';
+    } else if (result.riskLevel === 'moderate') {
+      riskText = lang === 'en' ? '🟡 MODERATE RISK' : lang === 'hi' ? '🟡 मध्यम जोखिम' : '🟡 मध्यम जोखीम';
+    } else {
+      riskText = lang === 'en' ? '🟢 LOW RISK' : lang === 'hi' ? '🟢 कम जोखिम' : '🟢 कमी जोखीम';
+    }
+    
+    const date = new Date().toLocaleDateString();
+    
+    let message = '';
+    if (lang === 'en') {
+      message = `*AAROGYA LINK - Anemia Screening Result*
+
+📅 Date: ${date}
+⚕️ Risk Level: ${riskText}
+📊 Score: ${result.score}/15
+
+${result.riskLevel === 'high' ? '⚠️ *URGENT ACTION REQUIRED*\n✅ Visit PHC within 7 days for Hb test\n✅ Consult healthcare professional' : result.riskLevel === 'moderate' ? '📋 *Recommended Actions:*\n✅ Get Hb test within 2-4 weeks\n✅ Improve iron-rich diet' : '✅ *Good Health Status*\nContinue healthy eating habits'}
+
+🩺 Developed by Rotaract Club of D.Y. Patil SBB
+🌐 Visit: https://aarogyalink.org
+
+⚠️ This is a screening tool, not a diagnosis. Please consult healthcare professionals.`;
+    } else if (lang === 'hi') {
+      message = `*आरोग्य लिंक - एनीमिया जांच परिणाम*
+
+📅 तिथि: ${date}
+⚕️ जोखिम स्तर: ${riskText}
+📊 स्कोर: ${result.score}/15
+
+${result.riskLevel === 'high' ? '⚠️ *तत्काल कार्रवाई आवश्यक*\n✅ 7 दिनों में PHC जाएं\n✅ डॉक्टर से परामर्श करें' : result.riskLevel === 'moderate' ? '📋 *अनुशंसित कार्रवाई:*\n✅ 2-4 सप्ताह में Hb जांच\n✅ आयरन युक्त आहार लें' : '✅ *अच्छा स्वास्थ्य*\nस्वस्थ खान-पान जारी रखें'}
+
+🩺 विकसित: रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल SBB
+🌐 Visit: https://aarogyalink.org
+
+⚠️ यह जांच उपकरण है, निदान नहीं।`;
+    } else {
+      message = `*आरोग्य लिंक - अॅनिमिया तपासणी निकाल*
+
+📅 तारीख: ${date}
+⚕️ जोखीम पातळी: ${riskText}
+📊 स्कोअर: ${result.score}/15
+
+${result.riskLevel === 'high' ? '⚠️ *तातडीची कार्रवाई आवश्यक*\n✅ 7 दिवसांत PHC ला भेट द्या\n✅ डॉक्टरांचा सल्ला घ्या' : result.riskLevel === 'moderate' ? '📋 *शिफारशीत कृती:*\n✅ 2-4 आठवड्यात Hb चाचणी\n✅ आयर्न-समृद्ध आहार घ्या' : '✅ *चांगले आरोग्य*\nनिरोगी खाणे सुरू ठेवा'}
+
+🩺 विकसित: रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील SBB
+🌐 Visit: https://aarogyalink.org
+
+⚠️ हे तपासणी साधन आहे, निदान नाही।`;
+    }
+    
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Track in GA4
+    gtag('event', 'share', {
+      'event_category': 'engagement',
+      'event_label': 'WhatsApp share',
+      'method': 'WhatsApp'
+    });
+  }
+  
   function printResults() {
     window.print();
   }
 
   function saveResults() {
-    const result = localStorage.getItem('lastScreeningResult');
-    if (result) {
-      const blob = new Blob([result], {type: 'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `aarogya-link-result-${new Date().toLocaleDateString()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      
-      alert(currentLang === 'en' ? 'Result saved!' : currentLang === 'hi' ? 'परिणाम सेव हो गया!' : 'परिणाम जतन केला!');
+    const resultData = safeLocalStorage('get', 'lastScreeningResult');
+    if (!resultData) {
+      alert('No screening result found. Please complete the screening first.');
+      return;
     }
+    
+    let result;
+    try {
+      result = JSON.parse(resultData);
+    } catch (e) {
+      console.error('Failed to parse result:', e);
+      alert('Error loading results. Please try screening again.');
+      return;
+    }
+    
+    const lang = currentLang;
+    const date = new Date().toLocaleDateString();
+    
+    let riskText = '';
+    if (result.riskLevel === 'high') {
+      riskText = lang === 'en' ? 'HIGH RISK' : lang === 'hi' ? 'उच्च जोखिम' : 'उच्च जोखीम';
+    } else if (result.riskLevel === 'moderate') {
+      riskText = lang === 'en' ? 'MODERATE RISK' : lang === 'hi' ? 'मध्यम जोखिम' : 'मध्यम जोखीम';
+    } else {
+      riskText = lang === 'en' ? 'LOW RISK' : lang === 'hi' ? 'कम जोखिम' : 'कमी जोखीम';
+    }
+    
+    let fileContent = '';
+    if (lang === 'en') {
+      fileContent = `═══════════════════════════════════════════════════
+AAROGYA LINK - ANEMIA SCREENING RESULT
+═══════════════════════════════════════════════════
+
+DATE: ${date}
+SCREENING ID: ${Date.now()}
+
+RISK ASSESSMENT
+═══════════════════════════════════════════════════
+Risk Level: ${riskText}
+Total Score: ${result.score}/15
+Symptom Count: ${result.symptoms}
+
+RECOMMENDED ACTIONS
+═══════════════════════════════════════════════════
+${result.riskLevel === 'high' ? `⚠️ URGENT - ACTION REQUIRED WITHIN 7 DAYS
+• Visit nearest Primary Health Centre (PHC) for hemoglobin test
+• Consult healthcare professional about symptoms
+• Start iron-rich diet immediately
+• Avoid tea/coffee after meals
+
+DIETARY RECOMMENDATIONS:
+• Eat iron-rich foods daily (spinach, pulses, jaggery, eggs)
+• Add vitamin C with meals (lemon, amla, citrus fruits)
+• Consider iron supplements (consult doctor first)` : result.riskLevel === 'moderate' ? `📋 RECOMMENDED - ACTION WITHIN 2-4 WEEKS
+• Schedule hemoglobin test at PHC
+• Improve iron-rich food intake (4-5 times/week)
+• Add vitamin C foods to improve absorption
+• Limit tea/coffee immediately after meals` : `✅ GOOD HEALTH STATUS
+• Continue balanced iron-rich diet
+• Stay hydrated (8-10 glasses daily)
+• Annual health check-ups recommended
+• Repeat screening after 6 months`}
+
+HEALTH RESOURCES
+═══════════════════════════════════════════════════
+National Health Helpline: 104
+Women Helpline: 1091
+Emergency Ambulance: 108
+Anemia Mukt Bharat: https://anemiamuktbharat.info
+
+IMPORTANT NOTES
+═══════════════════════════════════════════════════
+⚠️ This is a SCREENING TOOL, not a medical diagnosis
+⚠️ Always consult healthcare professionals for proper diagnosis
+⚠️ If experiencing severe symptoms, seek immediate medical attention
+
+DEVELOPED BY
+═══════════════════════════════════════════════════
+Rotaract Club of D.Y. Patil School of 
+Biotechnology and Bioinformatics
+Navi Mumbai | Zone 1, RID 3142
+
+Community Health Initiative
+For awareness and referral support only
+
+═══════════════════════════════════════════════════
+Generated: ${new Date().toLocaleString()}
+`;
+    } else if (lang === 'hi') {
+      fileContent = `═══════════════════════════════════════════════════
+आरोग्य लिंक - एनीमिया जांच परिणाम
+═══════════════════════════════════════════════════
+
+तिथि: ${date}
+जांच ID: ${Date.now()}
+
+जोखिम मूल्यांकन
+═══════════════════════════════════════════════════
+जोखिम स्तर: ${riskText}
+कुल स्कोर: ${result.score}/15
+लक्षण गिनती: ${result.symptoms}
+
+अनुशंसित कार्रवाई
+═══════════════════════════════════════════════════
+${result.riskLevel === 'high' ? `⚠️ तत्काल - 7 दिनों में कार्रवाई आवश्यक
+• निकटतम PHC पर हीमोग्लोबिन जांच के लिए जाएं
+• लक्षणों के बारे में डॉक्टर से परामर्श करें
+• तुरंत आयरन युक्त आहार शुरू करें
+• भोजन के बाद चाय/कॉफी से बचें
+
+आहार सिफारिशें:
+• रोज़ आयरन युक्त खाद्य पदार्थ खाएं
+• भोजन के साथ विटामिन सी लें
+• आयरन सप्लीमेंट (डॉक्टर से परामर्श)` : result.riskLevel === 'moderate' ? `📋 अनुशंसित - 2-4 सप्ताह में कार्रवाई
+• PHC पर हीमोग्लोबिन जांच कराएं
+• आयरन युक्त खाद्य पदार्थ बढ़ाएं
+• विटामिन सी खाद्य पदार्थ शामिल करें
+• भोजन के बाद चाय/कॉफी सीमित करें` : `✅ अच्छा स्वास्थ्य
+• संतुलित आयरन युक्त आहार जारी रखें
+• हाइड्रेटेड रहें (रोज़ 8-10 गिलास)
+• वार्षिक स्वास्थ्य जांच
+• 6 महीने बाद फिर से जांच`}
+
+स्वास्थ्य संसाधन
+═══════════════════════════════════════════════════
+राष्ट्रीय स्वास्थ्य हेल्पलाइन: 104
+महिला हेल्पलाइन: 1091
+आपातकालीन एम्बुलेंस: 108
+
+महत्वपूर्ण नोट्स
+═══════════════════════════════════════════════════
+⚠️ यह एक जांच उपकरण है, चिकित्सा निदान नहीं
+⚠️ उचित निदान के लिए स्वास्थ्य पेशेवरों से परामर्श करें
+⚠️ गंभीर लक्षणों के लिए तुरंत चिकित्सा सहायता लें
+
+विकसित
+═══════════════════════════════════════════════════
+रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़
+बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स
+नवी मुंबई | ज़ोन 1, आरआईडी 3142
+
+═══════════════════════════════════════════════════
+उत्पन्न: ${new Date().toLocaleString()}
+`;
+    } else {
+      fileContent = `═══════════════════════════════════════════════════
+आरोग्य लिंक - अॅनिमिया तपासणी निकाल
+═══════════════════════════════════════════════════
+
+तारीख: ${date}
+तपासणी ID: ${Date.now()}
+
+जोखीम मूल्यमापन
+═══════════════════════════════════════════════════
+जोखीम पातळी: ${riskText}
+एकूण स्कोअर: ${result.score}/15
+लक्षण संख्या: ${result.symptoms}
+
+शिफारशीत कृती
+═══════════════════════════════════════════════════
+${result.riskLevel === 'high' ? `⚠️ तातडीचे - 7 दिवसांत कार्रवाई आवश्यक
+• जवळच्या PHC वर हिमोग्लोबिन चाचणीसाठी जा
+• लक्षणांबद्दल डॉक्टरांचा सल्ला घ्या
+• लगेच आयर्न-समृद्ध आहार सुरू करा
+• जेवणानंतर चहा/कॉफी टाळा
+
+आहार शिफारसी:
+• रोज आयर्न-समृद्ध पदार्थ खा
+• जेवणासोबत व्हिटॅमिन सी घ्या
+• आयर्न सप्लिमेंट्स (डॉक्टरांचा सल्ला)` : result.riskLevel === 'moderate' ? `📋 शिफारशीत - 2-4 आठवड्यांत कृती
+• PHC वर हिमोग्लोबिन चाचणी करा
+• आयर्न-समृद्ध पदार्थ वाढवा
+• व्हिटॅमिन सी पदार्थ समाविष्ट करा
+• जेवणानंतर चहा/कॉफी मर्यादित करा` : `✅ चांगले आरोग्य
+• संतुलित आयर्न-समृद्ध आहार सुरू ठेवा
+• हायड्रेटेड राहा (दररोज 8-10 ग्लास)
+• वार्षिक आरोग्य तपासणी
+• 6 महिन्यांनंतर पुन्हा तपासणी`}
+
+आरोग्य संसाधने
+═══════════════════════════════════════════════════
+राष्ट्रीय आरोग्य हेल्पलाइन: 104
+महिला हेल्पलाइन: 1091
+आपत्कालीन रुग्णवाहिका: 108
+
+महत्वाच्या नोट्स
+═══════════════════════════════════════════════════
+⚠️ हे तपासणी साधन आहे, वैद्यकीय निदान नाही
+⚠️ योग्य निदानासाठी आरोग्य व्यावसायिकांचा सल्ला घ्या
+⚠️ गंभीर लक्षणांसाठी तात्काळ वैद्यकीय मदत घ्या
+
+विकसित
+═══════════════════════════════════════════════════
+रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ
+बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स
+नवी मुंबई | झोन 1, आरआयडी 3142
+
+═══════════════════════════════════════════════════
+उत्पन्न: ${new Date().toLocaleString()}
+`;
+    }
+    
+    const blob = new Blob([fileContent], {type: 'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Aarogya-Link-Result-${date.replace(/\//g, '-')}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    alert(currentLang === 'en' ? 'Result saved!' : currentLang === 'hi' ? 'परिणाम सेव हो गया!' : 'परिणाम जतन केला!');
+    
+    // Track in GA4
+    gtag('event', 'download', {
+      'event_category': 'engagement',
+      'event_label': 'Save results'
+    });
   }
 
   function resetScreening() {
@@ -1593,11 +2162,346 @@
   }
 
   // ==========================================
+  // PROGRESS TRACKER FUNCTIONS
+  // ==========================================
+  
+  function generateProgressCode() {
+    const prefix = 'AH';
+    const num = Math.floor(1000 + Math.random() * 9000);
+    return `${prefix}-${num}`;
+  }
+  
+  function copyProgressCode() {
+    const code = document.getElementById('progressCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = event.target;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✅ Copied!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 2000);
+      
+      gtag('event', 'copy_progress_code', {
+        'event_category': 'engagement',
+        'event_label': 'Progress code copied'
+      });
+    }).catch(() => {
+      alert('Code: ' + code + '\n\nPlease copy manually');
+    });
+  }
+  
+  function saveProgressData(code, result) {
+    const progressData = {
+      code: code,
+      results: [{
+        date: new Date().toISOString(),
+        score: result.score,
+        riskLevel: result.riskLevel,
+        symptoms: result.symptoms
+      }]
+    };
+    
+    // Check if code already exists
+    const existing = safeLocalStorage('get', `progress_${code}`);
+    if (existing) {
+      try {
+        const data = JSON.parse(existing);
+        data.results.push(progressData.results[0]);
+        safeLocalStorage('set', `progress_${code}`, JSON.stringify(data));
+      } catch (e) {
+        console.error('Failed to update progress:', e);
+      }
+    } else {
+      safeLocalStorage('set', `progress_${code}`, JSON.stringify(progressData));
+    }
+  }
+
+  // ==========================================
+  // 21-DAY CHALLENGE FUNCTIONS
+  // ==========================================
+  
+  function updateChallenge() {
+    const checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
+    const today = new Date().toDateString();
+    
+    // Count checked items
+    let completedToday = 0;
+    checkboxes.forEach(cb => {
+      if (cb.checked) completedToday++;
+    });
+    
+    // Get challenge data
+    const challengeData = safeLocalStorage('get', 'challenge_data');
+    let data = { streak: 0, lastUpdate: '', history: [] };
+    
+    if (challengeData) {
+      try {
+        data = JSON.parse(challengeData);
+      } catch (e) {
+        console.error('Failed to parse challenge data:', e);
+      }
+    }
+    
+    // Update streak
+    if (completedToday === 4) {
+      if (data.lastUpdate !== today) {
+        // Check if it is consecutive day
+        const lastDate = new Date(data.lastUpdate);
+        const currentDate = new Date(today);
+        const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+          data.streak++;
+        } else if (diffDays > 1) {
+          data.streak = 1; // Reset streak
+        } else {
+          data.streak = data.streak || 1;
+        }
+        
+        data.lastUpdate = today;
+        data.history.push({
+          date: today,
+          completed: 4
+        });
+        
+        safeLocalStorage('set', 'challenge_data', JSON.stringify(data));
+      }
+    }
+    
+    // Update UI
+    updateChallengeUI(data.streak, completedToday);
+    
+    // Track in GA4
+    if (completedToday === 4) {
+      gtag('event', 'challenge_day_completed', {
+        'event_category': 'engagement',
+        'event_label': 'Day completed',
+        'value': data.streak
+      });
+    }
+  }
+  
+  function updateChallengeUI(streak, completedToday) {
+    const streakDisplay = document.getElementById('streakDisplay');
+    const streakMotivation = document.getElementById('streakMotivation');
+    
+    streakDisplay.textContent = `🔥 ${streak}`;
+    
+    const lang = currentLang;
+    if (streak === 0) {
+      streakMotivation.textContent = lang === 'en' ? 
+        'Complete all 4 goals today to start your streak!' :
+        lang === 'hi' ?
+        'स्ट्रीक शुरू करने के लिए आज सभी 4 लक्ष्य पूरे करें!' :
+        'तुमची स्ट्रीक सुरू करण्यासाठी आज सर्व 4 ध्येये पूर्ण करा!';
+    } else if (streak < 7) {
+      streakMotivation.textContent = lang === 'en' ? 
+        `Great start! Keep going! ${completedToday}/4 today` :
+        lang === 'hi' ?
+        `बढ़िया शुरुआत! जारी रखें! आज ${completedToday}/4` :
+        `उत्तम सुरुवात! चालू ठेवा! आज ${completedToday}/4`;
+    } else if (streak < 14) {
+      streakMotivation.textContent = lang === 'en' ? 
+        `You're doing amazing! Week ${Math.floor(streak/7)} done!` :
+        lang === 'hi' ?
+        `आप बहुत अच्छा कर रहे हैं! सप्ताह ${Math.floor(streak/7)} पूरा!` :
+        `तुम्ही छान करत आहात! आठवडा ${Math.floor(streak/7)} पूर्ण!`;
+    } else if (streak < 21) {
+      streakMotivation.textContent = lang === 'en' ? 
+        `Almost there! ${21-streak} days to go!` :
+        lang === 'hi' ?
+        `लगभग पहुंच गए! ${21-streak} दिन बाकी!` :
+        `जवळजवळ पोहोचलात! ${21-streak} दिवस बाकी!`;
+    } else {
+      streakMotivation.textContent = lang === 'en' ? 
+        '🎉 21-Day Challenge Complete! You're a champion!' :
+        lang === 'hi' ?
+        '🎉 21-दिन की चुनौती पूरी! आप चैंपियन हैं!' :
+        '🎉 21-दिवसांचे आव्हान पूर्ण! तुम्ही चॅम्पियन आहात!';
+    }
+  }
+  
+  function loadChallengeData() {
+    const challengeData = safeLocalStorage('get', 'challenge_data');
+    if (challengeData) {
+      try {
+        const data = JSON.parse(challengeData);
+        const today = new Date().toDateString();
+        
+        // If data is from today, check the boxes
+        if (data.lastUpdate === today && data.history.length > 0) {
+          const todayRecord = data.history[data.history.length - 1];
+          if (todayRecord.completed === 4) {
+            const checkboxes = document.querySelectorAll('#dailyGoals input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = true);
+          }
+        }
+        
+        updateChallengeUI(data.streak, 0);
+      } catch (e) {
+        console.error('Failed to load challenge data:', e);
+      }
+    }
+  }
+
+  // ==========================================
+  // EDUCATIONAL ARTICLES FUNCTIONS
+  // ==========================================
+  
+  const articles = {
+    en: {
+      article1: `<strong>Start your day iron-strong with these simple breakfast ideas:</strong><br><br>
+
+<strong>1. Spinach Paratha with Curd</strong><br>
+Mix chopped spinach in whole wheat dough. Serve with curd and a squeeze of lemon for vitamin C boost.<br><br>
+
+<strong>2. Moong Dal Cheela</strong><br>
+Protein-packed pancakes made from moong dal. Add onions, tomatoes. Serve with green chutney.<br><br>
+
+<strong>3. Ragi Porridge with Jaggery</strong><br>
+Cook ragi flour with milk. Sweeten with jaggery (iron-rich). Add dry fruits.<br><br>
+
+<strong>4. Egg Bhurji with Whole Wheat Toast</strong><br>
+Scrambled eggs with tomatoes, onions. Serve with whole grain bread. Add orange juice.<br><br>
+
+<strong>5. Poha with Peanuts and Lemon</strong><br>
+Traditional poha loaded with peanuts (iron) and fresh lemon juice (vitamin C).<br><br>
+
+<strong>💡 Pro Tip:</strong> Always add lemon or amla to iron-rich meals - vitamin C helps your body absorb iron better!`,
+
+      article2: `<strong>The Tea-Iron Connection Explained:</strong><br><br>
+
+Tea and coffee contain compounds called <strong>tannins</strong> and <strong>polyphenols</strong>. These bind with iron in your digestive system and prevent your body from absorbing it.<br><br>
+
+<strong>What happens:</strong><br>
+• You eat dal/spinach (rich in iron)<br>
+• Drink tea immediately after<br>
+• Tannins in tea bind to the iron<br>
+• Your body can only absorb 25-30% of the iron instead of 60-70%<br><br>
+
+<strong>Simple Solution:</strong><br>
+Wait at least 1 hour after meals before drinking tea or coffee. This gives your body time to absorb the iron first.<br><br>
+
+<strong>Better Options Right After Meals:</strong><br>
+✅ Plain water<br>
+✅ Buttermilk<br>
+✅ Lemon water<br>
+✅ Fresh fruit juice (vitamin C boost!)<br><br>
+
+<strong>💡 Cultural Tip:</strong> Many grandmothers were right - they would say "don\'t drink tea after eating greens." Now science confirms why!`,
+
+      article3: `<strong>Do Not Ignore These Warning Signs - Visit PHC if You Experience:</strong><br><br>
+
+<strong>🚨 URGENT (Visit Today):</strong><br>
+• Extreme weakness - cannot stand or walk<br>
+• Fainting or near-fainting episodes<br>
+• Chest pain or rapid heartbeat<br>
+• Severe breathlessness even at rest<br>
+• Pale skin with blue lips/nails<br><br>
+
+<strong>⚠️ WITHIN 3-7 DAYS:</strong><br>
+• Constant tiredness for 2+ weeks<br>
+• Dizziness when standing up<br>
+• Frequent headaches<br>
+• Soaking pad every 1-2 hours during periods<br>
+• Difficulty concentrating or memory issues<br><br>
+
+<strong>📋 PLAN A VISIT (Within 2-4 Weeks):</strong><br>
+• Mild fatigue<br>
+• Occasional dizziness<br>
+• Poor appetite<br>
+• Pregnant or recently delivered<br><br>
+
+<strong>What to Tell the Doctor:</strong><br>
+1. Your symptoms and how long you have had them<br>
+2. Your diet habits<br>
+3. Menstrual history<br>
+4. Any medications you are taking<br><br>
+
+<strong>💡 Remember:</strong> Getting tested is free at PHCs. Do not wait until it gets worse!`,
+
+      article4: `<strong>Understanding Your Blood Test Results:</strong><br><br>
+
+<strong>What is Hemoglobin (Hb)?</strong><br>
+Hemoglobin is a protein in red blood cells that carries oxygen throughout your body. When it is low, you have anemia.<br><br>
+
+<strong>Normal Levels for Women (15-49 years):</strong><br>
+✅ <strong>Normal:</strong> 12.0 g/dL or higher<br>
+🟡 <strong>Mild Anemia:</strong> 11.0-11.9 g/dL<br>
+🟠 <strong>Moderate Anemia:</strong> 8.0-10.9 g/dL<br>
+🔴 <strong>Severe Anemia:</strong> Below 8.0 g/dL<br><br>
+
+<strong>During Pregnancy:</strong><br>
+Normal drops slightly to 11.0 g/dL or higher due to blood volume expansion.<br><br>
+
+<strong>What the Numbers Mean:</strong><br>
+• <strong>13+ g/dL:</strong> Excellent iron stores<br>
+• <strong>12-12.9 g/dL:</strong> Normal, maintain healthy diet<br>
+• <strong>11-11.9 g/dL:</strong> Start eating more iron-rich foods<br>
+• <strong>10-10.9 g/dL:</strong> Needs iron supplements + diet change<br>
+• <strong>Below 10 g/dL:</strong> Medical treatment required<br><br>
+
+<strong>💡 Good to Know:</strong> Your hemoglobin can improve 1-2 g/dL in just 3-4 weeks with proper diet and supplements!`,
+
+      article5: `<strong>Natural Ways to Boost Energy at Home:</strong><br><br>
+
+<strong>1. Jaggery Water in Morning</strong><br>
+Mix 1 small piece of jaggery in warm water. Drink on empty stomach. Rich in iron and instant energy.<br><br>
+
+<strong>2. Amla (Indian Gooseberry)</strong><br>
+Eat 1-2 fresh amla daily or amla candy. Super high in vitamin C - helps iron absorption.<br><br>
+
+<strong>3. Beetroot Juice</strong><br>
+Blend 1 small beetroot with carrot and apple. Drink fresh. Natural blood builder.<br><br>
+
+<strong>4. Dates and Milk</strong><br>
+Soak 2-3 dates overnight in milk. Eat in morning. Iron + calcium + energy.<br><br>
+
+<strong>5. Sesame Seeds (Til)</strong><br>
+Add roasted sesame to ladoos, chikki, or sprinkle on food. Excellent iron source.<br><br>
+
+<strong>6. Deep Breathing (Pranayama)</strong><br>
+5 minutes of deep breathing improves oxygen circulation. Helps combat fatigue.<br><br>
+
+<strong>7. Afternoon Power Nap</strong><br>
+20-minute rest after lunch (not more!). Recharges your body without affecting night sleep.<br><br>
+
+<strong>8. Tulsi Tea (Instead of regular tea)</strong><br>
+Boil tulsi leaves in water. No tannins = does not block iron. Reduces stress too.<br><br>
+
+<strong>💡 Consistency is Key:</strong> These remedies work best when done daily for 3-4 weeks. Track your energy levels!`
+    },
+    // Add Hindi and Marathi translations if needed
+  };
+  
+  function toggleArticle(articleId) {
+    const content = document.getElementById(articleId);
+    const arrow = document.getElementById(articleId + 'Arrow');
+    const lang = currentLang;
+    
+    if (content.style.display === 'none') {
+      // Load content
+      content.innerHTML = articles[lang]?.[articleId] || articles['en'][articleId];
+      content.style.display = 'block';
+      arrow.textContent = '▲';
+      
+      // Track in GA4
+      gtag('event', 'article_opened', {
+        'event_category': 'engagement',
+        'event_label': articleId
+      });
+    } else {
+      content.style.display = 'none';
+      arrow.textContent = '▼';
+    }
+  }
+
+  // ==========================================
   // LOAD LANGUAGE ON START
   // ==========================================
   
   window.addEventListener('load', function() {
-    const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+    const savedLang = safeLocalStorage('get', 'preferredLanguage') || 'en';
     if (savedLang !== 'en') {
       setLang(savedLang);
     }
