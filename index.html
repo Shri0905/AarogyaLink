@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Aarogya Link - Professional anemia screening tool with progressive assessment">
+  <meta name="theme-color" content="#607d8b">
+  <title>Aarogya Link | Smart Anemia Screening</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-763YK30X5T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-763YK30X5T');
+    window.addEventListener('error', function(e) {
+      gtag('event', 'exception', { 'description': (e.error && e.error.message) ? e.error.message : 'Unknown error', 'fatal': false });
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      gtag('event', 'exception', { 'description': (e.reason && e.reason.message) ? e.reason.message : 'Unhandled promise rejection', 'fatal': false });
+    });
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e8eaf6 0%, #f5f5f5 100%);
+      margin: 0; padding: 0; min-height: 100vh; line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, #455a64 0%, #607d8b 100%);
+      color: white; padding: 20px; text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    header h1 { margin: 0 0 8px 0; font-size: clamp(22px, 5vw, 32px); font-weight: 600; }
+    header p { margin: 4px 0; opacity: 0.95; font-size: clamp(13px, 3vw, 16px); }
+    .lang-toggle { margin-top: 16px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .lang-btn {
+      padding: 8px 16px; border: 2px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1); color: white; border-radius: 8px;
+      cursor: pointer; font-size: 14px; transition: all 0.3s; font-weight: 500;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    .lang-btn.active { background: white; color: #607d8b; border-color: white; }
+    .container { max-width: 900px; margin: auto; padding: 16px; }
+    .card {
+      background: white; padding: clamp(20px, 4vw, 32px); margin-top: 20px;
+      border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card h2 {
+      margin-top: 0; color: #455a64; font-size: clamp(18px, 4vw, 24px);
+      border-bottom: 3px solid #607d8b; padding-bottom: 10px; margin-bottom: 20px;
+    }
+    .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; margin: 20px 0; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%); transition: width 0.4s ease; border-radius: 4px; }
+    .progress-text { text-align: center; color: #666; font-size: 14px; margin-top: 8px; }
+    .question-container { min-height: 300px; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    .question-text { font-size: clamp(16px, 3.5vw, 20px); font-weight: 600; color: #333; margin-bottom: 16px; line-height: 1.5; }
+
+    /* Why badge shown under each question */
+    .why-badge {
+      background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px;
+      padding: 10px 14px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .why-badge .why-icon { font-size: 18px; line-height: 1.4; flex-shrink: 0; }
+    .why-badge .why-text { font-size: 13px; color: #4338ca; line-height: 1.5; }
+
+    .visual-helper { background: #f5f5f5; padding: 16px; border-radius: 12px; margin: 12px 0; display: flex; align-items: center; gap: 12px; }
+    .visual-helper-text { flex: 1; font-size: 14px; color: #666; }
+
+    /* Age Range Cards — no emoji */
+    .age-range-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0;
+    }
+    .age-range-card {
+      border: 2px solid #e0e0e0; border-radius: 12px; padding: 22px 10px;
+      text-align: center; cursor: pointer; transition: all 0.3s; background: white;
+    }
+    .age-range-card:hover {
+      border-color: #607d8b; background: #f0f4f5;
+      transform: translateY(-3px); box-shadow: 0 4px 12px rgba(96,125,139,0.2);
+    }
+    .age-range-card.selected {
+      border-color: #607d8b; background: #e3f2fd;
+      box-shadow: 0 4px 12px rgba(96,125,139,0.3);
+    }
+    .age-range-card .range-label { font-size: 18px; font-weight: 700; color: #333; }
+    .age-range-card .range-sub { font-size: 12px; color: #888; margin-top: 6px; }
+    .age-range-card.selected .range-label { color: #1565c0; }
+
+    /* Food Gallery */
+    .food-gallery {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px; margin: 12px 0; padding: 16px; background: #f9f9f9; border-radius: 12px;
+    }
+    .food-item {
+      text-align: center; padding: 10px; background: white;
+      border-radius: 10px; border: 2px solid #e0e0e0; transition: all 0.3s;
+    }
+    .food-item:hover { transform: scale(1.05); border-color: #607d8b; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .food-emoji { font-size: 30px; display: block; margin-bottom: 6px; }
+    .food-item-name { font-size: 10px; font-weight: 600; color: #333; line-height: 1.3; }
+
+    .options-container { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+    .option-btn {
+      padding: 16px 20px; border: 2px solid #e0e0e0; background: white;
+      border-radius: 12px; cursor: pointer; transition: all 0.3s;
+      font-size: 16px; text-align: left; display: flex; align-items: center; gap: 12px;
+    }
+    .option-btn:hover { border-color: #607d8b; background: #f5f5f5; transform: translateX(5px); }
+    .option-btn.selected { border-color: #607d8b; background: #e3f2fd; font-weight: 600; }
+    .option-icon { font-size: 24px; min-width: 30px; }
+    .nav-buttons { display: flex; gap: 12px; margin-top: 24px; }
+    .btn { flex: 1; padding: 14px 24px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .btn-primary { background: linear-gradient(135deg, #546e7a 0%, #607d8b 100%); color: white; box-shadow: 0 4px 12px rgba(84,110,122,0.3); }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(84,110,122,0.4); }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    .btn-secondary:hover { background: #d0d0d0; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .result-card { display: none; padding: 28px; border-radius: 16px; margin-top: 24px; animation: slideIn 0.5s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .high-risk { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 8px solid #ef5350; }
+    .moderate-risk { background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%); border-left: 8px solid #ffa726; }
+    .low-risk { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 8px solid #66bb6a; }
+    .result-card h2 { margin-top: 0; font-size: clamp(22px, 5vw, 28px); border: none; padding: 0; }
+    .next-steps { background: white; padding: 24px; border-radius: 12px; margin-top: 20px; }
+    .next-steps h3 { color: #455a64; margin-top: 0; font-size: 20px; border-bottom: 2px solid #607d8b; padding-bottom: 8px; }
+    .next-steps ul { list-style: none; padding: 0; }
+    .next-steps li { padding: 12px; margin: 8px 0; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; gap: 12px; }
+    .next-steps li strong { color: #607d8b; }
+    .next-steps a { color: #1976d2; text-decoration: none; font-weight: 600; }
+    .next-steps a:hover { text-decoration: underline; }
+    .phc-finder { background: #e3f2fd; padding: 20px; border-radius: 12px; margin-top: 16px; border-left: 4px solid #2196f3; }
+    .phc-finder h4 { margin-top: 0; color: #1976d2; }
+    .phc-finder select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #2196f3; border-radius: 8px; font-size: 15px; }
+    .phc-finder button { width: 100%; padding: 12px; background: #2196f3; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .phc-finder button:hover { background: #1976d2; }
+    .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+    .action-btn {
+      flex: 1; min-width: 140px; padding: 12px;
+      background: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+      color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(92,107,192,0.4); }
+    .hidden { display: none; }
+    .start-btn {
+      display: inline-block; padding: 16px 48px;
+      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+      color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(76,175,80,0.4); transition: all 0.3s;
+    }
+    .start-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(76,175,80,0.5); }
+
+    /* About collapsible */
+    .about-header {
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+      padding: 16px 20px; background: white; border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 20px; transition: all 0.3s;
+      border-left: 4px solid #607d8b;
+    }
+    .about-header:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+    .about-developer { font-size: 15px; color: #455a64; margin: 0; line-height: 1.6; }
+    .about-developer strong { color: #607d8b; font-weight: 600; }
+    .club-name { color: #455a64; font-weight: 700; font-size: 16px; }
+    .expand-icon { font-size: 24px; color: #607d8b; transition: transform 0.3s; }
+    .expand-icon.expanded { transform: rotate(180deg); }
+    .about-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; background: white; border-radius: 0 0 12px 12px; margin-top: -12px; padding: 0 20px; }
+    .about-content.expanded { max-height: 500px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .about-content p { margin: 12px 0; font-size: 14px; line-height: 1.6; color: #555; }
+
+    /* FAQ */
+    .faq-section { margin-top: 20px; }
+    .faq-item {
+      background: white; border-radius: 12px; margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;
+      border-left: 4px solid #607d8b; transition: all 0.2s;
+    }
+    .faq-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+    .faq-question {
+      padding: 16px 20px; cursor: pointer; display: flex;
+      justify-content: space-between; align-items: center; user-select: none;
+    }
+    .faq-question-text { font-size: 15px; font-weight: 600; color: #455a64; padding-right: 12px; }
+    .faq-arrow { font-size: 18px; color: #607d8b; transition: transform 0.3s; flex-shrink: 0; }
+    .faq-arrow.open { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 20px; font-size: 14px; color: #555; line-height: 1.7;
+    }
+    .faq-answer.open { max-height: 300px; padding: 0 20px 18px; }
+
+    /* Foods section in results */
+    .foods-section {
+      background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+      border-left: 4px solid #10B981; padding: 24px; border-radius: 12px; margin-top: 20px;
+    }
+    .foods-section h3 { color: #065F46; margin-top: 0; font-size: 20px; border-bottom: 2px solid #10B981; padding-bottom: 8px; }
+    .foods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 16px; }
+    .foods-grid-item {
+      background: white; border-radius: 10px; padding: 12px 8px; text-align: center;
+      border: 2px solid #bbf7d0; transition: all 0.2s;
+    }
+    .foods-grid-item:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(16,185,129,0.2); }
+    .foods-grid-item .fg-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+    .foods-grid-item .fg-name { font-size: 11px; font-weight: 700; color: #065F46; }
+    .foods-grid-item .fg-tip { font-size: 10px; color: #6b7280; margin-top: 3px; }
+
+    /* Articles */
+    .article-card { background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s; }
+    .article-card:hover { border-color: #F59E0B; background: #fffbeb; }
+    .article-content { font-size: 14px; line-height: 1.8; color: #44403C; }
+
+    footer { margin-top: 40px; padding: 24px 20px; text-align: center; color: white; background: linear-gradient(135deg, rgba(84,110,122,0.85) 0%, rgba(96,125,139,0.9) 100%); border-radius: 12px; }
+    footer p { margin: 6px 0; font-size: 13px; }
+    .privacy-footer { background: #f5f5f5; padding: 12px 16px; margin-top: 16px; border-radius: 8px; font-size: 11px; color: #666; display: flex; align-items: center; gap: 8px; line-height: 1.4; }
+    .privacy-footer span { font-size: 16px; }
+
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      .card { padding: 16px; }
+      .nav-buttons { flex-direction: column; }
+      .action-buttons { flex-direction: column; }
+      .action-btn { min-width: 100%; }
+      .age-range-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .age-range-card { padding: 16px 6px; }
+      .age-range-card .range-label { font-size: 15px; }
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  </style>
+</head>
+<body>
+
+<header role="banner">
+  <h1 id="title">Aarogya Link</h1>
+  <p id="subtitle">Smart Progressive Anemia Risk Screening</p>
+  <p id="tagline">Empowering Women's Health | Ages 15–49</p>
+  <div class="lang-toggle" role="group" aria-label="Language selection">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
+    <button class="lang-btn" onclick="setLang('hi')" id="btn-hi">हिंदी</button>
+    <button class="lang-btn" onclick="setLang('mr')" id="btn-mr">मराठी</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="card" id="heroCard" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;text-align:center;padding:50px 20px;border:none;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.1;background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:20px 20px;"></div>
+    <div style="max-width:800px;margin:auto;position:relative;z-index:1;">
+      <div style="display:inline-block;background:rgba(255,255,255,0.25);backdrop-filter:blur(10px);border-radius:50px;padding:15px 30px;margin-bottom:20px;border:2px solid rgba(255,255,255,0.3);">
+        <span style="font-size:32px;display:inline-block;animation:pulse 2s infinite;">&#10084;&#65039;</span>
+      </div>
+      <h2 id="heroTitle" style="font-size:clamp(28px,6vw,42px);margin:0 0 16px;font-weight:800;color:white;border:none;padding:0;text-shadow:0 2px 10px rgba(0,0,0,0.2);letter-spacing:-0.5px;line-height:1.2;">Women's Health Screening Initiative</h2>
+      <div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:20px;padding:20px 30px;margin:20px auto;max-width:600px;border:2px solid rgba(255,255,255,0.3);box-shadow:0 8px 32px rgba(0,0,0,0.1);">
+        <p style="font-size:clamp(17px,3.5vw,22px);margin:0;opacity:1;line-height:1.5;font-weight:600;"><span id="heroSubtitle">Free anemia risk assessment for women aged 15–49</span></p>
+        <div style="margin-top:15px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.3);">
+          <p style="font-size:clamp(13px,3vw,16px);margin:0;opacity:0.95;line-height:1.6;"><span id="heroTagline">Supporting community health through early detection and awareness</span></p>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border-radius:16px;padding:20px;margin:24px auto;max-width:600px;border:2px solid rgba(255,255,255,0.25);text-align:left;">
+        <p id="welcomeText" style="font-size:clamp(14px,3vw,16px);margin:0 0 12px;line-height:1.7;opacity:0.95;">This quick 10-question assessment will help identify your anemia risk level. It takes just 2–3 minutes and provides personalized recommendations and local health resources.</p>
+        <p id="welcomeDisclaimer" style="font-size:clamp(12px,2.5vw,14px);margin:0;opacity:0.9;font-weight:600;display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">&#9888;&#65039;</span><span>Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.</span></p>
+      </div>
+      <button class="start-btn" onclick="startScreening()" id="startBtn" style="margin-top:24px;">Start Screening</button>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:25px;">
+        <div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:25px;padding:10px 20px;border:1px solid rgba(255,255,255,0.3);font-size:14px;font-weight:600;"><span id="feature1">2 Minute Test</span></div>
+        <div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:25px;padding:10px 20px;border:1px solid rgba(255,255,255,0.3);font-size:14px;font-weight:600;"><span id="feature2">100% Private</span></div>
+        <div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:25px;padding:10px 20px;border:1px solid rgba(255,255,255,0.3);font-size:14px;font-weight:600;"><span id="feature3">3 Languages</span></div>
+        <div style="background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:25px;padding:10px 20px;border:1px solid rgba(255,255,255,0.3);font-size:14px;font-weight:600;"><span id="feature4">Free Forever</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="about-header" id="aboutHeader" onclick="toggleAbout()">
+    <p class="about-developer" id="aboutDeveloperShort"><strong>Developed by:</strong> <span class="club-name">The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span></p>
+    <span class="expand-icon" id="expandIcon">&#9660;</span>
+  </div>
+  <div class="about-content" id="aboutContent">
+    <p id="aboutDescription">We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.</p>
+    <p id="aboutLocation">Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.</p>
+    <p id="aboutMission"><strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.</p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section" id="faqSection"></div>
+
+  <!-- Screening -->
+  <div class="card hidden" id="screeningCard">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-text" id="progressText">Question 1 of 10</div>
+    <div class="question-container" id="questionContainer">
+      <div class="question-text" id="questionText"></div>
+      <div id="whyBadge"></div>
+      <div id="visualHelper"></div>
+      <div class="options-container" id="optionsContainer"></div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="previousQuestion()" id="prevBtn" disabled>&#8592; Previous</button>
+      <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn" disabled>Next &#8594;</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <h2 id="resultTitle"></h2>
+    <p id="resultText"></p>
+    <div class="next-steps">
+      <h3 id="nextStepsTitle">Recommended Next Steps</h3>
+      <div id="nextStepsContent"></div>
+    </div>
+    <div class="foods-section" id="foodsSection">
+      <h3 id="foodsSectionTitle">Iron-Rich Foods You Should Eat</h3>
+      <p id="foodsSectionIntro" style="font-size:14px;color:#374151;margin:0 0 4px;">These foods are common in your region and easy to add to daily meals:</p>
+      <div class="foods-grid" id="foodsGrid"></div>
+      <div style="background:rgba(16,185,129,0.1);padding:14px;border-radius:10px;margin-top:16px;">
+        <p style="margin:0;font-size:13px;color:#065F46;"><strong><span id="foodsTip">Pro Tip:</span></strong> <span id="foodsTipText">Always pair iron-rich foods with Vitamin C (lemon, amla, tomato) — it doubles iron absorption!</span></p>
+      </div>
+    </div>
+    <div class="next-steps">
+      <h3 id="healthResourcesTitle">Local Health Resources</h3>
+      <ul id="healthResourcesList">
+        <li><strong>National Health Helpline:</strong> 104</li>
+        <li><strong>Women Helpline:</strong> 1091</li>
+        <li><strong>Emergency Ambulance:</strong> 108</li>
+        <li><strong>Anemia Mukt Bharat:</strong> <a href="https://anemiamuktbharat.info/" target="_blank" rel="noopener noreferrer">Official Portal</a></li>
+        <li><strong>Find Nearest PHC:</strong> <a href="#" onclick="findNearestPHC(); return false;" id="findPHCLink">Use Location Services</a></li>
+      </ul>
+      <div class="phc-finder" id="phcFinder">
+        <h4 id="phcFinderTitle">Find PHC by Location</h4>
+        <select id="stateSelect" onchange="loadDistricts()">
+          <option value="">Select Your State</option>
+          <option value="maharashtra">Maharashtra</option>
+          <option value="gujarat">Gujarat</option>
+          <option value="karnataka">Karnataka</option>
+          <option value="delhi">Delhi</option>
+          <option value="up">Uttar Pradesh</option>
+          <option value="mp">Madhya Pradesh</option>
+        </select>
+        <select id="districtSelect"><option value="">Select Your District</option></select>
+        <button onclick="showPHCContacts()" id="showPHCBtn">Find Nearest PHC</button>
+        <div id="phcResults" style="margin-top:12px;display:none;"></div>
+      </div>
+    </div>
+    <div class="next-steps" style="margin-top:24px;background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border-left:4px solid #F59E0B;">
+      <h3 style="color:#92400E;"><span id="learnMoreTitle">Learn More About Anemia</span></h3>
+      <div id="learnMoreContent">
+        <p id="learnMoreText" style="font-size:15px;line-height:1.7;">Knowledge is power! Read these short articles to understand anemia better:</p>
+        <div style="display:grid;gap:12px;margin-top:16px;" id="articlesContainer"></div>
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="shareWhatsApp()"><span id="btnWhatsApp">Share on WhatsApp</span></button>
+      <button class="action-btn" onclick="printResults()"><span id="btnPrint">Print Results</span></button>
+      <button class="action-btn" style="background:linear-gradient(135deg,#78909c 0%,#90a4ae 100%);" onclick="resetScreening()"><span id="btnReset">New Screening</span></button>
+    </div>
+  </div>
+
+  <!-- References -->
+  <div class="card" id="referencesCard" style="display:none;">
+    <h2 id="refTitle">Scientific References & Resources</h2>
+    <div style="font-size:13px;line-height:1.6;color:#555;">
+      <p>[1] World Health Organization. Guideline on haemoglobin cut-offs to define anaemia. WHO; 2024.</p>
+      <p>[2] World Health Organization. Anaemia – Fact Sheet. WHO; 2024.</p>
+      <p>[3] Ministry of Health & Family Welfare, Government of India. Anemia Mukt Bharat: Operational Guidelines.</p>
+      <p>[4] IIPS and ICF. National Family Health Survey (NFHS-5), India Report 2019–21.</p>
+      <p>[5] Akpan IJ, et al. Heavy menstrual bleeding and iron deficiency anemia. Int J Gynaecol Obstet. 2025.</p>
+      <p>[6] Vyas N, et al. Accuracy of physical examination (pallor) for diagnosing anemia. Cureus. 2022.</p>
+      <p>[7] Disler PB, et al. The effect of tea on iron absorption. Gut. 1975;16:193–200.</p>
+    </div>
+  </div>
+
+  <footer role="contentinfo">
+    <p><strong>Aarogya Link</strong> | Rotaract Club of D.Y. Patil SBB, Navi Mumbai</p>
+    <p>Community Health Initiative | Zone 1, RID 3142</p>
+    <p id="footerText">For awareness and referral support only | Not a substitute for medical diagnosis</p>
+    <div class="privacy-footer">
+      <span>&#128274;</span>
+      <span id="privacyFooter"><strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+var translations = {
+  en: {
+    title:"Aarogya Link", subtitle:"Smart Progressive Anemia Risk Screening", tagline:"Empowering Women's Health | Ages 15–49",
+    aboutDeveloperShort:"<strong>Developed by:</strong> <span class='club-name'>The Rotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics</span>",
+    aboutDescription:"We are an institution-based youth organization bringing together people ages 18 and older to exchange ideas, focused on making a positive impact through community service, professional development, and cultural initiatives.",
+    aboutLocation:"Located in Navi Mumbai (Satellite City, Zone 1, RID 3142), our club encourages students to initiate impactful projects in environment, education, and empowerment, while promoting teamwork, leadership, and international fellowship.",
+    aboutMission:"<strong>Mission:</strong> Bridging healthcare gaps through awareness, screening, and timely referrals for all communities.",
+    welcomeText:"This quick 10-question assessment will help identify your anemia risk level. It takes just 2–3 minutes and provides personalized recommendations and local health resources.",
+    welcomeDisclaimer:"Remember: This is a screening tool, not a diagnosis. Always consult healthcare professionals for medical advice.",
+    startBtn:"Start Screening",
+    heroTitle:"Women's Health Screening Initiative", heroSubtitle:"Free anemia risk assessment for women aged 15–49", heroTagline:"Supporting community health through early detection and awareness",
+    privacyFooter:"<strong>Privacy:</strong> No personal data is stored on our servers. All screening information remains private on your device. We only collect anonymous usage statistics to improve the tool.",
+    feature1:"2 Minute Test", feature2:"100% Private", feature3:"3 Languages", feature4:"Free Forever",
+    nextStepsTitle:"Recommended Next Steps", healthResourcesTitle:"Local Health Resources", refTitle:"Scientific References & Resources",
+    phcFinderTitle:"Find PHC by Location", findPHCLink:"Use Location Services", showPHCBtn:"Find Nearest PHC",
+    btnWhatsApp:"Share on WhatsApp", btnPrint:"Print Results", btnReset:"New Screening",
+    learnMoreTitle:"Learn More About Anemia",
+    footerText:"For awareness and referral support only | Not a substitute for medical diagnosis",
+    foodsSectionTitle:"Iron-Rich Foods You Should Eat",
+    foodsSectionIntro:"These foods are common in your region and easy to add to daily meals:",
+    foodsTip:"Pro Tip:", foodsTipText:"Always pair iron-rich foods with Vitamin C (lemon, amla, tomato) — it doubles iron absorption!",
+    ageSub:"Young adult", ageSub2:"Childbearing years", ageSub3:"Mid reproductive",
+    foods: [
+      { emoji:"&#127796;", name:"Spinach", tip:"Palak sabzi" },
+      { emoji:"&#129452;", name:"Dal (Lentils)", tip:"Moong / Masoor" },
+      { emoji:"&#127906;", name:"Jaggery", tip:"Gur / Gudh" },
+      { emoji:"&#129370;", name:"Eggs", tip:"Boiled or scrambled" },
+      { emoji:"&#129370;", name:"Chicken/Meat", tip:"2–3 times/week" },
+      { emoji:"&#127792;", name:"Peanuts", tip:"Handful daily" },
+      { emoji:"&#127818;", name:"Fortified Rice", tip:"Govt-supplied" },
+      { emoji:"&#127793;", name:"Beetroot", tip:"Juice or sabzi" },
+      { emoji:"&#127807;", name:"Moringa", tip:"Powder in food" },
+      { emoji:"&#127859;", name:"Dark Chocolate", tip:"Small piece" }
+    ],
+    // FAQ
+    faq: [
+      { q:"What is anemia?", a:"Anemia is a condition where your blood does not have enough healthy red blood cells to carry sufficient oxygen to your body. In India, nearly 57% of women aged 15–49 have some form of anemia (NFHS-5). It is common but very treatable when caught early." },
+      { q:"Is this screening tool accurate?", a:"This tool uses validated screening indicators — symptoms like tiredness, dizziness, dietary habits, and menstrual health — to estimate your risk level. It is not a medical diagnosis. A hemoglobin blood test at your nearest PHC (free of cost) is the only way to confirm anemia." },
+      { q:"Who should use this tool?", a:"This screening is designed for women aged 15 to 49. If you are pregnant, recently delivered a baby, or experiencing symptoms like constant tiredness or dizziness, this tool can help you understand whether you should get tested." },
+      { q:"What happens after I get my result?", a:"Based on your risk level, you will receive personalized recommendations — from dietary changes you can start immediately, to guidance on when and where to get a free hemoglobin test at a Primary Health Centre (PHC)." },
+      { q:"Is my information private?", a:"Yes. Nothing you enter is stored on our servers or sent anywhere. The screening runs entirely on your device. We only collect anonymous, aggregate usage data to improve the tool." },
+      { q:"How can I improve my iron levels naturally?", a:"Eat iron-rich foods like spinach, dal, eggs, and jaggery at least 3–4 times a week. Always pair them with Vitamin C sources like lemon or amla to help your body absorb iron better. Avoid tea or coffee for at least 1 hour after meals, as tannins block iron absorption." },
+      { q:"Where can I get tested for free?", a:"Visit your nearest Primary Health Centre (PHC). Hemoglobin testing is free under the Anemia Mukt Bharat program. You can use the PHC finder in your results page, or call the National Health Helpline at 104 for guidance." }
+    ],
+    // Articles
+    articles: [
+      { title:"5 Iron-Rich Breakfast Ideas", sub:"Quick, tasty, and nutritious", content:"<strong>1. Spinach Paratha with Curd</strong><br>Mix chopped spinach in whole wheat dough. Serve with curd and lemon for a vitamin C boost.<br><br><strong>2. Moong Dal Cheela</strong><br>Protein-packed pancakes from moong dal. Add onions and tomatoes. Serve with green chutney.<br><br><strong>3. Ragi Porridge with Jaggery</strong><br>Cook ragi flour with milk. Sweeten with jaggery (iron-rich). Add dry fruits.<br><br><strong>4. Egg Bhurji with Whole Wheat Toast</strong><br>Scrambled eggs with tomatoes and onions on whole grain bread.<br><br><strong>5. Poha with Peanuts and Lemon</strong><br>Traditional poha loaded with peanuts (iron) and fresh lemon juice (vitamin C).<br><br><strong>Tip:</strong> Always add lemon or amla — vitamin C helps your body absorb iron better!" },
+      { title:"Why Tea After Meals Reduces Iron", sub:"The science explained simply", content:"Tea and coffee contain compounds called <strong>tannins</strong> and <strong>polyphenols</strong>. These bind with iron in your digestive system and prevent your body from absorbing it.<br><br><strong>What happens:</strong><br>- You eat dal or spinach (rich in iron)<br>- Drink tea right after<br>- Tannins bind to the iron<br>- Your body absorbs only 25–30% instead of 60–70%<br><br><strong>Simple Solution:</strong> Wait at least 1 hour after meals before drinking tea or coffee.<br><br><strong>Better Options Right After Meals:</strong><br>Plain water, Buttermilk, Lemon water, Fresh fruit juice" },
+      { title:"Warning Signs — When to Visit PHC", sub:"Don't ignore these symptoms", content:"<strong>URGENT (Visit Today):</strong><br>- Extreme weakness — cannot stand or walk<br>- Fainting or near-fainting episodes<br>- Chest pain or rapid heartbeat<br>- Severe breathlessness even at rest<br><br><strong>WITHIN 3–7 DAYS:</strong><br>- Constant tiredness for 2+ weeks<br>- Dizziness when standing up<br>- Soaking pad every 1–2 hours during periods<br><br><strong>WITHIN 2–4 WEEKS:</strong><br>- Mild fatigue or occasional dizziness<br>- Pregnant or recently delivered<br><br><strong>Remember:</strong> Hemoglobin testing is free at PHCs. Do not wait!" },
+      { title:"Understanding Hemoglobin Levels", sub:"What the numbers mean", content:"<strong>What is Hemoglobin (Hb)?</strong><br>Hemoglobin is a protein in red blood cells that carries oxygen. When it is low, you have anemia.<br><br><strong>Normal Levels for Women (15–49 years):</strong><br>Normal: 12.0 g/dL or higher<br>Mild Anemia: 11.0–11.9 g/dL<br>Moderate Anemia: 8.0–10.9 g/dL<br>Severe Anemia: Below 8.0 g/dL<br><br><strong>During Pregnancy:</strong> Normal is 11.0 g/dL or higher.<br><br><strong>Good to Know:</strong> Hb can improve 1–2 g/dL in just 3–4 weeks with proper diet and supplements!" },
+      { title:"Simple Home Remedies for Energy", sub:"Natural ways to feel better", content:"<strong>1. Jaggery Water in Morning</strong><br>Mix 1 small piece of jaggery in warm water. Drink on empty stomach.<br><br><strong>2. Amla (Indian Gooseberry)</strong><br>Eat 1–2 fresh amla daily. Super high in vitamin C — helps iron absorption.<br><br><strong>3. Beetroot Juice</strong><br>Blend 1 small beetroot with carrot and apple. Natural blood builder.<br><br><strong>4. Dates and Milk</strong><br>Soak 2–3 dates overnight in milk. Eat in morning. Iron + calcium + energy.<br><br><strong>5. Sesame Seeds (Til)</strong><br>Add roasted sesame to food. Excellent iron source.<br><br><strong>Consistency is Key:</strong> These work best when done daily for 3–4 weeks!" }
+    ]
+  },
+  hi: {
+    title:"आरोग्य लिंक", subtitle:"स्मार्ट प्रगतिशील एनीमिया जोखिम जांच", tagline:"महिला स्वास्थ्य को सशक्त बनाना | 15–49 वर्ष",
+    aboutDeveloperShort:"<strong>विकसित किया गया:</strong> <span class='club-name'>रोटरैक्ट क्लब ऑफ़ डी.वाय. पाटिल स्कूल ऑफ़ बायोटेक्नोलॉजी एंड बायोइन्फॉर्मेटिक्स</span>",
+    aboutDescription:"हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है।",
+    aboutLocation:"नवी मुंबई (सैटेलाइट सिटी, ज़ोन 1, आरआईडी 3142) में स्थित।",
+    aboutMission:"<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
+    welcomeText:"यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा।",
+    welcomeDisclaimer:"याद रखें: यह एक जांच उपकरण है, निदान नहीं।",
+    startBtn:"जांच शुरू करें",
+    heroTitle:"महिला स्वास्थ्य जांच पहल", heroSubtitle:"15–49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन", heroTagline:"शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
+    privacyFooter:"<strong>गोपनीयता:</strong> हमारे सर्वर पर कोई व्यक्तिगत डेटा संग्रहित नहीं किया जाता है।",
+    feature1:"2 मिनट की जांच", feature2:"100% निजी", feature3:"3 भाषाएं", feature4:"हमेशा मुफ्त",
+    nextStepsTitle:"अनुशंसित अगले कदम", healthResourcesTitle:"स्थानीय स्वास्थ्य संसाधन", refTitle:"वैज्ञानिक संदर्भ और संसाधन",
+    phcFinderTitle:"स्थान के अनुसार PHC खोजें", findPHCLink:"स्थान सेवाओं का उपयोग करें", showPHCBtn:"निकटतम PHC खोजें",
+    btnWhatsApp:"WhatsApp पर शेयर करें", btnPrint:"परिणाम प्रिंट करें", btnReset:"नई जांच",
+    learnMoreTitle:"एनीमिया के बारे में और जानें",
+    footerText:"केवल जागरूकता और रेफरल सहायता के लिए | चिकित्सा निदान का विकल्प नहीं",
+    foodsSectionTitle:"आपको खाने वाले आयरन-समृद्ध खाद्य पदार्थ",
+    foodsSectionIntro:"ये खाद्य पदार्थ आपके क्षेत्र में आसानी से मिलते हैं और दैनिक भोजन में शामिल करना आसान है:",
+    foodsTip:"टिप:", foodsTipText:"आयरन-समृद्ध खाद्य पदार्थों के साथ हमेशा विटामिन सी (नींबू, आंवला, टमाटर) लें — यह आयरन के अवशोषण को दोगुना कर देता है!",
+    ageSub:"युवा वयस्क", ageSub2:"बच्चे पैदा करने के वर्ष", ageSub3:"मध्यम प्रजनन आयु",
+    foods: [
+      { emoji:"&#127796;", name:"पालक", tip:"पालक की सब्ज़ी" },
+      { emoji:"&#129452;", name:"दाल", tip:"मूंग / मसूर दाल" },
+      { emoji:"&#127906;", name:"गुड़", tip:"गुड़ से मिठाई" },
+      { emoji:"&#129370;", name:"अंडे", tip:"उबले या भुर्जी" },
+      { emoji:"&#129370;", name:"चिकन/मांस", tip:"हफ़्ते में 2–3 बार" },
+      { emoji:"&#127792;", name:"मूंगफली", tip:"रोज़ एक मुट्ठी" },
+      { emoji:"&#127818;", name:"समृद्ध चावल", tip:"सरकारी आपूर्ति" },
+      { emoji:"&#127793;", name:"चुकंदर", tip:"जूस या सब्ज़ी" },
+      { emoji:"&#127807;", name:"मोरिंगा", tip:"खाने में पाउडर मिलें" },
+      { emoji:"&#127859;", name:"डार्क चॉकलेट", tip:"एक छोटा टुकड़ा" }
+    ],
+    faq: [
+      { q:"एनीमिया क्या है?", a:"एनीमिया एक स्थिति है जहाँ आपके खून में पर्याप्त स्वस्थ लाल रक्त कोशिकाएं नहीं होतीं। भारत में लगभग 57% महिलाओं को एनीमिया है (NFHS-5)। यह बहुत आम है लेकिन जल्दी पकड़ने पर बहुत आसानी से ठीक हो सकता है।" },
+      { q:"क्या यह जांच सटीक है?", a:"यह उपकरण मान्यता प्राप्त जांच सूचकांक استेमाल करता है — थकान, चक्कर, आहार और मासिक स्वास्थ्य जैसे लक्षण। यह चिकित्सा निदान नहीं है। PHC पर मुफ्त हीमोग्लोबिन जांच एकमात्र तरीका है।" },
+      { q:"कौन इस उपकरण का उपयोग कर सकती हैं?", a:"यह 15 से 49 वर्ष की महिलाओं के लिए बनाया गया है। अगर आप गर्भवती हैं, हाल ही में बच्चा दिया है, या लगातार थकान जैसे लक्षण हैं, तो यह आपको बता सकता है कि जांच करवानी चाहिए।" },
+      { q:"क्या मेरी जानकारी सुरक्षित है?", a:"हाँ। आप जो कुछ भी दर्ज करते हैं वह हमारे सर्वर पर नहीं जाता। जांच आपके डिवाइस पर चलती है। हम सिर्फ गुमनाम उपयोग डेटा एकत्रित करते हैं।" },
+      { q:"आयरन कैसे बढ़ाएं?", a:"पालक, दाल, अंडे और गुड़ जैसे आयरन-समृद्ध खाद्य पदार्थ हफ़्ते में 3–4 बार खाएं। नींबू या आंवला मिलें। खाने के 1 घंटे बाद तक चाय/कॉफी से बचें।" },
+      { q:"मुफ्त जांच कहाँ मिलेगी?", a:"अपने नजदीकी Primary Health Centre (PHC) जाएं। एनीमिया मुक्त भारत कार्यक्रम के अंतर हीमोग्लोबिन जांच मुफ्त है। PHC खोजने के लिए परिणाम पृष्ठ पर PHC finder का उपयोग करें।" }
+    ],
+    articles: [
+      { title:"आयरन-समृद्ध नाश्ते के 5 विचार", sub:"त्वरित, स्वादिस्ट और पौष्टिक", content:"<strong>1. पालक पराठा दही के साथ</strong><br>गेहूँ के आटे में कटा हुआ पालक मिलें। दही और नींबू के साथ परोसें।<br><br><strong>2. मूंग दाल चीला</strong><br>मूंग दाल से प्रोटीन भरपूर पैनकेक। प्याज और टमाटर मिलें।<br><br><strong>3. रागी दलिया गुड़ के साथ</strong><br>दूध में रागी का आटा पकाें। गुड़ से मीठा करें। सूखे मेवे मिलें।<br><br><strong>4. अंडा भुर्जी व्हिटमील टोस्ट के साथ</strong><br>टमाटर और प्याज के साथ भुर्जी।<br><br><strong>टिप:</strong> हमेशा नींबू या आंवला मिलें!" },
+      { title:"खाने के बाद चाय आयरन क्यों कम करती है", sub:"सरलतम तरीके से विज्ञान समझें", content:"चाय और कॉफ़ी में <strong>टैनिन</strong> और <strong>पॉलीफेनल</strong> होते हैं। ये आपके पाचन तंत्र में आयरन के साथ बंध जाते हैं।<br><br><strong>क्या होता है:</strong><br>- आप दाल या पालक खाते हैं<br>- फिर तुरंत चाय पीते हैं<br>- टैनिन आयरन के साथ बंध जाते हैं<br>- शरीर सिर्फ 25–30% आयरन सोख पाता है<br><br><strong>आसान हल:</strong> खाने के बाद 1 घंटे तक चाय या कॉफ़ी न पीें।" },
+      { title:"चेतावनी के संकेत — PHC कब जाें", sub:"इन लक्षणों को नज़रअंदाज़ न करें", content:"<strong>तत्काल (आज जाें):</strong><br>- अत्यधिक कमज़ोरी<br>- बेहोशी के प्रसंग<br>- सीने में दर्द या तेज़ दिल की धड़कन<br><br><strong>3–7 दिनों में:</strong><br>- 2+ सप्ताह से लगातार थकान<br>- खड़े होने पर चक्कर<br><br><strong>याद रखें:</strong> PHC में हीमोग्लोबिन जांच मुफ्त है!" },
+      { title:"हीमोग्लोबिन स्तर समझें", sub:"संख्याओं का क्या मतलब है", content:"<strong>हीमोग्लोबिन क्या है?</strong><br>लाल रक्त कोशिकाओं में एक प्रोटीन जो ऑक्सीजन ले जाता है।<br><br><strong>महिलाओं के लिए सामान्य स्तर (15–49 वर्ष):</strong><br>सामान्य: 12.0 g/dL या अधिक<br>हल्का एनीमिया: 11.0–11.9 g/dL<br>मध्यम एनीमिया: 8.0–10.9 g/dL<br>गंभीर एनीमिया: 8.0 g/dL से कम" },
+      { title:"ऊर्जा के लिए सरल घरेलू उपाय", sub:"बेहतर महसूस करने के प्राकृतिक तरीके", content:"<strong>1. सुबह गुड़ का पानी</strong><br>गर्म पानी में गुड़ का एक छोटा टुकड़ा मिलें।<br><br><strong>2. आंवला</strong><br>रोज़ 1–2 ताज़ा आंवला खाें। विटामिन सी में बहुत समृद्ध।<br><br><strong>3. चुकंदर का रस</strong><br>चुकंदर, गाजर और सेब का रस बनाें।<br><br><strong>ध्यान दें:</strong> ये 3–4 सप्ताह daily करने पर बेहतर काम करते हैं!" }
+    ]
+  },
+  mr: {
+    title:"आरोग्य लिंक", subtitle:"स्मार्ट प्रगतीशील अॅनिमिया जोखीम तपासणी", tagline:"महिला आरोग्य सशक्तीकरण | वय 15–49",
+    aboutDeveloperShort:"<strong>विकसित केले:</strong> <span class='club-name'>रोटारॅक्ट क्लब ऑफ डी.वाय. पाटील स्कूल ऑफ बायोटेक्नॉलॉजी अँड बायोइन्फॉर्मेटिक्स</span>",
+    aboutDescription:"आम्ही एक संस्था-आधारित युवा संघटना आहोत.",
+    aboutLocation:"नवी मुंबई (सॅटेलाइट सिटी, झोन 1, आरआयडी 3142) मध्ये स्थित.",
+    aboutMission:"<strong>ध्येय:</strong> सर्व समुदायांसाठी जागरूकता, तपासणी आणि वेळेवर रेफरलद्वारे आरोग्य सेवा अंतर भरणे.",
+    welcomeText:"हे द्रुत 10-प्रश्न मूल्यांकन तुमच्या अॅनिमिया जोखीम पातळीची ओळख करण्यात मदत करेल.",
+    welcomeDisclaimer:"लक्षात ठेवा: हे तपासणी साधन आहे, निदान नाही.",
+    startBtn:"तपासणी सुरू करा",
+    heroTitle:"महिला आरोग्य तपासणी उपक्रम", heroSubtitle:"15–49 वयोगटातील महिलांसाठी मोफत अॅनिमिया जोखीम मूल्यांकन", heroTagline:"लवकर शोध आणि जागरूकतेद्वारे सामुदायिक आरोग्याला समर्थन",
+    privacyFooter:"<strong>गोपनीयता:</strong> आमच्या सर्व्हरवर कोणताही वैयक्तिक डेटा संग्रहित केला जात नाही.",
+    feature1:"2 मिनिट चाचणी", feature2:"100% खाजगी", feature3:"3 भाषा", feature4:"नेहमी मोफत",
+    nextStepsTitle:"शिफारस केलेली पुढील पायऱ्या", healthResourcesTitle:"स्थानिक आरोग्य संसाधने", refTitle:"वैज्ञानिक संदर्भ आणि संसाधने",
+    phcFinderTitle:"स्थानानुसार PHC शोधा", findPHCLink:"स्थान सेवा वापरा", showPHCBtn:"जवळचे PHC शोधा",
+    btnWhatsApp:"WhatsApp वर शेअर करा", btnPrint:"परिणाम मुद्रित करा", btnReset:"नवीन तपासणी",
+    learnMoreTitle:"अॅनिमियाबद्दल अधिक जाणा",
+    footerText:"केवळ जागरूकता आणि रेफरल समर्थनासाठी | वैद्यकीय निदानाचा पर्याय नाही",
+    foodsSectionTitle:"खाण्यासाठी आयर्न-समृद्ध पदार्थ",
+    foodsSectionIntro:"हे पदार्थ तुमच्या परिसरात सहज मिळतात आणि दैनंदिन जेवणात समाविष्ट करणे सोपे आहे:",
+    foodsTip:"टिप:", foodsTipText:"आयर्न-समृद्ध पदार्थांसोबत व्हिटॅमिन सी (लिंबू, आवळा, टमाटर) नेहमी द्या — हे आयर्न मशुरण दोगुना करते!",
+    ageSub:"तरुण प्रौढ़", ageSub2:"बाळंतपणाचे वर्षे", ageSub3:"मध्यम प्रजनन वय",
+    foods: [
+      { emoji:"&#127796;", name:"पालक", tip:"पालकाची भाजी" },
+      { emoji:"&#129452;", name:"डाळी", tip:"मसूर / मोंगडाळी" },
+      { emoji:"&#127906;", name:"गूळ", tip:"गूळाचे लाडू" },
+      { emoji:"&#129370;", name:"अंडी", tip:"उकडलेली किंवा भुरजी" },
+      { emoji:"&#129370;", name:"चिकन/मांस", tip:"आठवड्यातून 2–3 वेळा" },
+      { emoji:"&#127792;", name:"शेंगदाणे", tip:"दोन बोट दाहवे" },
+      { emoji:"&#127818;", name:"समृद्ध तांदूळ", tip:"सरकारी पुरवठा" },
+      { emoji:"&#127793;", name:"बीटरूट", tip:"रस किंवा भाजी" },
+      { emoji:"&#127807;", name:"मोरिंगा", tip:"जेवणात पाउडर मिक्स" },
+      { emoji:"&#127859;", name:"डार्क चॉकलेट", tip:"एक छोटा टुकडा" }
+    ],
+    faq: [
+      { q:"अॅनिमिया काय आहे?", a:"अॅनिमिया म्हणजे तुमच्या रक्तात पुरेसे निरोगी लाल रक्तपेशी नाहीत. भारतात सुमारे 57% महिलांना अॅनिमिया आहे (NFHS-5). हे खूप सामान्य आहे पण लवकर सापडलं तर सहज बरं होतं." },
+      { q:"हे तपासणी साधन किती अचूक आहे?", a:"हे साधन मान्य तपासणी सूचक वापरतं — थकवा, चक्कर, आहार आणि मासिक आरोग्य. हे वैद्यकीय निदान नाही. PHC मध्ये मोफत हिमोग्लोबिन चाचणी एकच मार्ग आहे." },
+      { q:"कोण हे साधन वापरू शकतो?", a:"हे 15 ते 49 वयोगटातील महिलांसाठी आहे. तुम्ही गर्भवती असाल, नुकतेच बाळ दिलेलं असाल, किंवा सतत थकवा यासारखे लक्षणे असतील तर हे साधन मदत करेल." },
+      { q:"माझी माहिती खाजगी आहे का?", a:"होय. तुम्ही काहीही प्रविष्ट केलेलं आमच्या सर्व्हरवर जात नाही. तपासणी तुमच्या डिव्हाइसवरच चालतं." },
+      { q:"आयर्न कसं वाढवावं?", a:"पालक, डाळी, अंडी आणि गूळ आठवड्यातून 3–4 वेळा खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा." },
+      { q:"मोफत तपासणी कुठे मिळेल?", a:"जवळच्या Primary Health Centre (PHC) मध्ये जा. अॅनिमिया मुक्त भारत कार्यक्रमांतर हिमोग्लोबिन चाचणी मोफत आहे." }
+    ],
+    articles: [
+      { title:"आयर्न-समृद्ध नाश्त्याचे 5 विचार", sub:"द्रुत, चवदार आणि पोषक", content:"<strong>1. पालक पराठा दहीसोबत</strong><br>गहूँच्या पिठात कटलेला पालक मिक्स करा. दही आणि लिंबूसोबत वाढva.<br><br><strong>2. मोंगडाळीचा चीला</strong><br>मोंगडाळीपासून प्रोटीन-भरपूर पैनकेक.<br><br><strong>3. रागी लापसी गूळ-सोबत</strong><br>दूधात रागी शिजवा. गूळ-ने गोड करा.<br><br><strong>टिप:</strong> नेहमी लिंबू आवळा मिक्स करा!" },
+      { title:"जेवणानंतर चहा आयर्न का कमी करतो", sub:"विज्ञान सोपे स्पष्टीकरण", content:"चहा आणि कॉफीमध्ये <strong>टॅनिन</strong> आणि <strong>पॉलीफेनल</strong> असतात. हे तुमच्या पचनतंत्रात आयर्नशी जुळतात.<br><br><strong>काय होते:</strong><br>- तुम्ही डाळी खाता<br>- नंतर लगेच चहा पिता<br>- टॅनिन आयर्नशी जुळतात<br>- शरीर फक्त 25–30% आयर्न शोषित करतं<br><br><strong>सोपा उपाय:</strong> जेवणानंतर 1 तास चहा/कॉफी टाळा." },
+      { title:"चेतावनीचे चिन्हे — PHC कधी भेटावे", sub:"हे लक्षणे दुर्लक्षित करू नका", content:"<strong>तातडीचे (आज भेटा):</strong><br>- अत्यंत अशक्तपणा<br>- मूर्छा<br>- छातीत दुखणे<br><br><strong>3–7 दिवसांत:</strong><br>- 2+ आठवड्यांचा सतत थकवा<br>- उभे राहताना चक्कर<br><br><strong>लक्षात ठेवा:</strong> PHC मध्ये हिमोग्लोबिन चाचणी मोफत आहे!" },
+      { title:"हिमोग्लोबिन पातळी समजून घ्या", sub:"संख्यांचा अर्थ काय आहे", content:"<strong>हिमोग्लोबिन (Hb) काय आहे?</strong><br>लाल रक्तपेशींमधील प्रोटीन जो ऑक्सीजन वाहतो.<br><br><strong>महिलांसाठी सामान्य पातळी (15–49 वय):</strong><br>सामान्य: 12.0 g/dL किंवा जास्त<br>सौम्य अॅनिमिया: 11.0–11.9 g/dL<br>मध्यम अॅनिमिया: 8.0–10.9 g/dL<br>गंभीर अॅनिमिया: 8.0 g/dL पेक्षा कमी" },
+      { title:"ऊर्जेसाठी सोपे घरोपचार", sub:"बरे वाटण्याचे नैसर्गिक मार्ग", content:"<strong>1. सकाळी गूळाचे पाणी</strong><br>उषण पाण्यात गूळ विरजवा.<br><br><strong>2. आवळा</strong><br>दैनंदिन 1–2 आवळे खा. व्हिटॅमिन सी मध्ये खूप समृद्ध.<br><br><strong>3. बीटरूट रस</strong><br>बीटरूट, गाजर आणि सेब रस करा.<br><br><strong>लक्षात ठेवा:</strong> हे 3–4 आठवड्यांसाठी दैनिक केले तर उत्तम काम करतात!" }
+    ]
+  }
+};
+
+// Continue in next part due to length...
+
+// ============================================================
+// QUESTIONS — each has a "why" field (context shown to user, no points)
+// ============================================================
+var questions = [
+  {
+    id:'age', type:'ageRange',
+    text:{en:"Which age group are you in?", hi:"आप किस आयु वर्ग में हैं?", mr:"तुम्ही कोणत्या वयोगटातील आहात?"},
+    why:{en:"Your age group helps us understand your body's iron needs at this stage of life.", hi:"आपका आयु वर्ग हमें जीवन के इस चरण में आपके आयरन की आवश्यकता समझने में मदत करता है।", mr:"तुमचा वयोगट आपले शरीराच्या आयर्न गरजा समजण्यात मदत करतो."}
+  },
+  {
+    id:'pregnant',
+    text:{en:"Are you currently pregnant?", hi:"क्या आप वर्तमान में गर्भवती हैं?", mr:"तुम्ही सध्या गर्भवती आहात का?"},
+    why:{en:"Pregnancy significantly increases your body's demand for iron to support the growing baby.", hi:"गर्भावस्था में बच्चे के विकास के लिए आपके शरीर को बहुत अधिक आयरन की आवश्यकता होती है।", mr:"गर्भावस्थेत बाळाच्या वाढीसाठी तुमच्या शरीराला खूप जास्त आयर्नची गरज असते."},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:3}
+    ]
+  },
+  {
+    id:'postpartum',
+    text:{en:"Did you deliver a baby in the last 6 months?", hi:"क्या आपने पिछले 6 महीनों में बच्चे को जन्म दिया है?", mr:"तुम्ही गेल्या 6 महिन्यात बाळाला जन्म दिला आहे का?"},
+    why:{en:"After delivery, your body loses a significant amount of blood and iron. Breastfeeding also uses up iron stores.", hi:"प्रसव के बाद, आपका शरीर बहुत खून और आयरन खो देता है। स्तनपान भी आयरन की खपत करता है।", mr:"बाळंतपणानंतर, तुमचा शरीर खूप रक्त आणि आयर्न गमावतो. स्तनपान मध्ये देखील आयर्न वापरतं."},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:3}
+    ]
+  },
+  {
+    id:'fatigue',
+    text:{en:"Do you experience persistent tiredness or weakness?", hi:"क्या आप लगातार थकान या कमजोरी महसूस करती हैं?", mr:"तुम्हाला सतत थकवा किंवा अशक्तपणा जाणवतो का?"},
+    why:{en:"Constant tiredness is one of the most common signs that your body is not getting enough oxygen — which can happen when iron levels are low.", hi:"लगातार थकान एक बहुत आम संकेत है कि आपके शरीर को पर्याप्त ऑक्सीजन नहीं मिल रहा।", mr:"सतत थकवा एक बरेच सामान्य चिन्ह आहे की तुमचा शरीर पुरेसा ऑक्सीजन मिळत नाही."},
+    helper:{en:"Feeling constantly tired, low energy, difficulty doing daily work", hi:"लगातार थकान महसूस करना, कम ऊर्जा", mr:"सतत थकवा जाणवणे, कमी ऊर्जा"},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:2}
+    ]
+  },
+  {
+    id:'dizziness',
+    text:{en:"Do you feel dizzy when standing up or walking?", hi:"क्या खड़े होने या चलने पर आपको चक्कर आता है?", mr:"उभे राहताना किंवा चालताना तुम्हाला चक्कर येते का?"},
+    why:{en:"Dizziness when you stand up can be a sign that your brain is not receiving enough oxygen due to low iron in your blood.", hi:"खड़े होने पर चक्कर आना इस बात का संकेत हो सकता है कि आपके दिमाग को कम आयरन के कारण पर्याप्त ऑक्सीजन नहीं मिल रहा।", mr:"उभे राहताना चक्कर हे एक चिन्ह असू शकतं की तुमच्या मेंदूला कमी आयर्नमुळे पुरेसा ऑक्सीजन मिळत नाही."},
+    helper:{en:"Feeling lightheaded, unsteady, room spinning", hi:"सिर हल्का महसूस होना, अस्थिर", mr:"डोके हलके वाटणे, अस्थिर वाटणे"},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:2}
+    ]
+  },
+  {
+    id:'breathless',
+    text:{en:"Do you experience breathlessness during normal daily activities?", hi:"क्या आप सामान्य दैनिक गतिविधियों के दौरान सांस फूलने का अनुभव करती हैं?", mr:"तुम्हाला सामान्य दैनंदिन कामांदरम्यान श्वास लागतो का?"},
+    why:{en:"When iron is low, your heart and lungs work harder to compensate — which is why even simple tasks like walking or cooking can make you short of breath.", hi:"कम आयरन के कारण आपके दिल और फेफड़े मुआवजा देने के लिए बहुत मेहनत करते हैं — इसलिए चलना या खाना बनाना भी सांस फुला देता है।", mr:"कमी आयर्नमुळे तुमचं हृदय आणि फुफ्फुस जास्त मेहनत करतात — म्हणूनच चालणं किंवा स्वयंपाक करणं मध्ये श्वास लागतो."},
+    helper:{en:"Difficulty breathing during walking, cooking, or climbing stairs", hi:"चलने, खाना बनाने या सीढ़ियां चढ़ने में कठिनाई", mr:"चालताना, स्वयंपाक करताना श्वास घेण्यात अडचण"},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:2}
+    ]
+  },
+  {
+    id:'headache',
+    text:{en:"Do you have frequent headaches or difficulty concentrating?", hi:"क्या आपको बार-बार सिरदर्द या ध्यान केंद्रित करने में कठिनाई होती है?", mr:"तुम्हाला वारंवार डोकेदुखी किंवा लक्ष केंद्रित करण्यात अडचण येते का?"},
+    why:{en:"Your brain needs a steady supply of oxygen. Low iron can reduce that supply, which often shows up as headaches or trouble focusing.", hi:"आपके दिमाग को ऑक्सीजन की निरंतर आपूर्ति की आवश्यकता है। कम आयरन उस आपूर्ति को कम कर सकता है।", mr:"तुमच्या मेंदूला ऑक्सीजनचा सतत पुरवठा हवा. कमी आयर्न त्या पुरवठ्यात घट करू शकतं."},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:1}
+    ]
+  },
+  {
+    id:'bleeding',
+    text:{en:"Do you experience heavy menstrual bleeding?", hi:"क्या आपको अधिक मासिक धर्म रक्तस्राव होता है?", mr:"तुम्हाला जास्त मासिक पाळी रक्तस्राव होतो का?"},
+    why:{en:"Heavy periods are one of the most common reasons women lose iron. Each cycle can drain a significant amount if bleeding is heavy.", hi:"भारी मासिक धर्म महिलाओं के आयरन खोने के सबसे आम कारणों में से एक है। अगर रक्तस्राव ज़्यादा हो तो हर बार बहुत आयरन खो जाता है।", mr:"जास्त मासिक पाळी महिलांचा आयर्न कमी होण्याचा सगळ्यात सामान्य कारण आहे."},
+    helper:{en:"Soaking pad every 1–2 hours during periods", hi:"मासिक धर्म के दौरान हर 1–2 घंटे में पैड भिगोना", mr:"मासिक पाळीच्या वेळी दर 1–2 तासांनी पॅड भिजणे"},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:4},
+      {text:{en:"Prefer not to say", hi:"नहीं बताना चाहते", mr:"सांगू इच्छित नाही"}, score:0}
+    ]
+  },
+  {
+    id:'diet',
+    text:{en:"Do you eat iron-rich foods less than 3 times per week?", hi:"क्या आप सप्ताह में 3 बार से कम आयरन युक्त खाद्य पदार्थ खाती हैं?", mr:"तुम्ही आठवड्यातून 3 वेळेपेक्षा कमी आयर्न-समृद्ध पदार्थ खातात का?"},
+    why:{en:"Iron-rich foods like spinach, dal, and eggs are the main way your body gets iron. Eating them regularly is essential to keep your levels healthy.", hi:"पालक, दाल और अंडे जैसे आयरन-समृद्ध खाद्य पदार्थ आपके शरीर के आयरन पाने का मुख्य तरीका है।", mr:"पालक, डाळी आणि अंडी यासारखे आयर्न-समृद्ध पदार्थ तुमच्या शरीरचा आयर्न मिळण्याचा मुख्य मार्ग आहे."},
+    showFoodGallery:true,
+    options:[
+      {text:{en:"No (I eat regularly)", hi:"नहीं (नियमित खाती हूं)", mr:"नाही (नियमितपणे खाते)"}, score:0},
+      {text:{en:"Yes (Less than 3 times/week)", hi:"हां (सप्ताह में 3 बार से कम)", mr:"होय (3 वेळेपेक्षा कमी)"}, score:2}
+    ]
+  },
+  {
+    id:'tea',
+    text:{en:"Do you drink tea or coffee immediately after meals?", hi:"क्या आप भोजन के तुरंत बाद चाय या कॉफी पीती हैं?", mr:"तुम्ही जेवणानंतर लगेच चहा किंवा कॉफी पिता का?"},
+    why:{en:"Tea and coffee contain substances called tannins that block your body from absorbing iron from food. Waiting even 1 hour after eating makes a big difference.", hi:"चाय और कॉफी में टैनिन नामक पदार्थ होते हैं जो आपके शरीर को खाने से आयरन सोखने से रोकते हैं।", mr:"चहा आणि कॉफीमध्ये टॅनिन नाव के पदार्थ असतात जे तुमच्या शरीराला जेवणातील आयर्न शोषित करण्यात रोधक करतात."},
+    helper:{en:"Within 30 minutes of eating", hi:"खाने के 30 मिनट के भीतर", mr:"जेवणाच्या 30 मिनिटांच्या आत"},
+    options:[
+      {text:{en:"No", hi:"नहीं", mr:"नाही"}, score:0},
+      {text:{en:"Yes", hi:"हां", mr:"होय"}, score:1}
+    ]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+var currentLang = 'en';
+var currentQuestion = 0;
+var answers = {};
+var lastRiskLevel = 'low';
+
+// ============================================================
+// ABOUT TOGGLE
+// ============================================================
+function toggleAbout() {
+  document.getElementById('aboutContent').classList.toggle('expanded');
+  document.getElementById('expandIcon').classList.toggle('expanded');
+}
+
+// ============================================================
+// FAQ RENDER
+// ============================================================
+function renderFAQ() {
+  var t = translations[currentLang];
+  var container = document.getElementById('faqSection');
+  var html = '<div class="card" style="margin-top:20px;"><h2 id="faqTitle" style="color:#455a64;font-size:clamp(18px,4vw,24px);border-bottom:3px solid #607d8b;padding-bottom:10px;margin-bottom:20px;margin-top:0;">' + (currentLang === 'en' ? 'Frequently Asked Questions' : currentLang === 'hi' ? 'अक्सर पूछे जाने वाले प्रश्न' : 'वारंवार विचारले जाणारे प्रश्न') + '</h2>';
+  t.faq.forEach(function(item, i) {
+    html += '<div class="faq-item">' +
+      '<div class="faq-question" onclick="toggleFAQ(' + i + ')">' +
+        '<div class="faq-question-text">' + item.q + '</div>' +
+        '<div class="faq-arrow" id="faq-arrow-' + i + '">&#9660;</div>' +
+      '</div>' +
+      '<div class="faq-answer" id="faq-answer-' + i + '">' + item.a + '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function toggleFAQ(i) {
+  var answer = document.getElementById('faq-answer-' + i);
+  var arrow = document.getElementById('faq-arrow-' + i);
+  var isOpen = answer.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-answer').forEach(function(a){ a.classList.remove('open'); });
+  document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
+  // Toggle clicked
+  if (!isOpen) { answer.classList.add('open'); arrow.classList.add('open'); }
+}
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function setLang(lang) {
+  currentLang = lang;
+  gtag('event', 'language_change', { 'event_category': 'engagement', 'language': lang });
+  document.querySelectorAll(".lang-btn").forEach(function(btn){ btn.classList.remove("active"); });
+  document.getElementById("btn-" + lang).classList.add("active");
+  var t = translations[lang];
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("subtitle").textContent = t.subtitle;
+  document.getElementById("tagline").textContent = t.tagline;
+  document.getElementById("aboutDeveloperShort").innerHTML = t.aboutDeveloperShort;
+  document.getElementById("aboutDescription").textContent = t.aboutDescription;
+  document.getElementById("aboutLocation").textContent = t.aboutLocation;
+  document.getElementById("aboutMission").innerHTML = t.aboutMission;
+  document.getElementById("welcomeText").textContent = t.welcomeText;
+  document.getElementById("welcomeDisclaimer").innerHTML = '<span style="font-size:18px;">&#9888;&#65039;</span><span>' + t.welcomeDisclaimer + '</span>';
+  document.getElementById("startBtn").textContent = t.startBtn;
+  document.getElementById("heroTitle").textContent = t.heroTitle;
+  document.getElementById("heroSubtitle").textContent = t.heroSubtitle;
+  document.getElementById("heroTagline").textContent = t.heroTagline;
+  document.getElementById("privacyFooter").innerHTML = t.privacyFooter;
+  document.getElementById("feature1").textContent = t.feature1;
+  document.getElementById("feature2").textContent = t.feature2;
+  document.getElementById("feature3").textContent = t.feature3;
+  document.getElementById("feature4").textContent = t.feature4;
+  document.getElementById("refTitle").textContent = t.refTitle;
+  document.getElementById("footerText").textContent = t.footerText;
+  renderFAQ();
+  if (!document.getElementById('screeningCard').classList.contains('hidden')) loadQuestion();
+}
+
+// ============================================================
+// START
+// ============================================================
+function startScreening() {
+  gtag('event', 'screening_started', { 'event_category': 'engagement' });
+  document.getElementById('heroCard').style.display = 'none';
+  document.getElementById('aboutHeader').style.display = 'none';
+  document.getElementById('aboutContent').style.display = 'none';
+  document.getElementById('faqSection').style.display = 'none';
+  document.getElementById('screeningCard').classList.remove('hidden');
+  currentQuestion = 0; answers = {};
+  loadQuestion();
+}
+
+// ============================================================
+// LOAD QUESTION
+// ============================================================
+function loadQuestion() {
+  var q = questions[currentQuestion];
+  var lang = currentLang;
+  var progress = ((currentQuestion + 1) / questions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('progressText').textContent = (lang === 'en' ? 'Question ' : lang === 'hi' ? 'प्रश्न ' : 'प्रश्न ') + (currentQuestion + 1) + ' of ' + questions.length;
+  document.getElementById('questionText').textContent = q.text[lang];
+
+  // Why badge
+  document.getElementById('whyBadge').innerHTML = '<div class="why-badge"><div class="why-icon">&#128161;</div><div class="why-text">' + q.why[lang] + '</div></div>';
+
+  document.getElementById('visualHelper').innerHTML = '';
+  document.getElementById('optionsContainer').innerHTML = '';
+
+  // Helper
+  if (q.helper) {
+    document.getElementById('visualHelper').innerHTML = '<div class="visual-helper"><div class="visual-helper-text">' + q.helper[lang] + '</div></div>';
+  }
+
+  // Food gallery
+  if (q.showFoodGallery) {
+    var t = translations[lang];
+    var galleryHtml = '<div class="food-gallery">';
+    t.foods.slice(0, 6).forEach(function(f) {
+      galleryHtml += '<div class="food-item"><span class="food-emoji">' + f.emoji + '</span><div class="food-item-name">' + f.name + '</div><div style="font-size:9px;color:#999;">' + f.tip + '</div></div>';
+    });
+    galleryHtml += '</div>';
+    document.getElementById('visualHelper').innerHTML += galleryHtml;
+  }
+
+  // Age range — no emoji
+  if (q.type === 'ageRange') {
+    var t = translations[lang];
+    document.getElementById('optionsContainer').innerHTML =
+      '<div class="age-range-grid">' +
+        '<div class="age-range-card ' + (answers[q.id] === 0 ? 'selected' : '') + '" onclick="selectAgeRange(0)">' +
+          '<div class="range-label">15–24</div><div class="range-sub">' + t.ageSub + '</div></div>' +
+        '<div class="age-range-card ' + (answers[q.id] === 1 ? 'selected' : '') + '" onclick="selectAgeRange(1)">' +
+          '<div class="range-label">25–35</div><div class="range-sub">' + t.ageSub2 + '</div></div>' +
+        '<div class="age-range-card ' + (answers[q.id] === 2 ? 'selected' : '') + '" onclick="selectAgeRange(2)">' +
+          '<div class="range-label">36–49</div><div class="range-sub">' + t.ageSub3 + '</div></div>' +
+      '</div>';
+  }
+  // Standard options
+  else if (q.options) {
+    var html = '';
+    q.options.forEach(function(option, index) {
+      var isSelected = answers[q.id] === index;
+      html += '<div class="option-btn ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + index + ')">' +
+        '<span>' + option.text[lang] + '</span></div>';
+    });
+    document.getElementById('optionsContainer').innerHTML = html;
+  }
+
+  document.getElementById('prevBtn').disabled = currentQuestion === 0;
+  document.getElementById('nextBtn').disabled = answers[q.id] === undefined;
+  var l = currentLang;
+  document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1
+    ? (l === 'en' ? 'Finish' : l === 'hi' ? 'समाप्त' : 'सम्पन्न')
+    : (l === 'en' ? 'Next →' : l === 'hi' ? 'अगला →' : 'पुढे →');
+}
+
+// ============================================================
+// SELECT
+// ============================================================
+function selectAgeRange(index) {
+  answers[questions[currentQuestion].id] = index;
+  document.querySelectorAll('.age-range-card').forEach(function(card, i) { card.classList.toggle('selected', i === index); });
+  document.getElementById('nextBtn').disabled = false;
+}
+function selectAnswer(index) {
+  answers[questions[currentQuestion].id] = index;
+  document.querySelectorAll('.option-btn').forEach(function(btn, i) { btn.classList.toggle('selected', i === index); });
+  document.getElementById('nextBtn').disabled = false;
+}
+
+// ============================================================
+// NAV
+// ============================================================
+function nextQuestion() {
+  if (currentQuestion < questions.length - 1) { currentQuestion++; loadQuestion(); }
+  else calculateAndShowResult();
+}
+function previousQuestion() {
+  if (currentQuestion > 0) { currentQuestion--; loadQuestion(); }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { var nb = document.getElementById('nextBtn'); if (nb && !nb.disabled) nextQuestion(); }
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    var options = document.querySelectorAll('.option-btn');
+    if (options.length === 0) {
+      var cards = document.querySelectorAll('.age-range-card');
+      if (cards.length > 0) {
+        var sel = document.querySelector('.age-range-card.selected');
+        var idx = sel ? Array.prototype.indexOf.call(cards, sel) : -1;
+        idx = e.key === 'ArrowDown' ? (idx + 1) % cards.length : (idx <= 0 ? cards.length - 1 : idx - 1);
+        cards[idx].click(); e.preventDefault();
+      }
+      return;
+    }
+    var selected = document.querySelector('.option-btn.selected');
+    var index = selected ? Array.prototype.indexOf.call(options, selected) : -1;
+    index = e.key === 'ArrowDown' ? (index + 1) % options.length : (index <= 0 ? options.length - 1 : index - 1);
+    options[index].click(); options[index].focus(); e.preventDefault();
+  }
+});
+
+// ============================================================
+// CALCULATE — score never shown
+// ============================================================
+function calculateAndShowResult() {
+  var totalScore = 0, symptoms = 0;
+  questions.forEach(function(q) {
+    if (q.type === 'ageRange') return;
+    var answerIndex = answers[q.id];
+    if (answerIndex !== undefined && q.options) {
+      var score = q.options[answerIndex].score;
+      totalScore += score;
+      if (['fatigue','dizziness','breathless','headache'].indexOf(q.id) !== -1 && score > 0) symptoms++;
+    }
+  });
+  var riskLevel = 'low';
+  if (totalScore >= 8 || (answers.bleeding === 1 && symptoms >= 1)) riskLevel = 'high';
+  else if (totalScore >= 4 || answers.pregnant === 1 || answers.postpartum === 1 || (answers.diet === 1 && symptoms >= 1)) riskLevel = 'moderate';
+  lastRiskLevel = riskLevel;
+  gtag('event', 'screening_completed', { 'event_category': 'conversion', 'risk_level': riskLevel });
+  displayResult(riskLevel);
+}
+
+// ============================================================
+// DISPLAY RESULT
+// ============================================================
+function displayResult(riskLevel) {
+  document.getElementById('screeningCard').classList.add('hidden');
+  var resultCard = document.getElementById('resultCard');
+  resultCard.style.display = 'block';
+  resultCard.className = 'result-card ' + riskLevel + '-risk';
+  var lang = currentLang, t = translations[lang];
+
+  var titles = { high:{en:'High Risk',hi:'उच्च जोखिम',mr:'उच्च जोखीम'}, moderate:{en:'Moderate Risk',hi:'मध्यम जोखिम',mr:'मध्यम जोखीम'}, low:{en:'Low Risk',hi:'कम जोखिम',mr:'कमी जोखीम'} };
+  document.getElementById('resultTitle').textContent = titles[riskLevel][lang];
+
+  var texts = {
+    high:{en:'Based on your responses, you may be at a higher risk of anemia. We recommend you take action soon.',hi:'आपके उत्तरों के आधार पर, आपको एनीमिया का अधिक जोखिम हो सकता है। कृपया जल्दी कार्रवाई करें।',mr:'तुमच्या उत्तरांवर आधारित, तुम्हाला अॅनिमियाचा जास्त धोका असू शकतो. कृपया लवकरच कार्रवाई करा.'},
+    moderate:{en:'Your responses suggest some risk factors for anemia. We recommend getting tested at your nearest PHC.',hi:'आपके उत्तर एनीमिया के कुछ जोखिम कारक दर्शाते हैं। हम आपके निकटतम PHC पर परीक्षण की सिफारिश करते हैं।',mr:'तुमची उत्तरे अॅनिमियासाठी काही जोखीम घटक दाखवतात. आम्ही जवळच्या PHC मध्ये चाचणीची शिफारस करतो.'},
+    low:{en:'No major anemia risk factors were identified. Keep up the good work on maintaining your health!',hi:'कोई प्रमुख एनीमिया जोखिम कारक नहीं पाया गया। आपके स्वास्थ्य की देखभाल जारी रखें!',mr:'कोणतेही प्रमुख अॅनिमिया जोखीम घटक आढळले नाहीत. तुमच्या आरोग्याच्या काळजीचे छान काम सुरू ठेवा!'}
+  };
+  document.getElementById('resultText').textContent = texts[riskLevel][lang];
+
+  var steps = {
+    high:{en:'<p><strong>URGENT:</strong> Visit your nearest PHC within 7 days for a hemoglobin (Hb) blood test. This is free under government health programs.</p><p><strong>Start these dietary changes now:</strong></p><ul style="margin-left:20px;"><li>Eat iron-rich foods every day (see the list below)</li><li>Always add Vitamin C — lemon, amla, or tomato — with iron-rich meals</li><li>Avoid drinking tea or coffee for at least 1 hour after meals</li></ul>',
+         hi:'<p><strong>तत्काल:</strong> हीमोग्लोबिन जांच के लिए 7 दिनों के भीतर निकटतम PHC पर जाएं। यह सरकारी स्वास्थ्य कार्यक्रमों के अंतर मुफ्त है।</p><p><strong>अभी आहार परिवर्तन शुरू करें:</strong></p><ul style="margin-left:20px;"><li>हर दिन आयरन-समृद्ध खाद्य खाएं (नीचे सूची देखें)</li><li>हमेशा विटामिन सी मिलें</li><li>खाने के 1 घंटे बाद तक चाय/कॉफी से बचें</li></ul>',
+         mr:'<p><strong>तातडीचे:</strong> हिमोग्लोबिन चाचणीसाठी 7 दिवसांत जवळच्या PHC ला भेट द्या. हे सरकारी आरोग्य कार्यक्रमांतर मोफत आहे.</p><p><strong>आहार बदल आत्ता सुरू करा:</strong></p><ul style="margin-left:20px;"><li>रोज आयर्न-समृद्ध पदार्थ खा</li><li>नेहमी व्हिटॅमिन सी मिक्स करा</li><li>जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा</li></ul>'},
+    moderate:{en:'<p><strong>Recommendation:</strong> Get a hemoglobin test within the next 2–4 weeks at your nearest PHC (free of cost).</p><p><strong>Improve your diet:</strong></p><ul style="margin-left:20px;"><li>Eat iron-rich foods at least 4–5 times per week</li><li>Include Vitamin C foods with every iron-rich meal</li><li>Reduce tea or coffee intake right after eating</li></ul>',
+              hi:'<p><strong>सिफारिश:</strong> अगले 2–4 सप्ताह में निकटतम PHC पर हीमोग्लोबिन परीक्षण करवाएं (मुफ्त)।</p><p><strong>आहार में सुधार करें:</strong></p><ul style="margin-left:20px;"><li>सप्ताह में 4–5 बार आयरन-समृद्ध खाद्य खाएं</li><li>हर आयरन-समृद्ध भोजन के साथ विटामिन सी लें</li></ul>',
+              mr:'<p><strong>शिफारस:</strong> पुढच्या 2–4 आठवड्यांत जवळच्या PHC मध्ये हिमोग्लोबिन चाचणी करा (मोफत).</p><p><strong>आहार सुधारा:</strong></p><ul style="margin-left:20px;"><li>आठवड्यातून 4–5 वेळा आयर्न-समृद्ध पदार्थ खा</li><li>व्हिटॅमिन सी पदार्थ समाविष्ट करा</li></ul>'},
+    low:{en:'<p><strong>Great news!</strong> No major anemia risk factors were identified based on your answers.</p><p><strong>Keep these healthy habits going:</strong></p><ul style="margin-left:20px;"><li>Continue eating a variety of iron-rich foods regularly</li><li>Stay well hydrated throughout the day</li><li>Consider repeating this screening after 6 months</li></ul>',
+         hi:'<p><strong>अच्छा समाचार!</strong> कोई प्रमुख जोखिम कारक नहीं पाया गया।</p><p><strong>स्वस्थ आदतें जारी रखें:</strong></p><ul style="margin-left:20px;"><li>नियमित आयरन-समृद्ध खाद्य खाते रहें</li><li>पूरे दिन हाइड्रेटेड रहें</li><li>6 महीने बाद दोबारा जांच करें</li></ul>',
+         mr:'<p><strong>छान बातमी!</strong> कोणतेही प्रमुख जोखीम घटक आढळले नाहीत.</p><p><strong>निरोगी सवयी पुढे चालू ठेवा:</strong></p><ul style="margin-left:20px;"><li>नियमितपणे आयर्न-समृद्ध पदार्थ खा</li><li>दिवसभर हायड्रेटेड राहा</li><li>6 महिन्यांनंतर पुन्हा तपासणी करा</li></ul>'}
+  };
+  document.getElementById('nextStepsContent').innerHTML = steps[riskLevel][lang];
+
+  document.getElementById('nextStepsTitle').textContent = t.nextStepsTitle;
+  document.getElementById('healthResourcesTitle').textContent = t.healthResourcesTitle;
+  document.getElementById('phcFinderTitle').textContent = t.phcFinderTitle;
+  document.getElementById('findPHCLink').textContent = t.findPHCLink;
+  document.getElementById('showPHCBtn').textContent = t.showPHCBtn;
+  document.getElementById('btnWhatsApp').textContent = t.btnWhatsApp;
+  document.getElementById('btnPrint').textContent = t.btnPrint;
+  document.getElementById('btnReset').textContent = t.btnReset;
+  document.getElementById('learnMoreTitle').textContent = t.learnMoreTitle;
+  document.getElementById('foodsSectionTitle').textContent = t.foodsSectionTitle;
+  document.getElementById('foodsSectionIntro').textContent = t.foodsSectionIntro;
+  document.getElementById('foodsTip').textContent = t.foodsTip;
+  document.getElementById('foodsTipText').textContent = t.foodsTipText;
+
+  renderFoods();
+  renderArticles();
+  document.getElementById('referencesCard').style.display = 'block';
+  resultCard.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+// RENDER FOODS
+// ============================================================
+function renderFoods() {
+  var t = translations[currentLang];
+  var grid = document.getElementById('foodsGrid');
+  grid.innerHTML = '';
+  t.foods.forEach(function(f) {
+    grid.innerHTML += '<div class="foods-grid-item"><span class="fg-emoji">' + f.emoji + '</span><div class="fg-name">' + f.name + '</div><div class="fg-tip">' + f.tip + '</div></div>';
+  });
+}
+
+// ============================================================
+// RENDER ARTICLES
+// ============================================================
+function renderArticles() {
+  var t = translations[currentLang];
+  var container = document.getElementById('articlesContainer');
+  container.innerHTML = '';
+  t.articles.forEach(function(article, i) {
+    var id = 'article' + (i + 1);
+    container.innerHTML +=
+      '<div class="article-card" onclick="toggleArticle(\'' + id + '\', ' + i + ')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+          '<div><div style="font-weight:700;color:#92400E;font-size:15px;">' + article.title + '</div>' +
+          '<div style="font-size:13px;color:#78716C;margin-top:4px;">' + article.sub + '</div></div>' +
+          '<span id="' + id + 'Arrow" style="font-size:20px;color:#F59E0B;">&#9660;</span>' +
+        '</div>' +
+        '<div id="' + id + '" class="article-content" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid #FDE68A;"></div>' +
+      '</div>';
+  });
+}
+function toggleArticle(articleId, index) {
+  var content = document.getElementById(articleId);
+  var arrow = document.getElementById(articleId + 'Arrow');
+  var t = translations[currentLang];
+  if (content.style.display === 'none') {
+    content.innerHTML = t.articles[index].content;
+    content.style.display = 'block';
+    arrow.textContent = '▲';
+    gtag('event', 'article_opened', { 'event_category': 'engagement', 'event_label': articleId });
+  } else { content.style.display = 'none'; arrow.textContent = '▼'; }
+}
+
+// ============================================================
+// PHC FINDER
+// ============================================================
+function findNearestPHC() {
+  gtag('event', 'phc_finder_used', { 'event_category': 'engagement' });
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      window.open('https://www.google.com/maps/search/Primary+Health+Centre/@' + pos.coords.latitude + ',' + pos.coords.longitude + ',14z', '_blank');
+    }, function() { alert('Please enable location services or use the dropdown below.'); });
+  } else { alert('Geolocation not supported. Use the dropdown below.'); }
+}
+function loadDistricts() {
+  var state = document.getElementById('stateSelect').value;
+  var districts = {
+    maharashtra:['Mumbai','Mumbai Suburban','Thane','Raigad','Ratnagiri','Sindhudurg','Pune','Satara','Sangli','Solapur','Kolhapur','Nashik','Dhule','Nandurbar','Jalgaon','Aurangabad','Jalna','Beed','Latur','Osmanabad','Nanded','Parbhani','Hingoli','Nagpur','Wardha','Amravati','Akola','Yavatmal','Buldhana','Washim','Chandrapur','Gadchiroli','Bhandara','Gondia'],
+    gujarat:['Ahmedabad','Surat','Vadodara','Rajkot','Gandhinagar','Bhavnagar','Jamnagar'],
+    karnataka:['Bangalore','Mysore','Mangalore','Hubli','Belgaum','Gulbarga'],
+    delhi:['Central Delhi','North Delhi','South Delhi','East Delhi','West Delhi','New Delhi'],
+    up:['Lucknow','Kanpur','Ghaziabad','Agra','Varanasi','Meerut','Prayagraj','Noida'],
+    mp:['Bhopal','Indore','Jabalpur','Gwalior','Ujjain','Sagar','Ratlam']
+  };
+  var sel = document.getElementById('districtSelect');
+  sel.innerHTML = '<option value="">Select Your District</option>';
+  if (state && districts[state]) { districts[state].forEach(function(d) { sel.innerHTML += '<option value="' + d + '">' + d + '</option>'; }); }
+}
+function showPHCContacts() {
+  var state = document.getElementById('stateSelect').value;
+  var district = document.getElementById('districtSelect').value;
+  if (!state || !district) { alert('Please select both state and district'); return; }
+  var div = document.getElementById('phcResults');
+  div.innerHTML = '<div style="background:white;padding:12px;border-radius:8px;border:2px solid #4caf50;"><strong>' + district + ' PHC Information</strong><br><small style="color:#666;">Contact your nearest PHC for hemoglobin testing</small><br><br><a href="https://www.google.com/maps/search/Primary+Health+Centre+' + district + '" target="_blank" rel="noopener noreferrer" style="color:#2196f3;text-decoration:none;font-weight:600;">View ' + district + ' PHCs on Google Maps</a></div>';
+  div.style.display = 'block';
+}
+
+// ============================================================
+// SHARE / PRINT — removed saveResults() function
+// ============================================================
+function shareWhatsApp() {
+  var riskLabels = { high:{en:'HIGH RISK',hi:'उच्च जोखिम',mr:'उच्च जोखीम'}, moderate:{en:'MODERATE RISK',hi:'मध्यम जोखिम',mr:'मध्यम जोखीम'}, low:{en:'LOW RISK',hi:'कम जोखिम',mr:'कमी जोखीम'} };
+  var lang = currentLang;
+  var riskAdvice = {
+    high:{en:'Your screening indicates a higher risk of anemia. It is strongly recommended that you visit your nearest Primary Health Centre (PHC) within the next 7 days for a hemoglobin blood test. This test is completely free under government health programs. In the meantime, focus on eating iron-rich foods like spinach, dal, eggs, and jaggery every day. Pair them with sources of Vitamin C such as lemon or amla to help your body absorb iron better. Also, try to avoid tea or coffee for at least one hour after meals, as the tannins in them can block iron absorption significantly.',
+         hi:'आपकी जांच एनीमिया का अधिक जोखिम दर्शाती है। यह दृढ़ रूप से सिफारिश की जाती है कि आप अगले 7 दिनों में अपने निकटतम प्राथमिक स्वास्थ्य केंद्र (PHC) पर हीमोग्लोबिन रक्त परीक्षण के लिए जाएं। यह परीक्षण सरकारी स्वास्थ्य कार्यक्रमों के under बिल्कुल मुफ्त है। इस बीच, पालक, दाल, अंडे और गुड़ जैसे आयरन-समृद्ध खाद्य पदार्थ हर दिन खाएं। नींबू या आंवला जैसे विटामिन C के स्रोत मिलें। भोजन के बाद कम से कम एक घंटे तक चाय या कॉफी से बचें।',
+         mr:'तुमची तपासणी अॅनिमियाचा जास्त धोका दाखवते. पुढच्या 7 दिवसांत तुमच्या जवळच्या Primary Health Centre (PHC) ला हिमोग्लोबिन रक्त चाचणीसाठी भेट द्या. हे चाचणी सरकारी आरोग्य कार्यक्रमांतर अовल मोफत आहे. दरम्यान, पालक, डाळी, अंडी आणि गूळ यासारखे आयर्न-समृद्ध पदार्थ रोज खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा.'},
+    moderate:{en:'Your screening shows some risk factors for anemia. We recommend that you visit your nearest Primary Health Centre (PHC) within the next 2 to 4 weeks for a hemoglobin blood test, which is available free of cost. To support your health in the meantime, try to eat iron-rich foods like spinach, lentils, eggs, and jaggery at least 4 to 5 times a week. Adding Vitamin C sources like lemon or amla with these meals will help your body absorb iron more effectively. It would also be beneficial to cut back on drinking tea or coffee right after eating.',
+               hi:'आपकी जांच एनीमिया के कुछ जोखिम कारक दर्शाती है। हम सिफारिश करते हैं कि आप अगले 2 से 4 सप्ताह में अपने निकटतम PHC पर मुफ्त हीमोग्लोबिन रक्त परीक्षण के लिए जाएं। इस दौरान, सप्ताह में 4 से 5 बार आयरन-समृद्ध खाद्य पदार्थ खाएं। नींबू या आंवला जैसे विटामिन C स्रोत मिलें। खाने के बाद चाय या कॉफी पीना कम करें।',
+               mr:'तुमची तपासणी अॅनिमियासाठी काही जोखीम घटक दाखवते. पुढच्या 2 ते 4 आठवड्यांत जवळच्या PHC मध्ये मोफत हिमोग्लोबिन चाचणी करा. दरम्यान, आठवड्यातून 4 ते 5 वेळा आयर्न-समृद्ध पदार्थ खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर चहा किंवा कॉफी कमी करा.'},
+    low:{en:'Your screening did not identify any major risk factors for anemia, which is great news. To continue maintaining your good health, keep eating a balanced diet that includes iron-rich foods like spinach, dal, eggs, and jaggery regularly. Staying well hydrated throughout the day is also important. You are welcome to repeat this screening after 6 months to continue monitoring your health.',
+         hi:'आपकी जांच में एनीमिया के कोई प्रमुख जोखिम कारक नहीं पाए गए, जो बहुत अच्छी बात है। अपने अच्छे स्वास्थ्य को बनाए रखने के लिए, पालक, दाल, अंडे और गुड़ जैसे आयरन-समृद्ध खाद्य पदार्थ नियमित खाते रहें। पूरे दिन पर्याप्त पानी पीना भी ज़रूरी है। आप 6 महीने बाद इस जांच को दोबारा कर सकती हैं।',
+         mr:'तुमच्या तपासणीत अॅनिमियाचे कोणतेही प्रमुख जोखीम घटक आढळले नाहीत, हे खूप छान आहे. तुमच्या चांगल्या आरोग्याचा मेहनत ठेवण्यासाठी, पालक, डाळी, अंडी आणि गूळ यासारखे आयर्न-समृद्ध पदार्थ नियमित खा. दिवसभर पुरेसा पाणी पिणे देखील महत्त्वाचं आहे. 6 महिन्यांनंतर पुन्हा तपासणी करा.'}
+  };
+  var msg = 'AAROGYA LINK - Anemia Risk Screening Result\nRotaract Club of D.Y. Patil School of Biotechnology and Bioinformatics, Navi Mumbai\n\nScreening Date: ' + new Date().toLocaleDateString() + '\nYour Risk Level: ' + riskLabels[lastRiskLevel][lang] + '\n\n' + riskAdvice[lastRiskLevel][lang] + '\n\nImportant: This is a screening tool only and is not a medical diagnosis. Please consult a healthcare professional for proper medical advice.\n\nNational Health Helpline: 104\nWomen Helpline: 1091\nEmergency Ambulance: 108\n\nLearn more: https://aarogyalink.org';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  gtag('event', 'share', { 'event_category': 'engagement', 'method': 'WhatsApp' });
+}
+
+function printResults() { window.print(); }
+
+function resetScreening() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('heroCard').style.display = 'block';
+  document.getElementById('aboutHeader').style.display = 'flex';
+  document.getElementById('faqSection').style.display = 'block';
+  document.getElementById('screeningCard').classList.add('hidden');
+  document.getElementById('referencesCard').style.display = 'none';
+  currentQuestion = 0; answers = {}; lastRiskLevel = 'low';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('load', function() { renderFAQ(); });
+</script>
+</body>
+</html>

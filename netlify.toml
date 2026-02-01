@@ -1,0 +1,47 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed - static HTML site
+  publish = "."
+
+[[redirects]]
+  # Redirect default domain to custom domain (update with your domain)
+  from = "https://aarogya-link.netlify.app/*"
+  to = "https://aarogyalink.org/:splat"
+  status = 301
+  force = false
+  # Remove or update this redirect once you have a custom domain
+
+[[headers]]
+  # Security headers for all pages
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  # Cache static assets for 1 year
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Cache manifest and service worker for shorter time
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Service-Worker-Allowed = "/"
+
+# Custom 404 page (optional)
+# [[redirects]]
+#   from = "/*"
+#   to = "/404.html"
+#   status = 404
