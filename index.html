@@ -60,7 +60,6 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     .question-text { font-size: clamp(16px, 3.5vw, 20px); font-weight: 600; color: #333; margin-bottom: 16px; line-height: 1.5; }
 
-    /* Why badge shown under each question */
     .why-badge {
       background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px;
       padding: 10px 14px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 10px;
@@ -71,7 +70,6 @@
     .visual-helper { background: #f5f5f5; padding: 16px; border-radius: 12px; margin: 12px 0; display: flex; align-items: center; gap: 12px; }
     .visual-helper-text { flex: 1; font-size: 14px; color: #666; }
 
-    /* Age Range Cards — no emoji */
     .age-range-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0;
     }
@@ -91,7 +89,6 @@
     .age-range-card .range-sub { font-size: 12px; color: #888; margin-top: 6px; }
     .age-range-card.selected .range-label { color: #1565c0; }
 
-    /* Food Gallery */
     .food-gallery {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
       gap: 10px; margin: 12px 0; padding: 16px; background: #f9f9f9; border-radius: 12px;
@@ -154,7 +151,6 @@
     }
     .start-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(76,175,80,0.5); }
 
-    /* About collapsible */
     .about-header {
       display: flex; justify-content: space-between; align-items: center; cursor: pointer;
       padding: 16px 20px; background: white; border-radius: 12px;
@@ -171,7 +167,6 @@
     .about-content.expanded { max-height: 500px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .about-content p { margin: 12px 0; font-size: 14px; line-height: 1.6; color: #555; }
 
-    /* FAQ */
     .faq-section { margin-top: 20px; }
     .faq-item {
       background: white; border-radius: 12px; margin-bottom: 10px;
@@ -192,7 +187,6 @@
     }
     .faq-answer.open { max-height: 300px; padding: 0 20px 18px; }
 
-    /* Foods section in results */
     .foods-section {
       background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
       border-left: 4px solid #10B981; padding: 24px; border-radius: 12px; margin-top: 20px;
@@ -208,7 +202,6 @@
     .foods-grid-item .fg-name { font-size: 11px; font-weight: 700; color: #065F46; }
     .foods-grid-item .fg-tip { font-size: 10px; color: #6b7280; margin-top: 3px; }
 
-    /* Articles */
     .article-card { background: white; padding: 16px; border-radius: 10px; cursor: pointer; border: 2px solid #FDE68A; transition: all 0.3s; }
     .article-card:hover { border-color: #F59E0B; background: #fffbeb; }
     .article-content { font-size: 14px; line-height: 1.8; color: #44403C; }
@@ -410,6 +403,8 @@ var translations = {
     foodsSectionIntro:"These foods are common in your region and easy to add to daily meals:",
     foodsTip:"Pro Tip:", foodsTipText:"Always pair iron-rich foods with Vitamin C (lemon, amla, tomato) — it doubles iron absorption!",
     ageSub:"Young adult", ageSub2:"Childbearing years", ageSub3:"Mid reproductive",
+    btnPrev:"← Previous", btnNext:"Next →", btnFinish:"Finish",
+    progressLabel:"Question",
     foods: [
       { emoji:"&#127796;", name:"Spinach", tip:"Palak sabzi" },
       { emoji:"&#129452;", name:"Dal (Lentils)", tip:"Moong / Masoor" },
@@ -422,7 +417,6 @@ var translations = {
       { emoji:"&#127807;", name:"Moringa", tip:"Powder in food" },
       { emoji:"&#127859;", name:"Dark Chocolate", tip:"Small piece" }
     ],
-    // FAQ
     faq: [
       { q:"What is anemia?", a:"Anemia is a condition where your blood does not have enough healthy red blood cells to carry sufficient oxygen to your body. In India, nearly 57% of women aged 15–49 have some form of anemia (NFHS-5). It is common but very treatable when caught early." },
       { q:"Is this screening tool accurate?", a:"This tool uses validated screening indicators — symptoms like tiredness, dizziness, dietary habits, and menstrual health — to estimate your risk level. It is not a medical diagnosis. A hemoglobin blood test at your nearest PHC (free of cost) is the only way to confirm anemia." },
@@ -432,7 +426,6 @@ var translations = {
       { q:"How can I improve my iron levels naturally?", a:"Eat iron-rich foods like spinach, dal, eggs, and jaggery at least 3–4 times a week. Always pair them with Vitamin C sources like lemon or amla to help your body absorb iron better. Avoid tea or coffee for at least 1 hour after meals, as tannins block iron absorption." },
       { q:"Where can I get tested for free?", a:"Visit your nearest Primary Health Centre (PHC). Hemoglobin testing is free under the Anemia Mukt Bharat program. You can use the PHC finder in your results page, or call the National Health Helpline at 104 for guidance." }
     ],
-    // Articles
     articles: [
       { title:"5 Iron-Rich Breakfast Ideas", sub:"Quick, tasty, and nutritious", content:"<strong>1. Spinach Paratha with Curd</strong><br>Mix chopped spinach in whole wheat dough. Serve with curd and lemon for a vitamin C boost.<br><br><strong>2. Moong Dal Cheela</strong><br>Protein-packed pancakes from moong dal. Add onions and tomatoes. Serve with green chutney.<br><br><strong>3. Ragi Porridge with Jaggery</strong><br>Cook ragi flour with milk. Sweeten with jaggery (iron-rich). Add dry fruits.<br><br><strong>4. Egg Bhurji with Whole Wheat Toast</strong><br>Scrambled eggs with tomatoes and onions on whole grain bread.<br><br><strong>5. Poha with Peanuts and Lemon</strong><br>Traditional poha loaded with peanuts (iron) and fresh lemon juice (vitamin C).<br><br><strong>Tip:</strong> Always add lemon or amla — vitamin C helps your body absorb iron better!" },
       { title:"Why Tea After Meals Reduces Iron", sub:"The science explained simply", content:"Tea and coffee contain compounds called <strong>tannins</strong> and <strong>polyphenols</strong>. These bind with iron in your digestive system and prevent your body from absorbing it.<br><br><strong>What happens:</strong><br>- You eat dal or spinach (rich in iron)<br>- Drink tea right after<br>- Tannins bind to the iron<br>- Your body absorbs only 25–30% instead of 60–70%<br><br><strong>Simple Solution:</strong> Wait at least 1 hour after meals before drinking tea or coffee.<br><br><strong>Better Options Right After Meals:</strong><br>Plain water, Buttermilk, Lemon water, Fresh fruit juice" },
@@ -447,7 +440,7 @@ var translations = {
     aboutDescription:"हम एक संस्थागत युवा संगठन हैं जो 18 वर्ष और उससे अधिक उम्र के लोगों को विचारों के आदान-प्रदान के लिए एक साथ लाता है।",
     aboutLocation:"नवी मुंबई (सैटेलाइट सिटी, ज़ोन 1, आरआईडी 3142) में स्थित।",
     aboutMission:"<strong>मिशन:</strong> सभी समुदायों के लिए जागरूकता, जांच और समय पर रेफरल के माध्यम से स्वास्थ्य सेवा अंतराल को पाटना।",
-    welcomeText:"यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदद करेगा।",
+    welcomeText:"यह त्वरित 10-प्रश्न मूल्यांकन आपके एनीमिया जोखिम स्तर की पहचान करने में मदत करेगा।",
     welcomeDisclaimer:"याद रखें: यह एक जांच उपकरण है, निदान नहीं।",
     startBtn:"जांच शुरू करें",
     heroTitle:"महिला स्वास्थ्य जांच पहल", heroSubtitle:"15–49 वर्ष की महिलाओं के लिए मुफ्त एनीमिया जोखिम मूल्यांकन", heroTagline:"शीघ्र पता लगाने और जागरूकता के माध्यम से सामुदायिक स्वास्थ्य का समर्थन",
@@ -462,6 +455,8 @@ var translations = {
     foodsSectionIntro:"ये खाद्य पदार्थ आपके क्षेत्र में आसानी से मिलते हैं और दैनिक भोजन में शामिल करना आसान है:",
     foodsTip:"टिप:", foodsTipText:"आयरन-समृद्ध खाद्य पदार्थों के साथ हमेशा विटामिन सी (नींबू, आंवला, टमाटर) लें — यह आयरन के अवशोषण को दोगुना कर देता है!",
     ageSub:"युवा वयस्क", ageSub2:"बच्चे पैदा करने के वर्ष", ageSub3:"मध्यम प्रजनन आयु",
+    btnPrev:"← पिछला", btnNext:"अगला →", btnFinish:"समाप्त",
+    progressLabel:"प्रश्न",
     foods: [
       { emoji:"&#127796;", name:"पालक", tip:"पालक की सब्ज़ी" },
       { emoji:"&#129452;", name:"दाल", tip:"मूंग / मसूर दाल" },
@@ -511,6 +506,8 @@ var translations = {
     foodsSectionIntro:"हे पदार्थ तुमच्या परिसरात सहज मिळतात आणि दैनंदिन जेवणात समाविष्ट करणे सोपे आहे:",
     foodsTip:"टिप:", foodsTipText:"आयर्न-समृद्ध पदार्थांसोबत व्हिटॅमिन सी (लिंबू, आवळा, टमाटर) नेहमी द्या — हे आयर्न मशुरण दोगुना करते!",
     ageSub:"तरुण प्रौढ़", ageSub2:"बाळंतपणाचे वर्षे", ageSub3:"मध्यम प्रजनन वय",
+    btnPrev:"← मागे", btnNext:"पुढे →", btnFinish:"सम्पन्न",
+    progressLabel:"प्रश्न",
     foods: [
       { emoji:"&#127796;", name:"पालक", tip:"पालकाची भाजी" },
       { emoji:"&#129452;", name:"डाळी", tip:"मसूर / मोंगडाळी" },
@@ -541,10 +538,8 @@ var translations = {
   }
 };
 
-// Continue in next part due to length...
-
 // ============================================================
-// QUESTIONS — each has a "why" field (context shown to user, no points)
+// QUESTIONS
 // ============================================================
 var questions = [
   {
@@ -682,10 +677,8 @@ function toggleFAQ(i) {
   var answer = document.getElementById('faq-answer-' + i);
   var arrow = document.getElementById('faq-arrow-' + i);
   var isOpen = answer.classList.contains('open');
-  // Close all
   document.querySelectorAll('.faq-answer').forEach(function(a){ a.classList.remove('open'); });
   document.querySelectorAll('.faq-arrow').forEach(function(a){ a.classList.remove('open'); });
-  // Toggle clicked
   if (!isOpen) { answer.classList.add('open'); arrow.classList.add('open'); }
 }
 
@@ -742,9 +735,10 @@ function startScreening() {
 function loadQuestion() {
   var q = questions[currentQuestion];
   var lang = currentLang;
+  var t = translations[lang];
   var progress = ((currentQuestion + 1) / questions.length) * 100;
   document.getElementById('progressFill').style.width = progress + '%';
-  document.getElementById('progressText').textContent = (lang === 'en' ? 'Question ' : lang === 'hi' ? 'प्रश्न ' : 'प्रश्न ') + (currentQuestion + 1) + ' of ' + questions.length;
+  document.getElementById('progressText').textContent = t.progressLabel + ' ' + (currentQuestion + 1) + ' of ' + questions.length;
   document.getElementById('questionText').textContent = q.text[lang];
 
   // Why badge
@@ -760,7 +754,6 @@ function loadQuestion() {
 
   // Food gallery
   if (q.showFoodGallery) {
-    var t = translations[lang];
     var galleryHtml = '<div class="food-gallery">';
     t.foods.slice(0, 6).forEach(function(f) {
       galleryHtml += '<div class="food-item"><span class="food-emoji">' + f.emoji + '</span><div class="food-item-name">' + f.name + '</div><div style="font-size:9px;color:#999;">' + f.tip + '</div></div>';
@@ -769,9 +762,8 @@ function loadQuestion() {
     document.getElementById('visualHelper').innerHTML += galleryHtml;
   }
 
-  // Age range — no emoji
+  // Age range
   if (q.type === 'ageRange') {
-    var t = translations[lang];
     document.getElementById('optionsContainer').innerHTML =
       '<div class="age-range-grid">' +
         '<div class="age-range-card ' + (answers[q.id] === 0 ? 'selected' : '') + '" onclick="selectAgeRange(0)">' +
@@ -795,10 +787,10 @@ function loadQuestion() {
 
   document.getElementById('prevBtn').disabled = currentQuestion === 0;
   document.getElementById('nextBtn').disabled = answers[q.id] === undefined;
-  var l = currentLang;
-  document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1
-    ? (l === 'en' ? 'Finish' : l === 'hi' ? 'समाप्त' : 'सम्पन्न')
-    : (l === 'en' ? 'Next →' : l === 'hi' ? 'अगला →' : 'पुढे →');
+
+  // *** FIX: Translate BOTH Previous and Next/Finish buttons ***
+  document.getElementById('prevBtn').textContent = t.btnPrev;
+  document.getElementById('nextBtn').textContent = (currentQuestion === questions.length - 1) ? t.btnFinish : t.btnNext;
 }
 
 // ============================================================
@@ -847,7 +839,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ============================================================
-// CALCULATE — score never shown
+// CALCULATE
 // ============================================================
 function calculateAndShowResult() {
   var totalScore = 0, symptoms = 0;
@@ -1000,7 +992,7 @@ function showPHCContacts() {
 }
 
 // ============================================================
-// SHARE / PRINT — removed saveResults() function
+// SHARE / PRINT
 // ============================================================
 function shareWhatsApp() {
   var riskLabels = { high:{en:'HIGH RISK',hi:'उच्च जोखिम',mr:'उच्च जोखीम'}, moderate:{en:'MODERATE RISK',hi:'मध्यम जोखिम',mr:'मध्यम जोखीम'}, low:{en:'LOW RISK',hi:'कम जोखिम',mr:'कमी जोखीम'} };
@@ -1008,7 +1000,7 @@ function shareWhatsApp() {
   var riskAdvice = {
     high:{en:'Your screening indicates a higher risk of anemia. It is strongly recommended that you visit your nearest Primary Health Centre (PHC) within the next 7 days for a hemoglobin blood test. This test is completely free under government health programs. In the meantime, focus on eating iron-rich foods like spinach, dal, eggs, and jaggery every day. Pair them with sources of Vitamin C such as lemon or amla to help your body absorb iron better. Also, try to avoid tea or coffee for at least one hour after meals, as the tannins in them can block iron absorption significantly.',
          hi:'आपकी जांच एनीमिया का अधिक जोखिम दर्शाती है। यह दृढ़ रूप से सिफारिश की जाती है कि आप अगले 7 दिनों में अपने निकटतम प्राथमिक स्वास्थ्य केंद्र (PHC) पर हीमोग्लोबिन रक्त परीक्षण के लिए जाएं। यह परीक्षण सरकारी स्वास्थ्य कार्यक्रमों के under बिल्कुल मुफ्त है। इस बीच, पालक, दाल, अंडे और गुड़ जैसे आयरन-समृद्ध खाद्य पदार्थ हर दिन खाएं। नींबू या आंवला जैसे विटामिन C के स्रोत मिलें। भोजन के बाद कम से कम एक घंटे तक चाय या कॉफी से बचें।',
-         mr:'तुमची तपासणी अॅनिमियाचा जास्त धोका दाखवते. पुढच्या 7 दिवसांत तुमच्या जवळच्या Primary Health Centre (PHC) ला हिमोग्लोबिन रक्त चाचणीसाठी भेट द्या. हे चाचणी सरकारी आरोग्य कार्यक्रमांतर अовल मोफत आहे. दरम्यान, पालक, डाळी, अंडी आणि गूळ यासारखे आयर्न-समृद्ध पदार्थ रोज खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा.'},
+         mr:'तुमची तपासणी अॅनिमियाचा जास्त धोका दाखवते. पुढच्या 7 दिवसांत तुमच्या जवळच्या Primary Health Centre (PHC) ला हिमोग्लोबिन रक्त चाचणीसाठी भेट द्या. हे चाचणी सरकारी आरोग्य कार्यक्रमांतर अवल मोफत आहे. दरम्यान, पालक, डाळी, अंडी आणि गूळ यासारखे आयर्न-समृद्ध पदार्थ रोज खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर 1 तासासाठी चहा/कॉफी टाळा.'},
     moderate:{en:'Your screening shows some risk factors for anemia. We recommend that you visit your nearest Primary Health Centre (PHC) within the next 2 to 4 weeks for a hemoglobin blood test, which is available free of cost. To support your health in the meantime, try to eat iron-rich foods like spinach, lentils, eggs, and jaggery at least 4 to 5 times a week. Adding Vitamin C sources like lemon or amla with these meals will help your body absorb iron more effectively. It would also be beneficial to cut back on drinking tea or coffee right after eating.',
                hi:'आपकी जांच एनीमिया के कुछ जोखिम कारक दर्शाती है। हम सिफारिश करते हैं कि आप अगले 2 से 4 सप्ताह में अपने निकटतम PHC पर मुफ्त हीमोग्लोबिन रक्त परीक्षण के लिए जाएं। इस दौरान, सप्ताह में 4 से 5 बार आयरन-समृद्ध खाद्य पदार्थ खाएं। नींबू या आंवला जैसे विटामिन C स्रोत मिलें। खाने के बाद चाय या कॉफी पीना कम करें।',
                mr:'तुमची तपासणी अॅनिमियासाठी काही जोखीम घटक दाखवते. पुढच्या 2 ते 4 आठवड्यांत जवळच्या PHC मध्ये मोफत हिमोग्लोबिन चाचणी करा. दरम्यान, आठवड्यातून 4 ते 5 वेळा आयर्न-समृद्ध पदार्थ खा. लिंबू किंवा आवळा मिक्स करा. जेवणानंतर चहा किंवा कॉफी कमी करा.'},
